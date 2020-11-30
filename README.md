@@ -22,7 +22,7 @@ React, Firebase, Boostrap, Axios
 
 ## URL
 
-[https://lucid.app/lucidchart/invitations/accept/6821bf63-c498-47f7-bfe8-4eab18af6fd4](https://lucid.app/lucidchart/invitations/accept/6821bf63-c498-47f7-bfe8-4eab18af6fd4)
+n/a
 
 ## Screencastify:
 
