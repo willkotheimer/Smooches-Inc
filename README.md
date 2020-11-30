@@ -1,70 +1,67 @@
-# Getting Started with Create React App
+# Capstone: Smootches Inc
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Motivation
 
-## Available Scripts
+Relationships are hard. Asking for tasks done and chores done, even asking for what you want and need is sometimes hard. Smootches inc smoothes over the difficulty, by abstracting it to a kind of play ecommerce. A tagline for Smootches Inc borrows from the 5 love languages: "Acts of Service wrapped in Words of Affirmation".
 
-In the project directory, you can run:
+## Build status
 
-### `yarn start`
+Not started
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+## Code Style
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+React, Firebase, Boostrap, Axios
 
-### `yarn test`
+## ERD
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+[https://app.lucidchart.com/invitations/accept/8fcc899b-b72a-4cbb-8c25-2b613f560ca4](https://app.lucidchart.com/invitations/accept/8fcc899b-b72a-4cbb-8c25-2b613f560ca4)
 
-### `yarn build`
+## Figma
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+[https://www.figma.com/file/0Ved1uCqezBMaz6ddTnpwH/SmootchesInc---NSS-FrontEnd-Capstone?node-id=0%3A1](https://www.figma.com/file/0Ved1uCqezBMaz6ddTnpwH/SmootchesInc---NSS-FrontEnd-Capstone?node-id=0%3A1)
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## URL
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+[https://lucid.app/lucidchart/invitations/accept/6821bf63-c498-47f7-bfe8-4eab18af6fd4](https://lucid.app/lucidchart/invitations/accept/6821bf63-c498-47f7-bfe8-4eab18af6fd4)
 
-### `yarn eject`
+## Screencastify:
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+[https://drive.google.com/file/d/1CbKfxZsut9fFbeAeKrFFQa932che52pC/view](https://drive.google.com/file/d/1CbKfxZsut9fFbeAeKrFFQa932che52pC/view)
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+## Presentation:
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+[https://docs.google.com/presentation/d/1x9p36MlGjoAgPCz7RFPZSlolJRA6VZPxm3EhrTAzE4I/edit?usp=sharing](https://docs.google.com/presentation/d/1x9p36MlGjoAgPCz7RFPZSlolJRA6VZPxm3EhrTAzE4I/edit?usp=sharing)
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+## Screenshots:
 
-## Learn More
+## Features
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+Smootches Inc allows users to request tasks from another person, who reciprocally can request tasks from them. It is set up like an ecommerce app (payments are hearts) but the analogy breaks down there. It should be seen a cooperative and useful way to communicate, rather than a quid pro quo.
+The user will have the following screens:
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+- Splash Page / User login page
+- Create User page
+- Dashboard with components that show:
+  - Outstanding tasks to do
+  - Request Status (pending / shipped)
+  - Reviews left
+- Links to the following pages:
+  - Create a Service (Page will have Crud for services to give)
+  - Request a Service (Page will have ecommerce look with "Checkout" and confirmation screen, with "nice" messages in each part)
+  - Create an task (or make a special offer by adding offer text and that will alert the other user next time they log in and show up in their "Things I can request" pile until used or expired (when another offer is created).
+  - Leave a Review (Crud form that will allow reviews to be left).
+    (not exhaustive)
+    Stretch Goals:
+- Limit user ability to select item.
+- Send email or text
+- Boilerplate messages sent for different circumstances (receiving user order "lost in mail", user not signed into app recently, user finishing orders on time consistently, high ratings, high usage,
 
-### Code Splitting
+## Code Example
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+```
 
-### Analyzing the Bundle Size
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+## Team
 
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `yarn build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+Will Kotheimer
