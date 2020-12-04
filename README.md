@@ -14,7 +14,7 @@ React, Firebase, Boostrap, Axios
 
 ## ERD
 
-[https://app.lucidchart.com/invitations/accept/8fcc899b-b72a-4cbb-8c25-2b613f560ca4](https://app.lucidchart.com/invitations/accept/8fcc899b-b72a-4cbb-8c25-2b613f560ca4)
+[https://lucid.app/lucidchart/invitations/accept/d3b707f8-0e1b-471e-adaf-1848d4d6e3b4](https://lucid.app/lucidchart/invitations/accept/d3b707f8-0e1b-471e-adaf-1848d4d6e3b4)
 
 ## Figma
 
