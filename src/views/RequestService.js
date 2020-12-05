@@ -2,7 +2,7 @@ import React from 'react';
 import Loader from '../components/Loader';
 
 
-export default class CreateService extends React.Component {
+export default class RequestService extends React.Component {
     
     state = {
         loading: false
