@@ -3,21 +3,21 @@ import firebaseConfig from '../apiKeys';
 
 const baseUrl = firebaseConfig.databaseURL;
 
-const getAllUsers = () => new Promise((resolve, reject) => {
-  axios
-    .get(`${baseUrl}/users.json`)
-    .then((response) => {
-      const userData = response.data;
-      const users = [];
-      if (userData) {
-        Object.keys(userData).forEach((userId) => {
-          users.push(userData[userId]);
-        });
-      }
-      resolve(users);
-    })
-    .catch((error) => reject(error));
-});
+// const getAllUsers = () => new Promise((resolve, reject) => {
+//   axios
+//     .get(`${baseUrl}/users.json`)
+//     .then((response) => {
+//       const userData = response.data;
+//       const users = [];
+//       if (userData) {
+//         Object.keys(userData).forEach((userId) => {
+//           users.push(userData[userId]);
+//         });
+//       }
+//       resolve(users);
+//     })
+//     .catch((error) => reject(error));
+// });
 
 const checkIfUserExistsInFirebase = (user) => {
   axios
@@ -55,4 +55,4 @@ const setCurrentUser = (userObj) => {
   return user;
 };
 
-export default { setCurrentUser, getAllUsers };
+export default setCurrentUser;
