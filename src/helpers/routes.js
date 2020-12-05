@@ -13,7 +13,7 @@ export default function Routes({ user }) {
       <PrivateRoute
         exact
         path="/request-service"
-        component={() => <RequestService user={user} />}
+        component={RequestService} user={user} />}
       />
       <PrivateRoute exact path="/create-service" component={CreateService} user={user} />
 
