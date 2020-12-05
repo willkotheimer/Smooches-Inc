@@ -6,7 +6,7 @@ Relationships are hard. Asking for tasks done and chores done, even asking for w
 
 ## Build status
 
-Not started
+WIP
 
 ## Code Style
 
@@ -22,7 +22,7 @@ React, Firebase, Boostrap, Axios
 
 ## URL
 
-n/a
+[https://smootches-inc.netlify.app/](https://smootches-inc.netlify.app/)
 
 ## Screencastify:
 
