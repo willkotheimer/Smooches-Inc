@@ -26,9 +26,12 @@ export default function MyNavbar(props) {
     <div>
       <Navbar color="dark" dark expand="md" className="justify-content-between">
         <Link className="navbar-brand" to="/">
-          Pinterest
+          
         </Link>
         <NavbarToggler onClick={toggle} />
+        <Link className="navbar-brand" to="/">
+          SmootchesInc
+        </Link>
         <Collapse isOpen={isOpen} navbar>
           <Nav className="mr-auto" navbar>
             <NavItem>
@@ -37,7 +40,7 @@ export default function MyNavbar(props) {
               </Link>
             </NavItem>
             <NavItem>
-              <Link className="nav-link" to="/request-task">
+              <Link className="nav-link" to="/request-service">
                 Request Task
               </Link>
             </NavItem>
