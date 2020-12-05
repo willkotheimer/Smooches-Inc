@@ -1,25 +1,24 @@
 import React from 'react';
+import Auth from '../components/Auth';
 import Loader from '../components/Loader';
 
-
-export default class RequestService extends React.Component {
-    
-    state = {
-        loading: false
+export default function RequestService({ user }) {
+  const loadRequestService = () => {
+    let component = '';
+    if (user === null) {
+      component = <Loader />;
+    } else if (!user) {
+      component = (
+        <>
+          <Auth />
+          Request Service
+        </>
+      );
+    } else {
+      component = <Auth />;
     }
-  
-  render() {
-    return (
-      <>
-        {this.state.loading ? (
-          <Loader />
-        ) : (
-          <>
-            <h2>Request Service</h2>
-            
-          </>
-        )}
-      </>
-    );
-  }
+    return component;
+  };
+
+  return <div>RequestService{loadRequestService()}</div>;
 }
