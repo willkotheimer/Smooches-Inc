@@ -1,19 +1,22 @@
 {
-  "name": "smootches-inc",
+  "name": "react-pinterest",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
     "@fortawesome/fontawesome-free": "^5.15.1",
-    "@testing-library/jest-dom": "^5.11.4",
+    "@testing-library/jest-dom": "^5.11.5",
     "@testing-library/react": "^11.1.0",
     "@testing-library/user-event": "^12.1.10",
     "axios": "^0.21.0",
     "bootstrap": "^4.5.3",
-    "firebase": "^8.1.1",
+    "firebase": "^8.0.1",
     "prop-types": "^15.7.2",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
-    "react-scripts": "4.0.1",
+    "react-router-dom": "^5.2.0",
+    "react-scripts": "4.0.0",
+    "reactstrap": "^8.7.1",
+    "typescript": "^4.1.0-beta",
     "web-vitals": "^0.2.4"
   },
   "scripts": {
@@ -40,11 +43,8 @@
     ]
   },
   "devDependencies": {
-    "eslint": "^7.14.0",
-    "eslint-config-airbnb-base": "^14.2.1",
+    "eslint-config-airbnb-base": "^14.2.0",
     "eslint-config-prettier": "^6.15.0",
-    "eslint-plugin-prettier": "^3.2.0",
-    "node-sass": "^4.0.0",
-    "prettier": "^2.2.1"
+    "node-sass": "^4.14.1"
   }
 }
