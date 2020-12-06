@@ -5,6 +5,7 @@ import RequestService from '../views/RequestService';
 import CreateService from '../views/CreateService';
 import LeaveReview from '../views/LeaveReview';
 import NotFound from '../views/NotFound';
+import ServiceForm from '../components/Forms/ServiceForm';
 
 export default function Routes({ user }) {
   return (
@@ -13,11 +14,16 @@ export default function Routes({ user }) {
       <PrivateRoute
         exact
         path="/request-service"
-        component={RequestService} user={user} />}
-      />
+        component={RequestService} user={user} />
       <PrivateRoute exact path="/create-service" component={CreateService} user={user} />
 
       <PrivateRoute exact path="/leave-review" component={LeaveReview} user={user} />
+
+      <Route
+        exact
+        path="/service-form"
+        component={() => <ServiceForm user={user} />}
+      />
 
       <Route component={NotFound} />
     </Switch>
