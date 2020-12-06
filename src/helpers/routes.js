@@ -4,6 +4,7 @@ import Dashboard from '../views/Dashboard';
 import RequestService from '../views/RequestService';
 import CreateService from '../views/CreateService';
 import LeaveReview from '../views/LeaveReview';
+import UserConnect from '../views/UserConnect';
 import NotFound from '../views/NotFound';
 import ServiceForm from '../components/Forms/ServiceForm';
 
@@ -18,6 +19,8 @@ export default function Routes({ user }) {
       <PrivateRoute exact path="/create-service" component={CreateService} user={user} />
 
       <PrivateRoute exact path="/leave-review" component={LeaveReview} user={user} />
+
+      <PrivateRoute exact path="/user-connect" component={UserConnect} user={user} />
 
       <Route
         exact
