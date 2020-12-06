@@ -41,7 +41,7 @@ export default function MyNavbar(props) {
             </NavItem>
             <NavItem>
               <Link className="nav-link" to="/request-service">
-                Request Task
+                Request Service
               </Link>
             </NavItem>
             <NavItem>

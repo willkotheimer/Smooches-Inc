@@ -8,15 +8,19 @@ export default function Dashboard({ user }) {
     if (user === null) {
       component = <Loader />;
     } else if (!user) {
-      component = (
-        <>
-          <Auth />
-          Request Service
-        </>
-      );
-    } else {
-      component = <Auth />;
-    }
+        component = (
+            <>
+              <Auth />
+              Not Logged in
+            </>
+          );
+        } else {
+          component = (
+            <>
+              Dashboard
+            </>
+          );
+        }
     return component;
   };
 

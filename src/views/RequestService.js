@@ -8,15 +8,19 @@ export default function RequestService({ user }) {
     if (user === null) {
       component = <Loader />;
     } else if (!user) {
-      component = (
-        <>
-          <Auth />
-          Request Service
-        </>
-      );
-    } else {
-      component = <Auth />;
-    }
+        component = (
+            <>
+              <Auth />
+              Not Logged in
+            </>
+          );
+        } else {
+          component = (
+            <>
+              Request Service
+            </>
+          );
+        }
     return component;
   };
 
