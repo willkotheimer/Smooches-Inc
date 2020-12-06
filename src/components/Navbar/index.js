@@ -49,6 +49,11 @@ export default function MyNavbar(props) {
                 Leave Review
               </Link>
             </NavItem>
+            <NavItem>
+              <Link className="nav-link" to="/user-connect">
+              Link Accounts 
+              </Link>
+            </NavItem>
           </Nav>
           {/* "Optional chaining operator: (?.)" gives the prop time to load without throwing errors. 
         Only use this if you know your props are correct and need time to load. 
