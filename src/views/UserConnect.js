@@ -1,6 +1,7 @@
 import React from 'react';
 import Auth from '../components/Auth';
 import Loader from '../components/Loader';
+import LinkAccountsPage from './LinkAccountsPage';
 
 export default function UserConnect({ user }) {
   const loadUserConnect = () => {
@@ -17,7 +18,7 @@ export default function UserConnect({ user }) {
         } else {
           component = (
             <>
-              Connect Component Here
+              <LinkAccountsPage user={user} />
             </>
           );
         }

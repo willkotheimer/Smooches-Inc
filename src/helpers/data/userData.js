@@ -1,3 +1,5 @@
+// Userdata
+
 import axios from 'axios';
 import firebaseConfig from '../apiKeys';
 
@@ -23,6 +25,59 @@ const checkIfUserExistsInFirebase = (user) => {
     .catch((error) => console.error(error));
 };
 
+const createUserJoin = (userJoinObj) => 
+  axios.post(`${baseUrl}/userjoin.json`, userJoinObj).then(response => {
+    const update = { firebaseKey: response.data.name };
+  axios
+    .patch(`${baseUrl}/userjoin/${response.data.name}.json`, update)
+    .catch(error => console.warn(error));
+});
+
+const getUserByfirebaseKey = (firebaseKey) => 
+  new Promise((resolve, reject) => {
+    axios
+      .get(`${baseUrl}/users/${firebaseKey}.json`)
+      .then(response => {
+        resolve(response);
+      })
+      .catch(error => reject(error));
+  })
+
+  const getJoinedUser = (UID) => 
+  new Promise((resolve, reject) => {
+  axios
+    .get(`${baseUrl}/userjoin.json`)
+    .then(response => {
+      const arr = [];
+      Object.values(response.data).forEach((entry) => {
+        if(entry.user1FBKey === UID || entry.user2FBKey === UID) {
+          arr.push(entry);
+        }
+      });
+      resolve(arr);
+    })
+    .catch(error => reject(error));
+});
+
+const getAllUsers = () => 
+  new Promise((resolve, reject) => {
+  axios
+    .get(`${baseUrl}/users.json`)
+    .then(response => {
+      resolve(response);
+      })
+      .catch(error => reject(error));
+    })
+
+    const getUserByUid = (uid) => 
+    new Promise((resolve, reject) => {
+      console.warn(`${baseUrl}/users.json?orderBy="uid"&equalTo="${uid}"`);
+      axios.get(`${baseUrl}/users.json?orderBy="uid"&equalTo="${uid}"`)
+        .then((response) => {
+            resolve(Object.values(response));
+        });
+    }).catch((error) => console.warn(error));
+  
 const setCurrentUser = (userObj) => {
     const user = {
       image: userObj.photoURL,
@@ -39,4 +94,11 @@ const setCurrentUser = (userObj) => {
   return user;
 };
 
-export default setCurrentUser;
+export default  {
+  setCurrentUser,
+  createUserJoin,
+  getUserByfirebaseKey,
+  getJoinedUser,
+  getAllUsers,
+  getUserByUid
+}

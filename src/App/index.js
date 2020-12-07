@@ -4,7 +4,7 @@ import { BrowserRouter as Router } from 'react-router-dom';
 import fbConnection from '../helpers/data/connection';
 import Navbar from '../components/Navbar';
 import Routes from '../helpers/routes';
-import setCurrentUser from '../helpers/data/userData';
+import userData from '../helpers/data/userData';
 
 // patchFBBoardkeys();
 // patchFBPinkeys();
@@ -18,7 +18,7 @@ class App extends React.Component {
   componentDidMount() {
     this.removeListener = firebase.auth().onAuthStateChanged(user => {
       if (user) {
-        setCurrentUser(user);
+        userData.setCurrentUser(user);
         this.setState({ user });
       } else {
         this.setState({ user: false });
