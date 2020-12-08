@@ -102,6 +102,7 @@ const setCurrentUser = (userObj) => {
   return user;
 };
 
+// eslint-disable-next-line
 export default  {
   setCurrentUser,
   createUserJoin,
