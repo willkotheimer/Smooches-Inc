@@ -15,42 +15,20 @@ export default class UserJoin extends React.Component {
         show: true,
         userKey: '',
         otherKey: '',
-        otherName: ''
+        otherName: this.props.otherName
     }
 
     componentDidMount() {
         this.setState({
-            currentUserId: getUid()
+            currentUserId: this.props.user,
+            otherName: this.props.otherName,
+            otherKey: this.props.otherKey,
+            userKey: this.props.userKey
         });
         this.getUsersToConnect();
+        this.setLoading();
     }
 
-    // Need to try to move these up to the root of the page:
-    
-    getYourJoinedUser = () => 
-        userData.getJoinedUser(getUid()).then((response) => {
-            this.setState({
-                joinedUser: response[0],
-            });
-            if (this.state.currentUserId === response[0].user1FBKey) {
-                this.setState({
-                    userKey: response[0].user1FBKey,
-                    otherKey: response[0].user2FBKey
-                });
-            } else {
-                this.setState({
-                    userKey: response[0].user2FBKey,
-                    otherKey: response[0].user1FBKey
-                });
-            }
-            userData.getUserByUid(this.state.otherKey)
-                .then((value) => {
-                    this.setState({
-                        otherName: value
-                    });
-                });
-            this.setLoading();
-        });
     
     getUsersToConnect = () => {
         userData.getAllUsers().then((response) => {
@@ -72,12 +50,11 @@ export default class UserJoin extends React.Component {
     }
 
     render() {
-        this.getYourJoinedUser();
-        const { otherName, otherKey, currentUserId, joinedUser, usersToConnect, loading } = this.state;
+        const { otherName, currentUserId, joinedUser, usersToConnect, loading } = this.state;
 
         const showJoinedUser = () => (
-            <LinkUserCard key={otherKey} user={currentUserId} 
-            connectedUser={ otherName } />
+            <LinkUserCard key={this.props.otherKey} userKey={this.props.userKey} otherKey={this.props.otherKey} user={currentUserId} 
+            otherName={ this.props.otherName } joinedUser={this.props.joinedUser}  />
         );
          
         return (
@@ -86,12 +63,13 @@ export default class UserJoin extends React.Component {
                     <Loader />
                 ) : (
                   <>
-                  <AppModal title={'Link User'} buttonLabel={'Link User'}>
-                    {usersToConnect ? <UserRequest usersToConnect={usersToConnect} joinedUser={joinedUser}/> : ('There are not any users to connect with')}
-                  </AppModal>
+                  
                   <div className="d-flex flex-wrap container">
             
-                      { joinedUser && showJoinedUser() }
+                      
+                      { (joinedUser && showJoinedUser()) || <AppModal title={'Link User'} buttonLabel={'Link User'}>
+                    {usersToConnect ? <UserRequest usersToConnect={usersToConnect} joinedUser={joinedUser}/> : ('There are not any users to connect with')}
+                  </AppModal> }
                   </div>
                   </>
                 )}

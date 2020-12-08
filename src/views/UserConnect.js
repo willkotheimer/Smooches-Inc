@@ -3,7 +3,7 @@ import Auth from '../components/Auth';
 import Loader from '../components/Loader';
 import LinkAccountsPage from './LinkAccountsPage';
 
-export default function UserConnect({ user }) {
+export default function UserConnect({ user, otherName, otherKey, userKey, joinedUser }) {
   const loadUserConnect = () => {
     let component = '';
     if (user === null) {
@@ -18,7 +18,7 @@ export default function UserConnect({ user }) {
         } else {
           component = (
             <>
-              <LinkAccountsPage user={user} />
+              <LinkAccountsPage user={user} otherName={otherName} otherKey={otherKey} userKey={userKey} joinedUser={joinedUser}  />
             </>
           );
         }

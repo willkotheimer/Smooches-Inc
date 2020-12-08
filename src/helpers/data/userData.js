@@ -33,12 +33,20 @@ const createUserJoin = (userJoinObj) =>
     .catch(error => console.warn(error));
 });
 
+const confirmUserJoin = (userJoinObj) => {
+  console.warn(`${baseUrl}/userjoin/${userJoinObj.firebaseKey}.json`);
+  axios
+    .patch(
+      `${baseUrl}/userjoin/${userJoinObj.firebaseKey}.json`, { confirm: true }
+    ).catch(error => console.warn(error));
+    }
+
 const getUserByfirebaseKey = (firebaseKey) => 
   new Promise((resolve, reject) => {
     axios
       .get(`${baseUrl}/users/${firebaseKey}.json`)
       .then(response => {
-        resolve(response);
+        resolve(response.val.child());
       })
       .catch(error => reject(error));
   })
@@ -74,7 +82,7 @@ const getAllUsers = () =>
       console.warn(`${baseUrl}/users.json?orderBy="uid"&equalTo="${uid}"`);
       axios.get(`${baseUrl}/users.json?orderBy="uid"&equalTo="${uid}"`)
         .then((response) => {
-            resolve(Object.values(response));
+            resolve(response.data);
         });
     }).catch((error) => console.warn(error));
   
@@ -100,5 +108,6 @@ export default  {
   getUserByfirebaseKey,
   getJoinedUser,
   getAllUsers,
-  getUserByUid
+  getUserByUid,
+  confirmUserJoin
 }
