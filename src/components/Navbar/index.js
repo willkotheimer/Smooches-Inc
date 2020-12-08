@@ -30,7 +30,7 @@ export default function MyNavbar(props) {
         </Link>
         <NavbarToggler onClick={toggle} />
         <Link className="navbar-brand" to="/">
-          SmootchesInc
+          Smooch's Inc
         </Link>
         <Collapse isOpen={isOpen} navbar>
           <Nav className="mr-auto" navbar>
