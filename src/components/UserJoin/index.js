@@ -3,7 +3,6 @@ import userData from '../../helpers/data/userData';
 import LinkUserCard from '../Cards/LinkUserCard';
 import UserRequest from '../Forms/UserRequest';
 import Loader from '../Loader';
-import getUid from '../../helpers/data/authData';
 import AppModal from '../AppModal';
 
 export default class UserJoin extends React.Component {
@@ -50,7 +49,7 @@ export default class UserJoin extends React.Component {
     }
 
     render() {
-        const { otherName, currentUserId, joinedUser, usersToConnect, loading } = this.state;
+        const { currentUserId, joinedUser, usersToConnect, loading } = this.state;
 
         const showJoinedUser = () => (
             <LinkUserCard key={this.props.otherKey} userKey={this.props.userKey} otherKey={this.props.otherKey} user={currentUserId} 

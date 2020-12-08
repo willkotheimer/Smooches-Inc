@@ -26,7 +26,7 @@ export default class LinkAccountsPage extends Component {
   
 
   render() {
-    const { user, otherName, otherKey, userKey, joinedUser } = this.state;
+    const { user } = this.state;
     return (
       <>
       <div className="linkedAccountsPage d-flex justify-content-center">
