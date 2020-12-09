@@ -34,7 +34,6 @@ const createUserJoin = (userJoinObj) =>
 });
 
 const confirmUserJoin = (userJoinObj) => {
-  console.warn(`${baseUrl}/userjoin/${userJoinObj.firebaseKey}.json`);
   axios
     .patch(
       `${baseUrl}/userjoin/${userJoinObj.firebaseKey}.json`, { confirm: true }
@@ -57,15 +56,20 @@ const getUserByfirebaseKey = (firebaseKey) =>
     .get(`${baseUrl}/userjoin.json`)
     .then(response => {
       const arr = [];
-      Object.values(response.data).forEach((entry) => {
-        if(entry.user1FBKey === UID || entry.user2FBKey === UID) {
-          arr.push(entry);
-        }
-      });
+      if (response.data) {
+        Object.values(response.data).forEach((entry) => {
+          if(entry.user1FBKey === UID || entry.user2FBKey === UID) {
+            arr.push(entry);
+          }
+        });
+      }
       resolve(arr);
     })
     .catch(error => reject(error));
 });
+
+const deleteUserConnect = firebaseKey =>
+  axios.delete(`${baseUrl}/userjoin/${firebaseKey}.json`);
 
 const getAllUsers = () => 
   new Promise((resolve, reject) => {
@@ -110,5 +114,6 @@ export default  {
   getJoinedUser,
   getAllUsers,
   getUserByUid,
-  confirmUserJoin
+  confirmUserJoin,
+  deleteUserConnect
 }

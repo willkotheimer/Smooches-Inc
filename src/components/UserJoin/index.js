@@ -31,7 +31,7 @@ export default class UserJoin extends React.Component {
     
     getUsersToConnect = () => {
         userData.getAllUsers().then((response) => {
-            const arr = Object.values(response.data).filter(user => user.uid !== this.state.currentUserId) 
+            const arr = Object.values(response.data).filter(user => user.uid !== this.state.currentUserId.uid) 
             this.setState({
                 usersToConnect: arr,
             })
@@ -66,7 +66,7 @@ export default class UserJoin extends React.Component {
                   <div className="d-flex flex-wrap container">
             
                       
-                      { (joinedUser && showJoinedUser()) || <AppModal title={'Link User'} buttonLabel={'Link User'}>
+                      { (this.props.joinedUser && showJoinedUser()) || <AppModal title={'Link User'} buttonLabel={'Link User'}>
                     {usersToConnect ? <UserRequest usersToConnect={usersToConnect} joinedUser={joinedUser}/> : ('There are not any users to connect with')}
                   </AppModal> }
                   </div>
