@@ -26,9 +26,9 @@ class App extends React.Component {
             this.setState({
                 joinedUser: response[0],
             });
-            console.warn(this.state.user.uid);
-            console.warn(response[0].user1FBKey);
-            if (this.state.user.uid === response[0].user1FBKey) {
+
+            if (this.state.joinedUser) {
+              if (this.state.user.uid === response[0].user1FBKey) {
                 this.setState({
                     userKey: response[0].user1FBKey,
                     otherKey: response[0].user2FBKey
@@ -45,6 +45,7 @@ class App extends React.Component {
                         otherName: value
                     });
                 });
+            }
         });
 
   componentDidMount() {
