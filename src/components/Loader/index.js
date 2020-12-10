@@ -1,6 +1,8 @@
 const Loader = () => (
     <div className="mt-5">
-      <div className="heartbeat-loader">Loading...</div>
+      <span className="heartbeat-loader">Loading...</span>
+      <span className="heartbeat-loader">Loading...</span>
+      <span className="heartbeat-loader">Loading...</span>
     </div>
   );
   
