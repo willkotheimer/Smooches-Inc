@@ -1,8 +1,9 @@
 import React from 'react';
 import Auth from '../components/Auth';
 import Loader from '../components/Loader';
+import RequestServicePage from './RequestServicePage';
 
-export default function RequestService({ user }) {
+export default function RequestService({ user, otherName, otherKey, joinedUser }) {
   const loadRequestService = () => {
     let component = '';
     if (user === null) {
@@ -17,7 +18,7 @@ export default function RequestService({ user }) {
         } else {
           component = (
             <>
-              Request Service
+              <RequestServicePage user={user} otherName={otherName} joinedUser={joinedUser} otherKey={otherKey} />
             </>
           );
         }

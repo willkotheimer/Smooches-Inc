@@ -12,11 +12,10 @@ export default function Routes({ user, otherName, otherKey, userKey, joinedUser 
   return (
     <Switch>
       <Route exact path="/" component={() => <Dashboard otherName={otherName} user={user} />} />
-      <PrivateRoute
-        exact
-        path="/request-service"
-        component={RequestService} user={user} />
-      <PrivateRoute exact path="/create-service" component={CreateService} otherName={otherName} user={user} />
+      
+  <Route exact path="/request-service" render={() => <RequestService joinedUser={joinedUser}  otherKey={otherKey} otherName={otherName} userKey={userKey} user={user} /> } />
+        
+      <PrivateRoute exact path="/create-service" component={CreateService} otherName={otherName} joinedUser={joinedUser} user={user} />
 
       <PrivateRoute exact path="/leave-review" component={LeaveReview} otherName={otherName} user={user} />
 

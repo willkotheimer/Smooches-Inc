@@ -107,7 +107,7 @@ body {
 .heartbeat-loader:not(:required):before {
   position: absolute;
   content: '';
-  background: #483d8b;
+  background: #fff;
 }
 .heartbeat-loader:not(:required):before {
   -moz-border-radius-topleft: 12px;
