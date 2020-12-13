@@ -10,7 +10,7 @@ export default class YourOrder extends React.Component {
     const task = this.props.services[key];
     const count = this.props.order[key];
     return (<><li key={key}>
-           {count} {task.name}
+           {count} {task.name} <button onClick={() => this.props.removeFromOrder(key)}><strong>[x]</strong></button>
           </li></>);
     }
 
