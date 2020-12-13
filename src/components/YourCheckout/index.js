@@ -1,5 +1,4 @@
 import React from 'react';
-import { getUserServices } from '../../helpers/data/serviceData';
 import CheckoutCard from '../Cards/CheckoutCard';
 import Loader from '../Loader';
 import getUid from '../../helpers/data/authData';
@@ -7,7 +6,7 @@ import getUid from '../../helpers/data/authData';
 
 export default class YourCheckout extends React.Component {
   state = {
-    services: [],
+    services: this.props.services,
     loading: true,
     show: true,
     
@@ -17,20 +16,8 @@ export default class YourCheckout extends React.Component {
     this.setState({
       currentUserId: getUid()
     });
-    this.getServices();
+    this.setLoading();
   }
-
-  getServices = () => {
-    const UID = this.props.otherKey;
-    getUserServices(UID).then(response => {
-      this.setState(
-        {
-          services: response.data
-        },
-        this.setLoading
-      );
-    });
-  };
 
   setLoading = () => {
     this.timer = setInterval(() => {
@@ -45,8 +32,8 @@ export default class YourCheckout extends React.Component {
   render() {
     const { services, loading } = this.state;
     const showServices = () => 
-      Object.values(services).map(service => (
-        <CheckoutCard key={service.firebaseKey} service={service} redrawDom={this.getServices} />
+      Object.values(this.props.services).map(service => (
+        <CheckoutCard key={service.firebaseKey} index={service.firebaseKey} service={service} addToOrder={this.props.addToOrder} />
       ));
     return (
       <>
@@ -54,7 +41,6 @@ export default class YourCheckout extends React.Component {
           <Loader />
         ) : (
           <>
-        
             <div>Your Smooch's Inc Representative, {this.props.otherName[Object.keys(this.props.otherName)].name} has authorized the following services:</div>
             <div className="d-flex flex-wrap container">
               {services && showServices()}

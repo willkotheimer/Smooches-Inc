@@ -24,10 +24,8 @@ export default class UserRequest extends Component {
 
   handleSubmit = e => {
     e.preventDefault();
-    console.warn(this.state);
       userData.createUserJoin(this.state).then(() => {
         console.warn('made user', this.state);
-        // this.props.onUpdate();
     });
   };
 
