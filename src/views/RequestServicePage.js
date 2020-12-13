@@ -68,7 +68,14 @@ export default class RequestServicePage extends Component {
         <div className="leftSide">
           <div className="createService">
             <h2>Inventory:</h2>
-            {<YourCheckout addToOrder={this.addToOrder} services={this.state.services} user={user} userKey={this.state.userKey} otherKey={this.props.otherKey} joinedUser={this.props.joinedUser} otherName={this.props.otherName}  />}
+            {<YourCheckout 
+            addToOrder={this.addToOrder} 
+            services={this.state.services} 
+            user={user} userKey={this.state.userKey} 
+            otherKey={this.props.otherKey} 
+            joinedUser={this.props.joinedUser} 
+            otherName={this.props.otherName}  
+            />}
           </div>
         </div>
        <div className="rightSide">
