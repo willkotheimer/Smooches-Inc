@@ -5,6 +5,7 @@ const baseUrl = firebaseConfig.databaseURL;
 
 const getUserServices = (userId) =>
   new Promise((resolve, reject) => {
+    console.warn(`${baseUrl}/services.json?orderBy="uid"&equalTo="${userId}"`);
     axios
       .get(`${baseUrl}/services.json?orderBy="uid"&equalTo="${userId}"`)
       .then(response => {

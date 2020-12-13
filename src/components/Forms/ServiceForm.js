@@ -34,7 +34,6 @@ export default class ServiceForm extends Component {
       });
     } else {
       updateService(this.state).then(() => {
-          console.warn(this.state);
         // rerender / update state in the services component
         this.props.onUpdate(this.props.service.firebaseKey);
         this.setState({ isModalOpen: false });
