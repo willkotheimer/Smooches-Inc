@@ -33,7 +33,7 @@ export default class YourCheckout extends React.Component {
     const { services, loading } = this.state;
     const showServices = () => 
       Object.values(this.props.services).map(service => (
-        <CheckoutCard key={service.firebaseKey} index={service.firebaseKey} service={service} addToOrder={this.props.addToOrder} />
+        <CheckoutCard key={service.firebaseKey} index={service.firebaseKey} service={service} submitOrder={this.props.submitOrder} addToOrder={this.props.addToOrder} />
       ));
     return (
       <>
