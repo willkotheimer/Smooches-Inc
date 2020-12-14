@@ -1,6 +1,7 @@
 import React from 'react';
 import Auth from '../components/Auth';
 import Loader from '../components/Loader';
+import DashboardView from './DashboardView';
 
 export default function Dashboard({ user }) {
   const loadDashboard = () => {
@@ -17,7 +18,7 @@ export default function Dashboard({ user }) {
         } else {
           component = (
             <>
-              Dashboard
+              <DashboardView user={user}/>
             </>
           );
         }
