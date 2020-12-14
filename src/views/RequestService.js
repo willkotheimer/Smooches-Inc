@@ -18,7 +18,7 @@ export default function RequestService({ user, otherName, otherKey, joinedUser }
         } else {
           component = (
             <>
-              <RequestServicePage user={user} otherName={otherName} joinedUser={joinedUser} otherKey={otherKey} />
+              <RequestServicePage user={user} uid={user.uid} otherName={otherName} joinedUser={joinedUser} otherKey={otherKey} />
             </>
           );
         }
