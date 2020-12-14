@@ -61,35 +61,57 @@ The user will have the following screens:
 ## Code Example
 
 ```
-submitOrder = () => {
-        // Get things we need:
-        const dateTime = new Date();
-        // Object to hold the objects:
-        const postObj = [];
-        // Get the keys of items in current state [order]
-           Object.keys(this.state.order).map((key) => {
-            postObj.push({
-              "requesterId": `${this.props.uid}`,
-              "uid": `${this.props.otherKey}`,
-              "taskId": `${key}`,
-              "status": "pending",
-              "reviewId": "",
-              "requestedTime": `${dateTime}`,
-              "completedTime": ""
-            });
-            return postObj;
-           });
-        // Create the objects from the keys and record them into the submission state
-         postObj.forEach((item) => {
-          toDoData.createToDo(item).then(() => {
-            console.warn('Im posting this guy', item);
-            // remove everything and post in state:
-            this.removeAll();
-            // Confirm submission 
-            
-          });
-         })
+import React from 'react';
+import userData from '../../helpers/data/userData';
+
+export default class LinkUserCard extends React.Component {
+  state = {
+    user: this.props.user,
+    otherName: this.props.otherName,
+    otherKey: this.props.otherKey,
+    userKey: this.props.userKey,
+    joinedUser: this.props.joinedUser
+  }
+ 
+  rejectUser = () => {
+    userData.deleteUserConnect(this.state.joinedUser.firebaseKey);
+    this.setState({
+      joinedUser: null
+    });
+    console.warn('reject');
+  }
+
+  connectToUser = () => {
+    userData.confirmUserJoin(this.state.joinedUser);
+    const joined = this.state.joinedUser;
+    joined.confirm = true;
+    this.setState({
+      joinedUser: joined
+    });
+    console.warn('connect');
+  }
+
+  render() {
+    const { otherName, joinedUser, user } = this.state;
+  return (<>
+    <div className="card m-2">
+      <div className="card-body">
+      <h5 className="card-title">{otherName[Object.keys(otherName)].name} 
+      {joinedUser && (joinedUser.confirm) ? ' is connected' : ' is pending...'}.</h5>
+      <div>{(joinedUser && (joinedUser.user2FBKey === user.uid) && (!joinedUser.confirm)) ? (
+      <>
+      <button onClick={this.connectToUser} className='btn btn-danger'>Connect</button>
+      <button onClick={this.rejectUser} className='btn btn-danger'>Reject</button>
+      </>
+      ) : (joinedUser && (joinedUser.confirm) && 'congrats!')}</div>
+      </div>
+    </div>
+    </>
+  );
       }
+
+}
+
 ```
 
 ## Team
