@@ -2,7 +2,7 @@
 
 ## Motivation
 
-Relationships are hard. Asking for tasks done and chores done, even asking for what you want and need is sometimes hard. Smootches inc smoothes over the difficulty, by abstracting it to a kind of play ecommerce. A tagline for Smootches Inc borrows from the 5 love languages: "Acts of Service wrapped in Words of Affirmation".
+Relationships are hard. Asking for tasks done and chores done, even asking for what you want and need is sometimes hard. Smooches inc smoothes over the difficulty, by abstracting it to a kind of play ecommerce. A tagline for Smooches Inc borrows from the 5 love languages: "Acts of Service wrapped in Words of Affirmation".
 
 ## Build status
 
@@ -22,7 +22,9 @@ React, Firebase, Boostrap, Axios
 
 ## URL
 
-[https://smootches-inc.netlify.app/](https://smootches-inc.netlify.app/)
+[![Netlify Status](https://api.netlify.com/api/v1/badges/50ce45a8-6972-45c1-85d2-4f69c53fc91b/deploy-status)](https://app.netlify.com/sites/smootches-inc/deploys)
+
+[https://smooches-inc.netlify.app](https://smooches-inc.netlify.app)
 
 ## Screencastify:
 
@@ -36,7 +38,7 @@ React, Firebase, Boostrap, Axios
 
 ## Features
 
-Smootches Inc allows users to request tasks from another person, who reciprocally can request tasks from them. It is set up like an ecommerce app (payments are hearts) but the analogy breaks down there. It should be seen a cooperative and useful way to communicate, rather than a quid pro quo.
+Smooches Inc allows users to request tasks from another person, who reciprocally can request tasks from them. It is set up like an ecommerce app (payments are hearts) but the analogy breaks down there. It should be seen a cooperative and useful way to communicate, rather than a quid pro quo.
 The user will have the following screens:
 
 - Splash Page / User login page
