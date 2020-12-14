@@ -61,7 +61,35 @@ The user will have the following screens:
 ## Code Example
 
 ```
-
+submitOrder = () => {
+        // Get things we need:
+        const dateTime = new Date();
+        // Object to hold the objects:
+        const postObj = [];
+        // Get the keys of items in current state [order]
+           Object.keys(this.state.order).map((key) => {
+            postObj.push({
+              "requesterId": `${this.props.uid}`,
+              "uid": `${this.props.otherKey}`,
+              "taskId": `${key}`,
+              "status": "pending",
+              "reviewId": "",
+              "requestedTime": `${dateTime}`,
+              "completedTime": ""
+            });
+            return postObj;
+           });
+        // Create the objects from the keys and record them into the submission state
+         postObj.forEach((item) => {
+          toDoData.createToDo(item).then(() => {
+            console.warn('Im posting this guy', item);
+            // remove everything and post in state:
+            this.removeAll();
+            // Confirm submission 
+            
+          });
+         })
+      }
 ```
 
 ## Team
