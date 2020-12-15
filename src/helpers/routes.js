@@ -11,7 +11,7 @@ import ServiceForm from '../components/Forms/ServiceForm';
 export default function Routes({ user, otherName, otherKey, userKey, joinedUser }) {
   return (
     <Switch>
-      <Route exact path="/" component={() => <Dashboard otherName={otherName} user={user} />} />
+      <Route exact path="/" component={() => <Dashboard otherName={otherName} otherKey={otherKey} userKey={userKey} joinedUser={joinedUser} user={user} />} />
       
   <Route exact path="/request-service" render={() => <RequestService joinedUser={joinedUser}  otherKey={otherKey} otherName={otherName} userKey={userKey} user={user} /> } />
         

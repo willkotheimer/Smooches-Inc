@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import  YourCheckout from '../components/YourCheckout';
-import { getUserServices } from '../helpers/data/serviceData';
+import ServiceData from '../helpers/data/serviceData';
 import getUid from '../helpers/data/authData';
 import YourOrder from '../components/YourOrder';
 import toDoData from '../helpers/data/todoData';
@@ -36,7 +36,7 @@ export default class RequestServicePage extends Component {
 
       getServices = () => {
         const UID = this.state.otherKey;
-        getUserServices(UID).then(response => {
+        ServiceData.getUserServices(UID).then(response => {
           this.setState(
             {
               services: response.data

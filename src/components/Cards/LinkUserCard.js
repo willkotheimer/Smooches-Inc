@@ -33,7 +33,7 @@ export default class LinkUserCard extends React.Component {
   return (<>
     <div className="card m-2">
       <div className="card-body">
-      <h5 className="card-title">{otherName[Object.keys(otherName)].name} 
+      <h5 className="card-title">{otherName[0][1].name} 
       {joinedUser && (joinedUser.confirm) ? ' is connected' : ' is pending...'}.</h5>
       <div>{(joinedUser && (joinedUser.user2FBKey === user.uid) && (!joinedUser.confirm)) ? (
       <>

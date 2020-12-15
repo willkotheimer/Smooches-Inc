@@ -1,8 +1,9 @@
 import React from 'react';
 import Auth from '../components/Auth';
 import Loader from '../components/Loader';
+import DashboardView from './DashboardView';
 
-export default function Dashboard({ user }) {
+export default function Dashboard({ user, otherName, otherKey, userKey, joinedUser  }) {
   const loadDashboard = () => {
     let component = '';
     if (user === null) {
@@ -17,12 +18,12 @@ export default function Dashboard({ user }) {
         } else {
           component = (
             <>
-              Dashboard
+              <DashboardView user={user} otherName={otherName} otherKey={otherKey} userKey={userKey} joinedUser={joinedUser} />
             </>
           );
         }
     return component;
   };
 
-  return <div>Dashboard{loadDashboard()}</div>;
+  return <div>{loadDashboard()}</div>;
 }

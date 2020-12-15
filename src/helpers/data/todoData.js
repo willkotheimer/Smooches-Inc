@@ -21,8 +21,22 @@ const getUsertoDos = (userId) =>
       .catch(error => reject(error));
   });
 
+  const getUserToDosArrayByUid = (userId) => 
+    new Promise((resolve, reject) => {
+      const myArray = [];
+      axios.get(`${baseUrl}/todo.json?orderBy="uid"&equalTo="${userId}"`)
+        .then((response) => {
+            Object.entries(response.data).forEach((item) => {
+              myArray.push(item[1]);
+            });
+          console.warn(myArray);
+          resolve(myArray);
+        });
+    }).catch((error) => console.warn(error));
+
   // eslint-disable-next-line
   export default {
     getUsertoDos,
-    createToDo
+    createToDo,
+    getUserToDosArrayByUid
   }

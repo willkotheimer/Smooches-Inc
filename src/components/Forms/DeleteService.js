@@ -1,9 +1,5 @@
 import React from 'react';
-import {
-    deleteService
-  // deleteBoardPin,
-  // PinBoardsAll
-} from '../../helpers/data/serviceData';
+import ServiceData from '../../helpers/data/serviceData';
 
 export default class DeleteService extends React.Component {
   state = {
@@ -14,22 +10,8 @@ export default class DeleteService extends React.Component {
 
   handleSubmit = e => {
     e.preventDefault();
-    // need to delete associate data, but allow any pending requests to go through?
-
-    // PinBoardsAll().then(response => {
-    //   if (response) {
-    //     for (const [key, value] of Object.entries(response)) {
-    //       if (Object.values(value).includes(this.state.firebaseKey)) {
-    //         // 1 if needed, delete the board-pin [key]
-    //         deleteBoardPin(key);
-    //       }
-    //     }
-    //     // 2 delete the pin
-    //     // Update state
-    //     // deletePin(this.state.firebaseKey).then(() => this.props.redrawDom());
-    //   }
-    // });
-    deleteService(this.state.firebaseKey).then(() => this.props.redrawDom());
+    
+    ServiceData.deleteService(this.state.firebaseKey).then(() => this.props.redrawDom());
   };
 
   render() {
