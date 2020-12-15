@@ -7,11 +7,14 @@ export default class DashboardView extends React.Component {
   state = {
     user: this.props.user,
     otherName: this.props.otherName,
-    todos: this.props.todos,
-    requested: this.props.requested
+    otherKey: this.props.otherKey,
+    userKey: this.props.userKey,
+    joinedUser: this.props.joinedUser,
+    todos: {},
+    requested: {}
   }
 
-  loadDashboard = (user,otherName,todos,requested) => {
+  loadDashboard = (user) => {
     let component = '';
     if (user === null) {
       component = <Loader />;
@@ -25,7 +28,11 @@ export default class DashboardView extends React.Component {
         } else {
           component = (
             <>
-              <Dashboard otherName={otherName} todos={todos} requested={requested} />
+              <Dashboard user={user} 
+              otherName={this.state.otherName} 
+              otherKey={this.state.otherKey}
+              userKey={ this.state.userKey} 
+              joinedUser={this.state.joinedUser} />
             </>
           );
         }
@@ -33,7 +40,7 @@ export default class DashboardView extends React.Component {
   };
 
   render() {
-    const { user,otherName,todos,requested } = this.state;
-  return <div>{this.loadDashboard(user, otherName,todos,requested)}</div>;
+    const { user } = this.state;
+  return <div>{this.loadDashboard(user)}</div>;
   }
 }

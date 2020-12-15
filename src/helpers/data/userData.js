@@ -83,9 +83,14 @@ const getAllUsers = () =>
 
     const getUserByUid = (uid) => 
     new Promise((resolve, reject) => {
+      const myArray = [];
       axios.get(`${baseUrl}/users.json?orderBy="uid"&equalTo="${uid}"`)
         .then((response) => {
-            resolve(response.data);
+            Object.entries(response.data).forEach((item) => {
+              myArray.push(item);
+            });
+          console.warn(myArray);
+          resolve(myArray);
         });
     }).catch((error) => console.warn(error));
   

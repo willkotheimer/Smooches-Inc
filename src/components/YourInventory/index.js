@@ -1,5 +1,5 @@
 import React from 'react';
-import { getUserServices } from '../../helpers/data/serviceData';
+import ServiceData from '../../helpers/data/serviceData';
 import ServiceCard from '../Cards/ServiceCard';
 import ServiceForm from '../Forms/ServiceForm';
 import Loader from '../Loader';
@@ -22,7 +22,7 @@ export default class YourInventory extends React.Component {
 
   getServices = () => {
     const UID = getUid();
-    getUserServices(UID).then(response => {
+    ServiceData.getUserServices(UID).then(response => {
       this.setState(
         {
           services: response.data

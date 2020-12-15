@@ -27,6 +27,19 @@ const getUserServices = (userId) =>
       .catch(error => reject(error));
   });
 
+  const getAllServices = () => new Promise((resolve, reject) => {
+    axios
+      .get(`${baseUrl}/services.json`)
+      .then(response => {
+        const myData = [];
+        Object.values(response.data).forEach((item) => {
+          myData.push(item)
+        }) 
+        resolve(myData);
+      })
+      .catch(error => reject(error));
+  });
+
   const createService = serviceObj =>
   axios.post(`${baseUrl}/services.json`, serviceObj).then(response => {
     const update = { firebaseKey: response.data.name };
@@ -48,10 +61,11 @@ const deleteService = firebaseKey =>
   axios.delete(`${baseUrl}/services/${firebaseKey}.json`);
 
 
-  export {
+  export default {
     getUserServices,
     createService,
     updateService,
     deleteService,
-    getTaskByFBKey
+    getTaskByFBKey,
+    getAllServices
   }

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import getUser from '../../helpers/data/authData';
-import { createService, updateService } from '../../helpers/data/serviceData';
+import ServiceData from '../../helpers/data/serviceData';
 
 export default class ServiceForm extends Component {
   state = {
@@ -28,12 +28,12 @@ export default class ServiceForm extends Component {
     e.preventDefault();
 
     if (this.state.firebaseKey === '') {
-      createService(this.state).then(() => {
+      ServiceData.createService(this.state).then(() => {
         this.props.onUpdate();
         this.setState({ isModalOpen: false });
       });
     } else {
-      updateService(this.state).then(() => {
+      ServiceData.updateService(this.state).then(() => {
         // rerender / update state in the services component
         this.props.onUpdate(this.props.service.firebaseKey);
         this.setState({ isModalOpen: false });

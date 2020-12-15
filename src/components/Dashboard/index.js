@@ -1,39 +1,56 @@
 import React, { Component } from 'react';
-// import RequestCard from '../Cards/RequestCard';
-// import ToDosCard from '../Cards/ToDosCard';
-import { getTaskByFBKey } from '../../helpers/data/serviceData';
+import RequestCard from '../Cards/RequestCard';
+import ToDosCard from '../Cards/ToDosCard';
+import ServiceData from '../../helpers/data/serviceData';
+import ToDoData from '../../helpers/data/todoData';
 
 export default class Dashboard extends Component {
   state = {
     user: this.props.user,
     otherName: this.props.otherName,
-    todos: this.props.todos,
-    requested: this.props.requested,
-    
+    otherKey: this.props.otherKey,
+    userKey: this.props.userKey,
+    joinedUser: this.props.joinedUser,
+    services: [],
+    todos: [],
+    requested: []
   }
 
-getServiceInfo = (myKey) => getTaskByFBKey(myKey.taskId);
+  componentDidMount() {
+    ServiceData.getAllServices().then(services => {
+      this.setState({
+        services
+      });
+      ToDoData.getUserToDosArrayByUid(this.state.otherKey).then((toDos) => {
+        this.setState({
+          requested: toDos
+        });
+      });
+      ToDoData.getUserToDosArrayByUid(this.state.userKey).then((toDos) => {
+        this.setState({
+          todos: toDos
+        });
+      });
+    
+    });
+  }
 
-// mapRequests = () => {
-
-// }
-
-// mapToDos = () => {
-
-// }
+  getTask = (firebaseKey) => this.state.services.filter((x) => x.firebaseKey === firebaseKey);
 
 render() {
-  
-  // const connectionName = otherName[4];
-  
-  // const showRequests = () => 
-  //     Object.values(requested).map(service => (
-  //       <RequestCard key={service} service={service} />
-  //     ));
-  // const showToDos = () => 
-  //     Object.values(todos).map(service => (
-  //       <ToDosCard key={service} service={service}  />
-  //     ));
+    const { todos, requested } = this.state;
+    const { name } = this.props.otherName[0][1];
+    
+  const showRequests = () => 
+      requested.map(service => (
+        <RequestCard key={service.firebaseKey+Date.now()} service={service} task={this.getTask(service.taskId)} />
+     ));
+    
+  const showToDos = () => 
+      todos.map(service => (
+        <ToDosCard key={service.firebaseKey+Date.now()} service={service} task={this.getTask(service.taskId)}  />
+      ));
+
 return (
   <>
   <div className="servicePage d-flex justify-content-center">
@@ -41,13 +58,14 @@ return (
     <div className="todos">
          <h2>Your to dos: (Hardcoded)</h2>
          <div className="card m-2">
-          
+         {todos && showToDos()}
          </div>
        </div>
        <div className="requested">
-         <h2>'s Requests (Pending): (Hardcoded)</h2>
+        
+        <h2>{name}'s Requests (Pending):</h2>
          <div className="card m-2">
-          
+          {requested && showRequests()}
          </div>
        </div>
     </div>
