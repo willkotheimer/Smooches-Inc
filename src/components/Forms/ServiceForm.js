@@ -3,6 +3,7 @@ import getUser from '../../helpers/data/authData';
 import ServiceData from '../../helpers/data/serviceData';
 
 export default class ServiceForm extends Component {
+
   state = {
     firebaseKey: this.props.service?.firebaseKey || '',
     name: this.props.service?.name || '',
@@ -26,8 +27,16 @@ export default class ServiceForm extends Component {
 
   handleSubmit = e => {
     e.preventDefault();
-
+    // dealing with a bug that state is not saved
+    console.warn(this.state);
     if (this.state.firebaseKey === '') {
+      this.setState({
+        firebaseKey: this.props.firebaseKey
+      });
+    }  
+  
+    if (this.state.firebaseKey === '') {
+
       ServiceData.createService(this.state).then(() => {
         this.props.onUpdate();
         this.setState({ isModalOpen: false });
@@ -35,7 +44,7 @@ export default class ServiceForm extends Component {
     } else {
       ServiceData.updateService(this.state).then(() => {
         // rerender / update state in the services component
-        this.props.onUpdate(this.props.service.firebaseKey);
+        this.props.onUpdate();
         this.setState({ isModalOpen: false });
       });
     }
