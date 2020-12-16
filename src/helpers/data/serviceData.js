@@ -31,11 +31,14 @@ const getUserServices = (userId) =>
     axios
       .get(`${baseUrl}/services.json`)
       .then(response => {
-        const myData = [];
+        if (response.data !== null && response.data !== undefined ) {
+          const myData = [];
         Object.values(response.data).forEach((item) => {
           myData.push(item)
         }) 
         resolve(myData);
+        }
+        
       })
       .catch(error => reject(error));
   });
@@ -43,6 +46,7 @@ const getUserServices = (userId) =>
   const createService = serviceObj =>
   axios.post(`${baseUrl}/services.json`, serviceObj).then(response => {
     const update = { firebaseKey: response.data.name };
+    console.warn("in post",serviceObj,update,`${baseUrl}/services/${response.data.name}.json`);
     axios
       .patch(`${baseUrl}/services/${response.data.name}.json`, update)
       .catch(error => console.warn(error));

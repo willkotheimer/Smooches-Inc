@@ -5,6 +5,7 @@ import ServiceData from '../../helpers/data/serviceData';
 import ToDoData from '../../helpers/data/todoData';
 
 export default class Dashboard extends Component {
+
   state = {
     user: this.props.user,
     otherName: this.props.otherName,
@@ -17,30 +18,36 @@ export default class Dashboard extends Component {
   }
 
   componentDidMount() {
-    ServiceData.getAllServices().then(services => {
-      this.setState({
-        services
-      });
-      ToDoData.getUserToDosArrayByUid(this.state.otherKey).then((toDos) => {
-        this.setState({
-          requested: toDos
-        });
-      });
-      ToDoData.getUserToDosArrayByUid(this.state.userKey).then((toDos) => {
-        this.setState({
-          todos: toDos
-        });
-      });
-    
-    });
+    this.getServices();
+    this.getTodos();
+    this.getUserTodosByUid();
   }
+
+  getServices = () => ServiceData.getAllServices().then(services => {
+    this.setState({
+      services
+    });
+  });
+
+  getTodos = () =>  ToDoData.getUserToDosArrayByUid(this.state.userKey).then((toDos) => {
+      this.setState({
+        requested: toDos
+      });
+    });
+
+  getUserTodosByUid = () => ToDoData.getUserToDosArrayByUid(this.state.userKey).then((toDos) => {
+      this.setState({
+        todos: toDos
+      });
+    });
+
 
   getTask = (firebaseKey) => this.state.services.filter((x) => x.firebaseKey === firebaseKey);
 
 render() {
     const { todos, requested } = this.state;
-    const { name } = this.props.otherName[0][1];
-    
+    // const { name } = this.props.otherName[0][1];
+
   const showRequests = () => 
       requested.map(service => (
         <RequestCard key={service.firebaseKey+Date.now()} service={service} task={this.getTask(service.taskId)} />
@@ -63,7 +70,7 @@ return (
        </div>
        <div className="requested">
         
-        <h2>{name}'s Requests (Pending):</h2>
+        <h2>'s Requests (Pending):</h2>
          <div className="card m-2">
           {requested && showRequests()}
          </div>

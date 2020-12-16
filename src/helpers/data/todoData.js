@@ -29,7 +29,6 @@ const getUsertoDos = (userId) =>
             Object.entries(response.data).forEach((item) => {
               myArray.push(item[1]);
             });
-          console.warn(myArray);
           resolve(myArray);
         });
     }).catch((error) => console.warn(error));

@@ -29,7 +29,7 @@ export default class DashboardView extends React.Component {
           component = (
             <>
               <Dashboard user={user} 
-              otherName={this.state.otherName} 
+              otherName={this.props.otherName} 
               otherKey={this.state.otherKey}
               userKey={ this.state.userKey} 
               joinedUser={this.state.joinedUser} />
