@@ -14,13 +14,17 @@ export default class Dashboard extends Component {
     joinedUser: this.props.joinedUser,
     services: [],
     todos: [],
-    requested: []
+    requested: [],
+    partnerName: ''
   }
 
   componentDidMount() {
     this.getServices();
     this.getTodos();
     this.getUserTodosByUid();
+    if (this.props.otherName) {
+      this.setState({ partnerName: this.props.otherName[0][1].name })
+    }
   }
 
   getServices = () => ServiceData.getAllServices().then(services => {
@@ -45,7 +49,7 @@ export default class Dashboard extends Component {
   getTask = (firebaseKey) => this.state.services.filter((x) => x.firebaseKey === firebaseKey);
 
 render() {
-    const { todos, requested, otherName } = this.state;
+    const { todos, requested, partnerName } = this.state;
 
   const showRequests = () => 
       requested.map(service => (
@@ -69,7 +73,7 @@ return (
        </div>
        <div className="requested">
         
-        <h2>{otherName[0][1].name}'s Requests (Pending):</h2>
+        <h2>{partnerName}'s Requests (Pending):</h2>
          <div className="card m-2">
           {requested && showRequests()}
          </div>
