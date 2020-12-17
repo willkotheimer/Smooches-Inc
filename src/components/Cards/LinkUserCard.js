@@ -15,7 +15,6 @@ export default class LinkUserCard extends React.Component {
     this.setState({
       joinedUser: null
     });
-    console.warn('reject');
   }
 
   connectToUser = () => {

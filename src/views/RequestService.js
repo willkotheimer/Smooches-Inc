@@ -25,5 +25,5 @@ export default function RequestService({ user, otherName, otherKey, joinedUser }
     return component;
   };
 
-  return <div>RequestService{loadRequestService()}</div>;
+  return <div>{loadRequestService()}</div>;
 }

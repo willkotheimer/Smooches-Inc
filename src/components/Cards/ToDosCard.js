@@ -3,7 +3,6 @@ import React from 'react';
 export default class toDosCard extends React.Component { 
   
   render() {
-    const { completedTime } = this.props.service;
     const { name } = this.props.task[0] || "task";
     const dateTime = new Date();
   return (
