@@ -11,6 +11,17 @@ const createToDo = toDoObj =>
       .catch(error => console.warn(error));
   });
 
+  const completeTask = (firebaseKey, time) =>
+  new Promise((resolve, reject) => {
+    console.warn(`${baseUrl}/todo/${firebaseKey}.json`);
+    axios
+      .patch(`${baseUrl}/todo/${firebaseKey}.json`, {completedTime: time })
+      .then(response => {
+        resolve(response.data);
+      })
+      .catch(error => reject(error));
+  });
+
 const getUsertoDos = (userId) =>
   new Promise((resolve, reject) => {
     axios
@@ -37,5 +48,6 @@ const getUsertoDos = (userId) =>
   export default {
     getUsertoDos,
     createToDo,
-    getUserToDosArrayByUid
+    getUserToDosArrayByUid,
+    completeTask
   }

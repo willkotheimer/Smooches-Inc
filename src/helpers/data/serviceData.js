@@ -5,7 +5,6 @@ const baseUrl = firebaseConfig.databaseURL;
 
 const getUserServices = (userId) =>
   new Promise((resolve, reject) => {
-    console.warn(`${baseUrl}/services.json?orderBy="uid"&equalTo="${userId}"`);
     axios
       .get(`${baseUrl}/services.json?orderBy="uid"&equalTo="${userId}"`)
       .then(response => {
@@ -46,7 +45,6 @@ const getUserServices = (userId) =>
   const createService = serviceObj =>
   axios.post(`${baseUrl}/services.json`, serviceObj).then(response => {
     const update = { firebaseKey: response.data.name };
-    console.warn("in post",serviceObj,update,`${baseUrl}/services/${response.data.name}.json`);
     axios
       .patch(`${baseUrl}/services/${response.data.name}.json`, update)
       .catch(error => console.warn(error));

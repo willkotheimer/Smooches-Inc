@@ -21,7 +21,7 @@ export default class Dashboard extends Component {
   componentDidMount() {
     this.getServices();
     this.getTodos();
-    this.getUserTodosByUid();
+    this.getotheruserrequests();
     if (this.props.otherName) {
       this.setState({ partnerName: this.props.otherName[0][1].name })
     }
@@ -39,12 +39,17 @@ export default class Dashboard extends Component {
       });
     });
 
-  getUserTodosByUid = () => ToDoData.getUserToDosArrayByUid(this.state.userKey).then((toDos) => {
+  getotheruserrequests = () => ToDoData.getUserToDosArrayByUid(this.state.otherKey).then((toDos) => {
       this.setState({
         todos: toDos
       });
     });
 
+  completeTask = (firebaseKey, time) => {
+    ToDoData.completeTask(firebaseKey, time).then((response) => {
+      this.getTodos();
+    })
+  }
 
   getTask = (firebaseKey) => this.state.services.filter((x) => x.firebaseKey === firebaseKey);
 
@@ -52,28 +57,30 @@ render() {
     const { todos, requested, partnerName } = this.state;
 
   const showRequests = () => 
-      requested.map(service => (
+      todos.map(service => (
         <RequestCard key={service.firebaseKey+Date.now()} service={service} task={this.getTask(service.taskId)} />
      ));
     
   const showToDos = () => 
-      todos.map(service => (
-        <ToDosCard key={service.firebaseKey+Date.now()} service={service} task={this.getTask(service.taskId)}  />
+  requested.map(service => (
+        <ToDosCard key={service.firebaseKey+Date.now()}  firebaseKey= { service.firebaseKey } service={service} completeTask={this.completeTask} task={this.getTask(service.taskId)}  />
       ));
+
+      
 
 return (
   <>
   <div className="servicePage d-flex justify-content-center">
     <div className="leftSide">
     <div className="todos">
-         <h2>Your to dos: (Hardcoded)</h2>
+         <h2>Your task to dos:</h2>
          <div className="card m-2">
          {todos && showToDos()}
          </div>
        </div>
        <div className="requested">
         
-        <h2>{partnerName}'s Requests (Pending):</h2>
+        <h2>Your Requests (Pending):</h2>
          <div className="card m-2">
           {requested && showRequests()}
          </div>
