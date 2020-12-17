@@ -26,6 +26,7 @@ export default class RequestServicePage extends Component {
           otherKey: this.props.otherKey
         });
         this.getServices();
+        console.warn(this.state.services);
       }
 
       componentWillUnmount() {
@@ -33,7 +34,7 @@ export default class RequestServicePage extends Component {
           return null;
       };
       }
-
+      
       getServices = () => {
         const UID = this.state.otherKey;
         ServiceData.getUserServices(UID).then(response => {
@@ -73,7 +74,6 @@ export default class RequestServicePage extends Component {
         // Create the objects from the keys and record them into the submission state
          postObj.forEach((item) => {
           toDoData.createToDo(item).then(() => {
-            console.warn('Im posting this guy', item);
             // remove everything and post in state:
             this.removeAll();
             // Confirm submission 
