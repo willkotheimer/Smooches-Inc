@@ -54,7 +54,7 @@ export default class Dashboard extends Component {
   getTask = (firebaseKey) => this.state.services.filter((x) => x.firebaseKey === firebaseKey);
 
 render() {
-    const { todos, requested, partnerName } = this.state;
+    const { todos, requested } = this.state;
 
   const showRequests = () => 
       todos.map(service => (

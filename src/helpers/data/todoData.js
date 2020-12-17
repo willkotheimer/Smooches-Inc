@@ -13,7 +13,6 @@ const createToDo = toDoObj =>
 
   const completeTask = (firebaseKey, time) =>
   new Promise((resolve, reject) => {
-    console.warn(`${baseUrl}/todo/${firebaseKey}.json`);
     axios
       .patch(`${baseUrl}/todo/${firebaseKey}.json`, {completedTime: time })
       .then(response => {
@@ -44,10 +43,26 @@ const getUsertoDos = (userId) =>
         });
     }).catch((error) => console.warn(error));
 
+    const getCompletedToDosByUid = (otherKey) => 
+    new Promise((resolve, reject) => {
+      const myArray = [];
+      axios.get(`${baseUrl}/todo.json?orderBy="uid"&equalTo="${otherKey}"`)
+        .then((response) => {
+            Object.values(response.data).forEach((item) => {
+              if ((item.completedTime !== "") &&
+                 (item.reviewId === "")) {
+                  myArray.push(item);
+                 }
+            });
+          resolve(myArray);
+        }).catch((error) => reject(error));
+    })
+
   // eslint-disable-next-line
   export default {
     getUsertoDos,
     createToDo,
     getUserToDosArrayByUid,
-    completeTask
+    completeTask,
+    getCompletedToDosByUid
   }

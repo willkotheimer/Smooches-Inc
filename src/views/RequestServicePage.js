@@ -26,7 +26,6 @@ export default class RequestServicePage extends Component {
           otherKey: this.props.otherKey
         });
         this.getServices();
-        console.warn(this.state.services);
       }
 
       componentWillUnmount() {

@@ -27,8 +27,6 @@ export default class ServiceForm extends Component {
 
   handleSubmit = e => {
     e.preventDefault();
-    // dealing with a bug that state is not saved
-    console.warn(this.state);
     if (this.state.firebaseKey === '') {
       this.setState({
         firebaseKey: this.props.firebaseKey
