@@ -1,18 +1,22 @@
 import React from 'react';
-import toDosCard from './ToDosCard';
+import AppModal from '../AppModal';
+import ReviewForm from '../Forms/ReviewForm';
 
 export default class ReviewTaskCard extends React.Component { 
   
   render() {
-      const key = this.props.toDo.taskId;
+      const taskKey = this.props.toDo.taskId;
+      const toDoId = this.props.toDo.firebaseKey;
       const service = Object.values(this.props.services).filter((x) =>
-      x.firebaseKey === key);
-    
+      x.firebaseKey === taskKey);
+      
   return (
     <div className="card m-2">
       <div className="card-body" id="">
         <h5 className="card-title">{service[0].name}</h5>
-        <button onClick={() => this.props.reviewTask(this.props.firebaseKey)}>ReviewTask</button>
+        <AppModal title={'Leave a Review'} buttonLabel={'Leave a Review'}>
+         <ReviewForm toDoId={toDoId} taskid={taskKey} onUpdate={this.props.onUpdate} />
+        </AppModal>
       </div>
     </div>
   );

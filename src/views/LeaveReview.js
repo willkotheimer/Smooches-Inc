@@ -25,5 +25,5 @@ export default function LeaveReview({ user, otherName, otherKey, userKey, joined
     return component;
   };
 
-  return <div>LeaveReview{loadLeaveReview()}</div>;
+  return <div>{loadLeaveReview()}</div>;
 }

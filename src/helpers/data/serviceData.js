@@ -37,7 +37,6 @@ const getUserServices = (userId) =>
         }) 
         resolve(myData);
         }
-        
       })
       .catch(error => reject(error));
   });
