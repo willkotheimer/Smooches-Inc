@@ -23,7 +23,6 @@ export default class ReviewTasks extends React.Component {
   }
 
   getServices = () => {
-    const UID = getUid();
     ServiceData.getAllServices().then(stuff => {
       this.setState(
         {
@@ -53,8 +52,10 @@ export default class ReviewTasks extends React.Component {
   render() {
     const { services, loading, toDos } = this.state;
     const showUnreviewed = () => 
-      Object.values(toDos).map(toDo => (
-        <ReviewTaskCard key={toDo.firebaseKey} services={services} toDo={toDo} redrawDom={this.getServices} />
+      Object.values(toDos)
+      .filter((x) => x.reviewed !== true)
+      .map(toDo => (
+        <ReviewTaskCard key={toDo.firebaseKey} services={services} toDo={toDo} onUpdate={this.props.onUpdate} />
       ));
     return (
       <>
