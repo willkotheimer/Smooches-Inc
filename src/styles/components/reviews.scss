@@ -1,0 +1,33 @@
+@import '../_variables';
+
+.reviewsToGiveDiv {
+  position: absolute;
+  width: 221px;
+  height: 313px;
+  overflow: scroll;
+  background: #ffffff;
+  border-radius: 3px;
+}
+
+.previousReviewsGivenDiv {
+  width: 224px;
+  height: 138px;
+  overflow: scroll;
+
+  background: #fafafa;
+  box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.25);
+}
+
+reviewsGivenToYouDiv {
+  width: 224px;
+  height: 162px;
+  overflow: scroll;
+  background: #fafafa;
+  box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.25);
+}
+
+.reviewGivenDiv {
+  background: #ffdfdf;
+  box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.5);
+  border-radius: 3px;
+}
