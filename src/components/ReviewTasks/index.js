@@ -64,10 +64,11 @@ export default class ReviewTasks extends React.Component {
         ) : (
           <>
            
-            <h3>Completed Tasks To Review:</h3>
-            <div className="d-flex flex-wrap reviewsToGiveDiv">
+            <h3 className="reviewHeader">Completed Tasks To Review:</h3>
+            <div className="d-flex flex-wrap">
               {toDos && showUnreviewed()}
             </div>
+            
           </>
         )}
       </>

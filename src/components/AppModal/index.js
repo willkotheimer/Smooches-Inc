@@ -12,7 +12,7 @@ const AppModal = props => {
 
   return (
     <div>
-      <Button color="btn-primary-outline" onClick={toggle}>
+      <Button color="btn-primary-outline accentColor" onClick={toggle}>
         {buttonLabel}
       </Button>
       <Modal isOpen={modal} toggle={toggle} className={className}>
