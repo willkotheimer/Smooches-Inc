@@ -72,15 +72,15 @@ return (
   <>
   <div className="servicePage d-flex justify-content-center">
     <div className="leftSide">
-    <div className="todos">
-         <h2>Your task to dos:</h2>
+    <div className="tasksToComplete">
+         <h3 className="taskHeader">Your task to dos:</h3>
          <div className="card m-2">
          {todos && showToDos()}
          </div>
        </div>
-       <div className="requested">
+       <div className="requestLeftDiv">
         
-        <h2>Your Requests (Pending):</h2>
+        <h3 className="requestHeader">All Tasks Requested By You:</h3>
          <div className="card m-2">
           {requested && showRequests()}
          </div>
@@ -88,7 +88,7 @@ return (
     </div>
    <div className="rightSide">
      <div className="reviewsgiven2you">
-         <h2>Reviews Given to you: (Hardcoded)</h2>
+         <h3>Reviews Given to you: (Hardcoded)</h3>
          <div className="card m-2">
            <div className="card-body">
              <h5 className="card-title">This was great!</h5>
@@ -99,7 +99,7 @@ return (
          </div>
        </div>
        <div className="servicesData">
-         <h2>Data of tasks (Hardcoded)</h2>
+         <h3>Data of tasks (Hardcoded)</h3>
          <div className="card m-2">
            <div className="card-body">
              <h5 className="card-title">Tasks Finished</h5>

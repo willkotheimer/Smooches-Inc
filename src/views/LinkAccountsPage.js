@@ -32,7 +32,7 @@ export default class LinkAccountsPage extends Component {
       <div className="linkedAccountsPage d-flex justify-content-center">
         <div className="leftSide">
           <div>
-            <h2>User Connections:</h2>
+            <h3>User Connections:</h3>
             {<UserJoin user={user} userKey={this.props.userKey} otherKey={this.props.otherKey} joinedUser={this.props.joinedUser} otherName={this.props.otherName} />}
             
           </div>

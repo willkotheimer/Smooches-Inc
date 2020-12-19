@@ -17,7 +17,7 @@ export default class DeleteService extends React.Component {
   render() {
     return (
       <form onSubmit={this.handleSubmit}>
-        <h1 className="deleteService">{this.state.name}</h1>
+        <h3 className="deleteService">{this.state.name}</h3>
         <input
           type="hidden"
           name="firebaseKey"

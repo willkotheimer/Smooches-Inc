@@ -11,14 +11,14 @@ export default class CreateServicePage extends Component {
       <>
       <div className="servicePage d-flex justify-content-center">
         <div className="leftSide">
-          <div className="createService">
-            <h2>Inventory:</h2>
+          <div className="tasksOffered">
+           
             {<YourInventory />}
           </div>
         </div>
        <div className="rightSide">
          <div className="todos">
-             <h2>To Dos: (Hardcoded)</h2>
+             <h3>To Dos: (Hardcoded)</h3>
              <div className="card m-2">
                <div className="card-body">
                  <h5 className="card-title">Make dinner</h5>
@@ -29,7 +29,7 @@ export default class CreateServicePage extends Component {
              </div>
            </div>
            <div className="servicesData">
-             <h2>Services Data (Hardcoded)</h2>
+             <h3>Services Data (Hardcoded)</h3>
              <div className="card m-2">
                <div className="card-body">
                  <h5 className="card-title">Tasks Finished</h5>

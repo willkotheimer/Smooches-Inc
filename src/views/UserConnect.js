@@ -25,5 +25,5 @@ export default function UserConnect({ user, otherName, otherKey, userKey, joined
     return component;
   };
 
-  return <div><h1 className="title d-flex justify-content-center">Connect with a user</h1><br/>{loadUserConnect()}</div>;
+  return <div><h3 className="title d-flex justify-content-center">Connect with a user</h3><br/>{loadUserConnect()}</div>;
 }
