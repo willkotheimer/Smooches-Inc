@@ -25,5 +25,5 @@ export default function CreateService({ user }) {
     return component;
   };
 
-  return <div><h1 className="title d-flex justify-content-center">Create Service</h1><br/>{loadCreateService()}</div>;
+  return <div><h3 className="title d-flex justify-content-center">Create Service</h3><br/>{loadCreateService()}</div>;
 }

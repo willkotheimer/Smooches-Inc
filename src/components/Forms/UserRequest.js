@@ -37,7 +37,7 @@ export default class UserRequest extends Component {
     ));
     return (
       <form onSubmit={this.handleSubmit}>
-        <h1>User Request Form</h1>
+        <h3>User Request Form</h3>
         (No users will be linked to until confirmed)
     
         User available to link to:

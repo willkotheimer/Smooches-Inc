@@ -51,7 +51,7 @@ export default class ServiceForm extends Component {
   render() {
     return (
       <form onSubmit={this.handleSubmit}>
-        <h1>Service Form</h1>
+        <h3>Service Form</h3>
         <input
           type="text"
           name="name"

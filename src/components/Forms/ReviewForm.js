@@ -68,7 +68,7 @@ export default class LeaveReview extends Component {
     return (
         
       <form onSubmit={this.handleSubmit}>
-        <h1>Leave a Review</h1>
+        <h3>Leave a Review</h3>
         <hr/>
         <div className="form-group">
         <label htmlFor="leaveReview">Leave a Review</label>

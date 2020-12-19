@@ -2,6 +2,7 @@ import React from 'react';
 import CheckoutCard from '../Cards/CheckoutCard';
 import Loader from '../Loader';
 import getUid from '../../helpers/data/authData';
+import AppModal from '../AppModal';
 
 
 export default class YourCheckout extends React.Component {
@@ -42,7 +43,9 @@ export default class YourCheckout extends React.Component {
         ) : (
           <>
             <div>Your Smooch's Inc Representative, {this.props.otherName[Object.keys(this.props.otherName)].name} has authorized the following services:</div>
-            <div className="d-flex flex-wrap container">
+            <div className="tasksOffered">
+              <h3 className="checkoutHeader">Tasks Offered</h3>
+              
               {services && showServices()}
             </div>
           </>

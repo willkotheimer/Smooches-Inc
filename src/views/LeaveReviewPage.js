@@ -69,7 +69,7 @@ export default class LeaveReviewPage extends Component {
       <>
       <div className="servicePage d-flex justify-content-center">
         <div className="leftSide">
-          <div className="leaveReview">
+          <div className="reviewsToGiveDiv">
           <>
               <ReviewTasks user={user} 
               otherName={this.props.otherName} 
@@ -81,12 +81,14 @@ export default class LeaveReviewPage extends Component {
           </div>
         </div>
        <div className="rightSide">
-         <div className="previousReviews">
-             <h2>Previous Reviews Given</h2>
+         <div className="previousReviewsGivenDiv">
+             <h3>Previous Reviews Given</h3>
+             <div className="fullLine"></div>
              {yourReviews && this.yourPreviousReviews()}
            </div>
-           <div className="servicesData">
-             <h2>Reviews Given To You</h2>
+           <div className="reviewsGivenToYouDiv">
+             <h3>Reviews Given To You</h3>
+             <div className="fullLine"></div>
              {theirReviews && this.theirPreviousReviews()}
            </div>
          </div>
