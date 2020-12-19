@@ -1,18 +1,13 @@
 @import '~bootstrap/scss/bootstrap';
 @import '~@fortawesome/fontawesome-free/css/all.min.css';
+@import 'variables';
 @import './components';
 
 body {
-  background-color: #000000d1;
+  background-color: $background-color;
   font-family: Roboto, Oxygen-Sans, Ubuntu, Cantarell, Fira Sans, Droid Sans,
     Helvetica Neue, Helvetica, Hiragino Kaku Gothic Pro, メイリオ, Meiryo, Arial,
     sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI;
-}
-
-@import 'variables';
-
-body {
-  background-color: $favColor;
 }
 
 /*Heartbeat loader John Long */
