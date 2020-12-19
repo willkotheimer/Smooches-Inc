@@ -31,6 +31,11 @@ body {
   color: $accentColor;
 }
 
+.title {
+  text-align: center;
+  justify-content: center;
+}
+
 /*Heartbeat loader John Long */
 @-moz-keyframes heartbeat-loader {
   0% {

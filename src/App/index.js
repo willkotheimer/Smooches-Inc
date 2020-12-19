@@ -68,6 +68,7 @@ class App extends React.Component {
     const { user, otherName, otherKey, userKey, joinedUser } = this.state;
     return (
       <div className="App">
+        <h1 className="title">Smooches Inc</h1>
         <Router>
           <Navbar user={user} />
           <Routes joinedUser={joinedUser} otherName={otherName} user={user} userKey={userKey} otherKey={otherKey} />

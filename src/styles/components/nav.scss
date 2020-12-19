@@ -1,5 +1,9 @@
 @import '../_variables';
 
+.dropdown {
+  color: $accentColor !important;
+}
+
 @media (min-width: 768px) {
   .userInfo {
     max-height: 50px;
