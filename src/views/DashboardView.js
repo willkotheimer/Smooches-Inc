@@ -11,7 +11,7 @@ export default class DashboardView extends React.Component {
     userKey: this.props.userKey,
     joinedUser: this.props.joinedUser,
     todos: {},
-    requested: {}
+    requested: {},
   }
 
   loadDashboard = (user) => {
