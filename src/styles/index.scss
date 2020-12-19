@@ -27,6 +27,10 @@ body {
   font-family: WaitingfortheSunrise;
 }
 
+.accentColor {
+  color: $accentColor;
+}
+
 /*Heartbeat loader John Long */
 @-moz-keyframes heartbeat-loader {
   0% {

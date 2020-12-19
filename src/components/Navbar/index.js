@@ -34,7 +34,7 @@ export default function MyNavbar(props) {
         </Link>
         <Collapse isOpen={isOpen} navbar>
           <Nav className="mr-auto" navbar>
-          <NavItem>
+          <NavItem className="d-flex justify-content-center">
               <Link className="nav-link" to="/">
                 Dashboard
               </Link>

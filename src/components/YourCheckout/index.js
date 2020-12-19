@@ -2,8 +2,6 @@ import React from 'react';
 import CheckoutCard from '../Cards/CheckoutCard';
 import Loader from '../Loader';
 import getUid from '../../helpers/data/authData';
-import AppModal from '../AppModal';
-
 
 export default class YourCheckout extends React.Component {
   state = {
