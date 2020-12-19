@@ -56,9 +56,9 @@ export default class YourInventory extends React.Component {
           <>
             
             <h3 className="taskHeader">Tasks You Offer:</h3>
-            <div className="d-flex flex-wrap container">
+           
               {services && showServices()}
-            </div>
+           
             <div className="createServiceButton">
             <AppModal title={'Create A New Task'} buttonLabel={'Create A New Task +'}>
               <ServiceForm services={services} onUpdate={this.getServices} />
