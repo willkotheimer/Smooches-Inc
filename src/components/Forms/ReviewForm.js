@@ -37,6 +37,7 @@ export default class LeaveReview extends Component {
   
       ReviewData.createReview(this.state).then(() => {
         this.props.onUpdate();
+        this.props.toggle();
       });
     
   };

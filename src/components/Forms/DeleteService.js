@@ -12,6 +12,7 @@ export default class DeleteService extends React.Component {
     e.preventDefault();
     
     ServiceData.deleteService(this.state.firebaseKey).then(() => this.props.redrawDom());
+    this.props.toggle();
   };
 
   render() {

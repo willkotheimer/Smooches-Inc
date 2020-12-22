@@ -37,13 +37,13 @@ export default class ServiceForm extends Component {
 
       ServiceData.createService(this.state).then(() => {
         this.props.onUpdate();
-        this.setState({ isModalOpen: false });
+        this.props.toggle();
       });
     } else {
       ServiceData.updateService(this.state).then(() => {
         // rerender / update state in the services component
         this.props.onUpdate();
-        this.setState({ isModalOpen: false });
+        this.props.toggle();
       });
     }
   };
