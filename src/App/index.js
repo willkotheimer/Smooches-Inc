@@ -6,6 +6,7 @@ import Navbar from '../components/Navbar';
 import Routes from '../helpers/routes';
 import userData from '../helpers/data/userData';
 import getUid from '../helpers/data/authData';
+import { ReactComponent as Logo } from '../styles/icons/sm-logo.svg';
 
 // patchFBBoardkeys();
 // patchFBPinkeys();

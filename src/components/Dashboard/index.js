@@ -105,9 +105,7 @@ return (
     <div className="leftSide">
     <div className="tasksToComplete">
          <h3 className="taskHeader">Your task to dos:</h3>
-         <div className="card m-2">
          {todos && showToDos()}
-         </div>
        </div>
        <div className="requestLeftDiv">
         
