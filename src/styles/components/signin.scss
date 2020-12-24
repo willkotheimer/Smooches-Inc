@@ -3,7 +3,7 @@
 .homeDiv {
   width: 499px;
   height: 451px;
-  background: #ffffff;
+  background: $box-background;
   box-shadow: 2px 2px 5px 2px rgba(0, 0, 0, 0.25);
   border-radius: 10px;
 }
@@ -12,6 +12,6 @@
   width: 238px;
   height: 39px;
   color: #fff;
-  background: #ff4b4b;
+  background: $reddish;
   box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
 }

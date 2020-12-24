@@ -17,9 +17,9 @@ const Loader = () => {
     <div className="text-center">
       <h1 className="message">{myArr[0]}</h1>
       <h3 className="message">{myArr[1]}</h3>
-    <span className="heartbeat-loader">Loading...</span>
-    <span className="heartbeat-loader">Loading...</span>
-    <span className="heartbeat-loader">Loading...</span>
+    <span className="space heartbeat-loader">Loading...</span>
+    <span className="space heartbeat-loader">Loading...</span>
+    <span className="space heartbeat-loader">Loading...</span>
   </div>
 );
  

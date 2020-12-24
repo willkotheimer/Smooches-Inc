@@ -3,8 +3,8 @@
 .requestLeftDiv {
   width: 500px;
   max-height: 500px;
-  overflow: scroll;
-  background: #fafafa;
+
+  background: $box-background;
   box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
   border-radius: 3px;
   margin: 12px;
@@ -15,28 +15,30 @@
 .requestRightDiv {
   height: 262px;
   overflow: scroll;
-  background: #fff8f8;
+  background: $box-background;
   box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
 }
 
 .requestCheckoutButton {
   width: 199px;
   height: 30px;
-  background: #ff4b4b;
+  background: $reddish;
   color: #fff;
   box-shadow: 2px 2px 0px rgba(0, 0, 0, 0.5);
   border-radius: 3px;
+  justify-content: center;
 }
 
 .checkoutButton {
   color: #fff;
   height: 50px;
-  background: #ff4b4b;
+  background: $reddish;
   box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
   margin-right: 25px;
 }
 
 .requestHeader {
+  text-align: center;
   color: #fff;
   background: $requestHeader-color;
   padding-left: 8px;
@@ -46,9 +48,9 @@
 
 .removeItemButton {
   border-radius: 50%;
-  border: 1px solid #ff4b4b;
+  border: 1px solid $reddish;
   background: #fff;
-  color: #ff4b4b;
+  color: $reddish;
   width: 20px;
   height: 20px;
   line-height: 12px;
@@ -59,6 +61,7 @@
 }
 
 .checkoutHeader {
+  text-align: center;
   background: $checkoutHeader-color;
   color: #fff;
 }

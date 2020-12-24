@@ -5,9 +5,12 @@
 
 body {
   background-color: $background-color;
-  font-family: Roboto, Oxygen-Sans, Ubuntu, Cantarell, Fira Sans, Droid Sans,
-    Helvetica Neue, Helvetica, Hiragino Kaku Gothic Pro, メイリオ, Meiryo, Arial,
-    sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI;
+  ::-webkit-scrollbar {
+    display: none;
+  }
+  // font-family: Roboto, Oxygen-Sans, Ubuntu, Cantarell, Fira Sans, Droid Sans,
+  //   Helvetica Neue, Helvetica, Hiragino Kaku Gothic Pro, メイリオ, Meiryo, Arial,
+  //   sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI;
 }
 
 .fullLine {
@@ -23,6 +26,14 @@ body {
   src: url('fonts/WaitingfortheSunrise-Regular.ttf');
 }
 
+@font-face {
+  font-family: 'AlfaSlabOne';
+  src: url('fonts/AlfaSlabOne-Regular.ttf');
+}
+
+body {
+  font-family: AlfaSlabOne;
+}
 .message {
   font-family: WaitingfortheSunrise;
 }
@@ -137,7 +148,7 @@ body {
 .heartbeat-loader:not(:required):before {
   position: absolute;
   content: '';
-  background: #ff4b4b;
+  background: $reddish;
 }
 .heartbeat-loader:not(:required):before {
   -moz-border-radius-topleft: 12px;
@@ -162,4 +173,9 @@ body {
   left: 12px;
   width: 24px;
   height: 12px;
+}
+
+.space {
+  margin-left: 4px;
+  margin-right: 4px;
 }
