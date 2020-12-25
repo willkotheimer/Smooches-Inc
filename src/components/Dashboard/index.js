@@ -83,7 +83,7 @@ export default class Dashboard extends Component {
 
   theirPreviousReviews = () => 
     this.state.theirReviews.map(review => (
-      <TheirPreviousReviews previousReview={review} />
+      <TheirPreviousReviews key={review.firebaseKey} previousReview={review} service={review.serviceid} otherName={this.state.partnerName} />
     ));
 
 render() {

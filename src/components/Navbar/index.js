@@ -13,6 +13,8 @@ import {
   DropdownMenu,
   DropdownItem
 } from 'reactstrap';
+import Logo  from '../../styles/icons/smooches-inc-logo.png';
+
 
 export default function MyNavbar(props) {
   const logMeOut = e => {
@@ -25,13 +27,15 @@ export default function MyNavbar(props) {
   return (
     <div>
       <Navbar color="dark" dark expand="md" className="justify-content-between">
+      <Link className="navbar-brand" to="/">
+      <img src={ Logo } className="logo" />
+        </Link>
+        
         <Link className="navbar-brand" to="/">
           
         </Link>
         <NavbarToggler onClick={toggle} />
-        <Link className="navbar-brand" to="/">
-          Smooch's Inc
-        </Link>
+        
         <Collapse isOpen={isOpen} navbar>
           <Nav className="mr-auto" navbar>
           <NavItem className="d-flex justify-content-center">

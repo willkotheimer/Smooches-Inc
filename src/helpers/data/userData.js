@@ -92,7 +92,20 @@ const getAllUsers = () =>
           resolve(myArray);
         });
     }).catch((error) => console.warn(error));
-  
+
+    const getUserNameByUid = (uid) => 
+    new Promise((resolve, reject) => {
+      console.warn(uid);
+      const myArray = [];
+      axios.get(`${baseUrl}/users.json?orderBy="uid"&equalTo="${uid}"`)
+        .then((response) => {
+          Object.values(response).forEach((item) => {
+            myArray.push(item);
+          });
+        resolve(myArray);
+    }).catch((error) => console.warn(error));
+    });
+
 const setCurrentUser = (userObj) => {
     const user = {
       image: userObj.photoURL,
@@ -117,6 +130,7 @@ export default  {
   getJoinedUser,
   getAllUsers,
   getUserByUid,
+  getUserNameByUid,
   confirmUserJoin,
   deleteUserConnect
 }

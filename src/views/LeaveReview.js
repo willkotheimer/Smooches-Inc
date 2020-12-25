@@ -3,7 +3,7 @@ import Auth from '../components/Auth';
 import Loader from '../components/Loader';
 import LeaveReviewPage from './LeaveReviewPage';
 
-export default function LeaveReview({ user, otherName, otherKey, userKey, joinedUser }) {
+export default function LeaveReview({ user, otherName, otherKey, userKey, joinedUser, joinedUserName }) {
   const loadLeaveReview = () => {
     let component = '';
     if (user === null) {
@@ -18,7 +18,7 @@ export default function LeaveReview({ user, otherName, otherKey, userKey, joined
         } else {
           component = (
             <>
-              <LeaveReviewPage otherName={otherName} otherKey={otherKey} userKey={userKey} joinedUser={joinedUser} user={user} />
+              <LeaveReviewPage otherName={otherName} otherKey={otherKey} userKey={userKey} joinedUser={joinedUser} joinedUserName={joinedUserName} user={user} />
             </>
           );
         }

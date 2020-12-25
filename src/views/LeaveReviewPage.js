@@ -3,6 +3,7 @@ import ReviewTasks from '../components/ReviewTasks';
 import ReviewData from '../helpers/data/reviewData';
 import YourPreviousReviews from '../components/YourPreviousReviews';
 import TheirPreviousReviews from '../components/TheirPreviousReviews';
+import UserData from '../helpers/data/userData';
 
 export default class LeaveReviewPage extends Component {
   state = {
@@ -48,18 +49,17 @@ export default class LeaveReviewPage extends Component {
 
   updateReviewPage = () => {
     this.getReviews();
-    window.location.reload(false);
   }
 
   yourPreviousReviews = () => 
     this.state.yourReviews.map(review => (
-      <YourPreviousReviews previousReview={review} />
+      <YourPreviousReviews key={review.firebaseKey} previousReview={review} service={review.serviceid} otherName={this.props.joinedUserName} />
     ));
   
 
   theirPreviousReviews = () => 
     this.state.theirReviews.map(review => (
-      <TheirPreviousReviews previousReview={review} />
+      <TheirPreviousReviews key={review.firebaseKey} previousReview={review} service={review.serviceid} otherName={this.props.joinedUserName} />
     ));
   
 
@@ -82,14 +82,15 @@ export default class LeaveReviewPage extends Component {
         </div>
        <div className="rightSide">
          <div className="previousReviewsGivenDiv">
-             <h3>Previous Reviews Given</h3>
+             <h4>Previous Reviews Given</h4>
              <div className="fullLine"></div>
              {yourReviews && this.yourPreviousReviews()}
            </div>
            <div className="reviewsGivenToYouDiv">
-             <h3>Reviews Given To You</h3>
+             <h4>Reviews Given To You</h4>
              <div className="fullLine"></div>
-             {theirReviews && this.theirPreviousReviews()}
+             {theirReviews!==undefined && this.theirPreviousReviews()
+             }
            </div>
          </div>
       </div> 

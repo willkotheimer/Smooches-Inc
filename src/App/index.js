@@ -19,13 +19,14 @@ class App extends React.Component {
     userKey: '',
     otherKey: '',
     otherName: '',
-    currenUserId: ''
+    currenUserId: '',
+    joinedUserName: ''
   };
 
   getYourJoinedUser = () => 
         userData.getJoinedUser(getUid()).then((response) => {
             this.setState({
-                joinedUser: response[0],
+                joinedUser: response[0]
             });
 
             if (this.state.joinedUser) {
@@ -34,6 +35,7 @@ class App extends React.Component {
                     userKey: response[0].user1FBKey,
                     otherKey: response[0].user2FBKey
                 });
+              
             } else {
                 this.setState({
                     userKey: response[0].user2FBKey,
@@ -43,7 +45,8 @@ class App extends React.Component {
             userData.getUserByUid(this.state.otherKey)
                 .then((value) => {
                     this.setState({
-                        otherName: value
+                        otherName: value,
+                        joinedUserName: value[0][1].name
                     });
                 });
             }
@@ -66,13 +69,12 @@ class App extends React.Component {
   }
 
   render() {
-    const { user, otherName, otherKey, userKey, joinedUser } = this.state;
+    const { user, otherName, otherKey, userKey, joinedUser, joinedUserName } = this.state;
     return (
       <div className="App">
-        <h1 className="title">Smooches Inc</h1>
         <Router>
           <Navbar user={user} />
-          <Routes joinedUser={joinedUser} otherName={otherName} user={user} userKey={userKey} otherKey={otherKey} />
+          <Routes joinedUser={joinedUser} otherName={otherName} user={user} userKey={userKey} otherKey={otherKey} joinedUserName={joinedUserName} />
         </Router>
       </div>
     );
