@@ -15,13 +15,13 @@ const getUserServices = (userId) =>
 
   const getTaskByFBKey = (fbKey) => new Promise((resolve, reject) => {
     axios
-      .get(`${baseUrl}/services.json"`)
+      .get(`${baseUrl}/services.json`)
       .then(response => {
         const myData = [];
         if (response) {
-          myData.push(response.data.find((item) => item.firebaseKey === fbKey));
+          myData.push(Object.values(response.data).find((item) => item.firebaseKey === fbKey));
         }
-        resolve(response);
+        resolve(myData);
       })
       .catch(error => reject(error));
   });

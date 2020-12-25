@@ -7,7 +7,7 @@ export default function ServiceCard({ service, addToOrder, index, key }) {
         <h5 className="card-title"><i>{service.name}</i></h5>
         <p className="card-text">{service.description}</p>
         </div>
-        <button className="checkoutButton" onClick={() => addToOrder(index)}><i class="far fa-heart">+</i></button>
+        <button className="checkoutButton" onClick={() => addToOrder(index)}><i className="far fa-heart">+</i></button>
     
     </div>
   );

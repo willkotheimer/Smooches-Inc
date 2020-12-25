@@ -40,7 +40,7 @@ export default class YourCheckout extends React.Component {
           <Loader />
         ) : (
           <>
-            <div>Your Smooch's Inc Representative, {this.props.otherName[Object.keys(this.props.otherName)].name} has authorized the following services:</div>
+            <div>Your Smooches Inc Representative, {this.props.otherName[Object.keys(this.props.otherName)].name} has authorized the following services:</div>
             <div className="tasksOffered">
               <h3 className="checkoutHeader">Tasks Offered</h3>
               

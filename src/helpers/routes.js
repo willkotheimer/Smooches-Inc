@@ -8,16 +8,16 @@ import UserConnect from '../views/UserConnect';
 import NotFound from '../views/NotFound';
 import ServiceForm from '../components/Forms/ServiceForm';
 
-export default function Routes({ user, otherName, otherKey, userKey, joinedUser }) {
+export default function Routes({ user, otherName, otherKey, userKey, joinedUser, joinedUserName }) {
   return (
     <Switch>
-      <Route exact path="/" component={() => <Dashboard otherName={otherName} otherKey={otherKey} userKey={userKey} joinedUser={joinedUser} user={user} />} />
+      <Route exact path="/" component={() => <Dashboard joinedUser={joinedUser} joinedUserName={joinedUserName} otherKey={otherKey} otherName={otherName} userKey={userKey} user={user} />} />
       
   <Route exact path="/request-service" render={() => <RequestService joinedUser={joinedUser}  otherKey={otherKey} otherName={otherName} userKey={userKey} user={user} /> } />
         
       <PrivateRoute exact path="/create-service" component={CreateService} otherName={otherName} joinedUser={joinedUser} user={user} />
 
-      <Route exact path="/leave-review" render={() => <LeaveReview joinedUser={joinedUser}  otherKey={otherKey} otherName={otherName} userKey={userKey} user={user} /> } />
+      <Route exact path="/leave-review" render={() => <LeaveReview joinedUser={joinedUser} joinedUserName={joinedUserName} otherKey={otherKey} otherName={otherName} userKey={userKey} user={user} /> } />
 
   <Route exact path="/user-connect" render={() => <UserConnect joinedUser={joinedUser}  otherKey={otherKey} otherName={otherName} userKey={userKey} user={user} /> } />
 

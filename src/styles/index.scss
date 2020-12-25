@@ -8,17 +8,18 @@ body {
   ::-webkit-scrollbar {
     display: none;
   }
-  // font-family: Roboto, Oxygen-Sans, Ubuntu, Cantarell, Fira Sans, Droid Sans,
-  //   Helvetica Neue, Helvetica, Hiragino Kaku Gothic Pro, メイリオ, Meiryo, Arial,
-  //   sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI;
 }
 
 .fullLine {
   border: 1px solid #000000;
-  width: 88%;
+  width: 95%;
   margin: 0 auto;
   height: 0px;
   margin-bottom: 12px;
+}
+
+.logo {
+  height: 120px;
 }
 
 @font-face {
