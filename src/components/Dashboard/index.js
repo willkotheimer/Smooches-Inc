@@ -88,7 +88,7 @@ export default class Dashboard extends Component {
 
 render() {
     const { todos, requested, reviews, theirReviews } = this.state;
-
+  
   const showRequests = () => 
       todos.map(service => (
         <RequestCard key={service.firebaseKey+Date.now()} service={service} task={this.getTask(service.taskId)} />
@@ -96,7 +96,7 @@ render() {
     
   const showToDos = () => 
   requested.map(service => (
-        <ToDosCard key={service.firebaseKey+Date.now()}  firebaseKey= { service.firebaseKey } service={service} completeTask={this.completeTask} task={this.getTask(service.taskId)}  />
+        <ToDosCard key={service.firebaseKey+Date.now()}  firebaseKey={ service.firebaseKey } service={service} completeTask={this.completeTask} task={this.getTask(service.taskId)}  />
       ));
   
 return (

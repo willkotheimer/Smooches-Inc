@@ -65,7 +65,7 @@ export default class RequestServicePage extends Component {
               "taskId": `${key}`,
               "status": "pending",
               "reviewId": "",
-              "requestedTime": `${dateTime}`,
+              "requestedTime": `${dateTime.toDateString()}`,
               "completedTime": ""
             });
             return postObj;
