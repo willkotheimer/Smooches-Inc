@@ -3,7 +3,7 @@ import Auth from '../components/Auth';
 import Loader from '../components/Loader';
 import CreateServicePage from './CreateServicePage';
 
-export default function CreateService({ user }) {
+export default function CreateService({ user, otherKey }) {
   const loadCreateService = () => {
     let component = '';
     if (user === null) {
@@ -18,7 +18,7 @@ export default function CreateService({ user }) {
     } else if (user){
       component = (
         <>
-          <CreateServicePage user={user} />
+          <CreateServicePage user={user} otherKey={otherKey} />
         </>
       );
     }
