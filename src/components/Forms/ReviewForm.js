@@ -5,7 +5,7 @@ import ReviewData from '../../helpers/data/reviewData';
 export default class LeaveReview extends Component {
 
   state = {
-    dateTime: Date.now(),
+    dateTime: Date.now().toDateString(),
     toDoid: this.props.toDoId || '',
     serviceid: this.props.taskid || '',
     firebaseKey: this.props.toDo?.firebaseKey || '',

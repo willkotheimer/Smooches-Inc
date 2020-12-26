@@ -1,0 +1,31 @@
+@import '../_variables';
+
+.completeButton {
+  color: #fff;
+  max-height: 30px;
+  background: #ff4b4b;
+  box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+}
+
+.status {
+  margin-left: 5px;
+  line-height: 28px;
+  max-height: 30px;
+  text-align: center;
+  width: 80px;
+}
+
+.done {
+  background-color: $reddish;
+  color: #fff;
+}
+
+.pending {
+  background-color: $accentColor;
+  color: #fff;
+}
+
+.description,
+.date {
+  font-size: 12px;
+}
