@@ -96,7 +96,7 @@ render() {
     
   const showToDos = () => 
   requested.map(service => (
-        <ToDosCard key={service.firebaseKey+Date.now()}  firebaseKey={ service.firebaseKey } service={service} completeTask={this.completeTask} task={this.getTask(service.taskId)}  />
+        <ToDosCard key={service.firebaseKey+Date.now()}  firebaseKey={ service.firebaseKey } service={service} completeTask={this.completeTask} otherName={this.props.otherName} task={this.getTask(service.taskId)}  />
       ));
   
 return (

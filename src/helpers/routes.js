@@ -15,7 +15,7 @@ export default function Routes({ user, otherName, otherKey, userKey, joinedUser,
       
   <Route exact path="/request-service" render={() => <RequestService joinedUser={joinedUser}  otherKey={otherKey} otherName={otherName} userKey={userKey} user={user} /> } />
         
-      <PrivateRoute exact path="/create-service" component={CreateService} otherName={otherName} joinedUser={joinedUser} user={user} />
+  <Route exact path="/create-service" render={() => <CreateService otherName={otherName} joinedUser={joinedUser} user={user} otherKey={otherKey} /> } />
 
       <Route exact path="/leave-review" render={() => <LeaveReview joinedUser={joinedUser} joinedUserName={joinedUserName} otherKey={otherKey} otherName={otherName} userKey={userKey} user={user} /> } />
 
