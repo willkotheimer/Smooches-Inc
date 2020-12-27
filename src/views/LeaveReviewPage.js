@@ -3,7 +3,6 @@ import ReviewTasks from '../components/ReviewTasks';
 import ReviewData from '../helpers/data/reviewData';
 import YourPreviousReviews from '../components/YourPreviousReviews';
 import TheirPreviousReviews from '../components/TheirPreviousReviews';
-import UserData from '../helpers/data/userData';
 
 export default class LeaveReviewPage extends Component {
   state = {

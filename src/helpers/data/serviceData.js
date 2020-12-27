@@ -61,7 +61,7 @@ const getUserServices = (userId) =>
 const deleteService = firebaseKey =>
   axios.delete(`${baseUrl}/services/${firebaseKey}.json`);
 
-
+  // eslint-disable-next-line
   export default {
     getUserServices,
     createService,

@@ -20,16 +20,13 @@ const getAllReviews = () => new Promise((resolve, reject) => {
       .get(`${baseUrl}/review.json`)
       .then(response => {
         if (response.data !== null && response.data !== undefined ) {
-        //   const myData = [];
-        // Object.values(response.data).forEach((item) => {
-        //   myData.push(item)
-        // }) 
         resolve(response.data);
         }
       })
       .catch(error => reject(error));
   });
 
+  // eslint-disable-next-line
 export default {
     createReview,
     getAllReviews

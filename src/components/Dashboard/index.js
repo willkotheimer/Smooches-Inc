@@ -5,7 +5,7 @@ import ServiceData from '../../helpers/data/serviceData';
 import ToDoData from '../../helpers/data/todoData';
 import ReviewData from '../../helpers/data/reviewData';
 import TheirPreviousReviews from '../TheirPreviousReviews';
-
+import LeaderBoardData from '../../helpers/data/leaderboardData';
 
 export default class Dashboard extends Component {
 
@@ -18,7 +18,10 @@ export default class Dashboard extends Component {
     services: [],
     todos: [],
     requested: [],
-    partnerName: ''
+    partnerName: '',
+    doneTodos: null,
+    avgDoneToDos: null,
+    starValues: []
   }
 
   componentDidMount() {
@@ -26,6 +29,7 @@ export default class Dashboard extends Component {
     this.getTodos();
     this.getReviews();
     this.getotheruserrequests();
+    this.getLeaderBoardInfo();
     if (this.props.otherName) {
       this.setState({ partnerName: this.props.otherName[0][1].name })
     }
@@ -48,9 +52,10 @@ export default class Dashboard extends Component {
       });
 
       if (theirReviews.length) {
+        this.reviewsGottenData(theirReviews);
         this.setState({
           theirReviews
-        })
+        });
       };
     });
   }
@@ -85,9 +90,42 @@ export default class Dashboard extends Component {
     this.state.theirReviews.map(review => (
       <TheirPreviousReviews key={review.firebaseKey} previousReview={review} service={review.serviceid} otherName={this.state.partnerName} />
     ));
+  
+  reviewsGottenData = (theirReviews) => {
+    let one = 0; let two = 0; let three =0;
+    let four = 0; let five = 0;
+    const revData = [];
+    theirReviews.forEach((review) => {
+      if (review.reviewStars=== "1") {
+        one++;
+    } else if (review.reviewStars=== "2") {
+        two++;
+    } else if (review.reviewStars=== "3") {
+        three+=1
+    } else if (review.reviewStars=== "4") {
+        four+=1;
+    } else if (review.reviewStars=== "5") {
+        five+=1;
+    }
+    });
+    revData.push(one, two, three, four, five);
+    this.setState({
+      starValues: revData
+    });
+  }
+
+  getLeaderBoardInfo = () => {
+    LeaderBoardData.getTaskLeaderBoards(this.state.userKey).then((array) => {
+      this.setState({
+        doneTodos: array.numberToDos,
+        avgDoneToDos: array.avgToDos
+      })
+    });
+  }
+
 
 render() {
-    const { todos, requested, reviews, theirReviews } = this.state;
+    const { doneTodos, avgDoneToDos, todos, requested, theirReviews } = this.state;
   
   const showRequests = () => 
       todos.map(service => (
@@ -96,9 +134,14 @@ render() {
     
   const showToDos = () => 
   requested.map(service => (
-        <ToDosCard key={service.firebaseKey+Date.now()}  firebaseKey={ service.firebaseKey } service={service} completeTask={this.completeTask} otherName={this.props.otherName} task={this.getTask(service.taskId)}  />
+        <ToDosCard key={service.firebaseKey+Date.now()}  
+        firebaseKey={ service.firebaseKey } 
+        service={service} 
+        completeTask={this.completeTask} 
+        otherName={this.props.otherName} 
+        task={this.getTask(service.taskId)}  />
       ));
-  
+
 return (
   <>
   <div className="servicePage d-flex justify-content-center">
@@ -121,12 +164,10 @@ return (
         
        </div>
        <div className="servicesData">
-         <h3>Data of tasks (Hardcoded)</h3>
-         
            <div className="card-body">
-             <h5 className="card-title">Tasks Finished</h5>
-             <p className="card-text">8</p>
-             <div className="create-delete-btn"></div>
+             <h5 className="card-title">Tasks Data</h5>
+             <p className="card-text">Finished Tasks: {doneTodos}</p>
+             <p className="card-text">Percent done: {(avgDoneToDos*100).toFixed(2)}%</p>
            </div>
         
        </div>
