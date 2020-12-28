@@ -68,6 +68,18 @@ const getUsertoDos = (userId) =>
         }).catch((error) => reject(error));
     })
 
+    const getUserToDosCountArrayByUid = (userId) => 
+    new Promise((resolve, reject) => {
+      const counts = [];
+      axios.get(`${baseUrl}/todo.json?orderBy="uid"&equalTo="${userId}"`)
+        .then((response) => {
+            Object.entries(response.data).forEach((item) => {
+              counts[item[1].taskId] = counts[item[1].taskId] ? counts[item[1].taskId]+1 : 1
+            });
+          resolve(Object.entries(counts));
+        });
+    }).catch((error) => console.warn(error));
+
   // eslint-disable-next-line
   export default {
     getUsertoDos,
@@ -75,5 +87,6 @@ const getUsertoDos = (userId) =>
     getUserToDosArrayByUid,
     completeTask,
     getCompletedToDosByUid,
-    markReviewed
+    markReviewed,
+    getUserToDosCountArrayByUid
   }

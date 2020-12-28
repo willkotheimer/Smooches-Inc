@@ -16,7 +16,9 @@ export default class RequestServicePage extends Component {
         order: {},
         services: {},
         submission: {},
-        submitted: false
+        submitted: false,
+        allServices: [],
+        otherUserToDosCount: []
       }
 
       componentDidMount() {
@@ -116,6 +118,7 @@ export default class RequestServicePage extends Component {
     
   render() {
     const { user } = this.state;
+
     return (
       <>
       <div className="servicePage d-flex justify-content-center">
@@ -144,16 +147,7 @@ export default class RequestServicePage extends Component {
               removeFromOrder={this.removeFromOrder} />}
                </div>
              </div>
-             <div className="servicesData">
-             <h3>Services Data (Hardcoded)</h3>
-             <div className="card m-2">
-               <div className="card-body">
-                 <h5 className="card-title">Tasks Finished</h5>
-                 <p className="card-text">8</p>
-                 <div className="create-delete-btn"></div>
-               </div>
-             </div>
-           </div>
+            
            
            </div>
          </div>

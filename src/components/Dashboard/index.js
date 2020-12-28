@@ -6,6 +6,7 @@ import ToDoData from '../../helpers/data/todoData';
 import ReviewData from '../../helpers/data/reviewData';
 import TheirPreviousReviews from '../TheirPreviousReviews';
 import LeaderBoardData from '../../helpers/data/leaderboardData';
+import OrderHistory from '../Cards/OrderHistory';
 
 export default class Dashboard extends Component {
 
@@ -21,7 +22,9 @@ export default class Dashboard extends Component {
     partnerName: '',
     doneTodos: null,
     avgDoneToDos: null,
-    starValues: []
+    starValues: [],
+    userToDosCount: [],
+    otherUserToDosCount: []
   }
 
   componentDidMount() {
@@ -33,6 +36,7 @@ export default class Dashboard extends Component {
     if (this.props.otherName) {
       this.setState({ partnerName: this.props.otherName[0][1].name })
     }
+    this.getUserRequests();
   }
 
   getReviews = () => {
@@ -91,6 +95,14 @@ export default class Dashboard extends Component {
       <TheirPreviousReviews key={review.firebaseKey} previousReview={review} service={review.serviceid} otherName={this.state.partnerName} />
     ));
   
+    getUserRequests = () => {
+    ToDoData.getUserToDosCountArrayByUid(this.state.userKey).then((data) => {
+      this.setState({
+        userToDosCount: data
+      })
+    });
+  }
+
   reviewsGottenData = (theirReviews) => {
     let one = 0; let two = 0; let three =0;
     let four = 0; let five = 0;
@@ -125,8 +137,13 @@ export default class Dashboard extends Component {
 
 
 render() {
-    const { doneTodos, avgDoneToDos, todos, requested, theirReviews } = this.state;
+    const { userToDosCount, doneTodos, avgDoneToDos, todos, requested, theirReviews, services } = this.state;
   
+  const showUserRequests = () => 
+    userToDosCount.map(toDo => (
+      <OrderHistory toDo={ toDo } services={services} />
+    ));
+
   const showRequests = () => 
       todos.map(service => (
         <RequestCard key={service.firebaseKey+Date.now()} service={service} task={this.getTask(service.taskId)} />
@@ -168,6 +185,12 @@ return (
              <h5 className="card-title">Tasks Data</h5>
              <p className="card-text">Finished Tasks: {doneTodos}</p>
              <p className="card-text">Percent done: {(avgDoneToDos*100).toFixed(2)}%</p>
+             <div>
+               <h1>
+               other user requests
+                 </h1>
+               {userToDosCount && showUserRequests()}
+             </div>
            </div>
         
        </div>
