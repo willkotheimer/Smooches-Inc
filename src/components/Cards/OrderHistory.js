@@ -10,7 +10,6 @@ export default class OrderHistory extends React.Component {
   return (
     <div className="card m-2">
       <div className="card-body" id="">
-          {console.warn(taskKey, service[0].name)}
         <h5 className="card-title">{service && service[0].name}</h5>
         <div>amount { this.props.toDo[1]} </div>
       </div>

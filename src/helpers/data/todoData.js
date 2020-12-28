@@ -21,6 +21,16 @@ const createToDo = toDoObj =>
       .catch(error => reject(error));
   });
 
+  const hideTask = (firebaseKey) =>
+  new Promise((resolve, reject) => {
+    axios
+      .patch(`${baseUrl}/todo/${firebaseKey}.json`, {hidden: true })
+      .then(response => {
+        resolve(response.data);
+      })
+      .catch(error => reject(error));
+  });
+
   const markReviewed = (toDofirebaseKey, reviewFirebaseKey) =>
   new Promise((resolve, reject) => {
     axios
@@ -86,6 +96,7 @@ const getUsertoDos = (userId) =>
     createToDo,
     getUserToDosArrayByUid,
     completeTask,
+    hideTask,
     getCompletedToDosByUid,
     markReviewed,
     getUserToDosCountArrayByUid
