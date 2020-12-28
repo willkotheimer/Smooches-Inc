@@ -7,7 +7,6 @@ export default class ReviewTaskCard extends React.Component {
   render() {
       const taskKey = this.props.toDo.taskId;
       const toDoId = this.props.toDo.firebaseKey;
-      console.warn(this.props.services, taskKey);
       const service = Object.values(this.props.services).filter((x) =>
       x.firebaseKey === taskKey);
       

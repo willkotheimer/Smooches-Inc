@@ -17,7 +17,12 @@ export default function Routes({ user, otherName, otherKey, userKey, joinedUser,
         
   <Route exact path="/create-service" render={() => <CreateService otherName={otherName} joinedUser={joinedUser} user={user} otherKey={otherKey} /> } />
 
-      <Route exact path="/leave-review" render={() => <LeaveReview joinedUser={joinedUser} joinedUserName={joinedUserName} otherKey={otherKey} otherName={otherName} userKey={userKey} user={user} /> } />
+  <Route exact path="/leave-review" render={() => <LeaveReview joinedUser={joinedUser} 
+  joinedUserName={joinedUserName} 
+  otherKey={otherKey} 
+  otherName={otherName} 
+  userKey={userKey} 
+  user={user} /> } />
 
   <Route exact path="/user-connect" render={() => <UserConnect joinedUser={joinedUser}  otherKey={otherKey} otherName={otherName} userKey={userKey} user={user} /> } />
 

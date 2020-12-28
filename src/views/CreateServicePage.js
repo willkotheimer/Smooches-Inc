@@ -69,16 +69,7 @@ export default class CreateServicePage extends Component {
                }
              </div>
            </div>
-           <div className="servicesData">
-             <h3>Services Data (Hardcoded)</h3>
-             <div className="card m-2">
-               <div className="card-body">
-                 <h5 className="card-title">Tasks Finished</h5>
-                 <p className="card-text">8</p>
-                 <div className="create-delete-btn"></div>
-               </div>
-             </div>
-           </div>
+           
          </div>
       </div> 
       </>

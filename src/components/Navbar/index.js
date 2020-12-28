@@ -28,7 +28,7 @@ export default function MyNavbar(props) {
     <div>
       <Navbar color="dark" dark expand="md" className="justify-content-between">
       <Link className="navbar-brand" to="/">
-      <img src={ Logo } className="logo" />
+      <img src={ Logo } alt={'Smooches Inc logo'} className="logo" />
         </Link>
         
         <Link className="navbar-brand" to="/">
