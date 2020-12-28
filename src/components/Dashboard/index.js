@@ -88,6 +88,18 @@ export default class Dashboard extends Component {
     })
   }
 
+  hideTask = (firebaseKey) => {
+    ToDoData.hideTask(firebaseKey).then((response) => {
+      this.getTodos();
+    })
+  }
+
+  hideRequest = (firebaseKey) => {
+    ToDoData.hideTask(firebaseKey).then((response) => {
+      this.getotheruserrequests();
+    })
+  }
+
   getTask = (firebaseKey) => this.state.services.filter((x) => x.firebaseKey === firebaseKey);
 
   theirPreviousReviews = () => 
@@ -145,16 +157,21 @@ render() {
     ));
 
   const showRequests = () => 
-      todos.map(service => (
-        <RequestCard key={service.firebaseKey+Date.now()} service={service} task={this.getTask(service.taskId)} />
+      todos
+      .filter(service => service.hidden !== true)
+      .map(service => (
+        <RequestCard key={service.firebaseKey+Date.now()} service={service} hideRequest={this.hideRequest} task={this.getTask(service.taskId)} />
      ));
     
   const showToDos = () => 
-  requested.map(service => (
+  requested
+  .filter(service => service.hidden !== true)
+  .map(service => (
         <ToDosCard key={service.firebaseKey+Date.now()}  
         firebaseKey={ service.firebaseKey } 
         service={service} 
         completeTask={this.completeTask} 
+        hideTask={this.hideTask}
         otherName={this.props.otherName} 
         task={this.getTask(service.taskId)}  />
       ));

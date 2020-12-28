@@ -3,8 +3,8 @@
 .requestLeftDiv {
   width: 500px;
   max-height: 500px;
-
-  background: $box-background;
+  overflow: scroll;
+  background: #eae1df;
   box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
   border-radius: 3px;
   margin: 12px;
