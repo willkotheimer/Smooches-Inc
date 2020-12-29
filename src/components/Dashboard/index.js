@@ -178,7 +178,7 @@ render() {
 
 return (
   <>
-  <div className="servicePage d-flex justify-content-center">
+  <div className="servicePage">
     <div className="leftSide">
     <div className="tasksToComplete">
          <h3 className="taskHeader">Your task to dos:</h3>

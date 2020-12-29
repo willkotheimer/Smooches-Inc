@@ -121,7 +121,7 @@ export default class RequestServicePage extends Component {
 
     return (
       <>
-      <div className="servicePage d-flex justify-content-center">
+      <div className="servicePage">
         <div className="leftSide">
           <div className="createService">
             <h3>Your Smooch's Inc partner's Inventory:</h3>
