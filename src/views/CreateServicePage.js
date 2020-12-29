@@ -54,7 +54,7 @@ export default class CreateServicePage extends Component {
 
     return (
       <>
-      <div className="servicePage d-flex justify-content-center">
+      <div className="servicePage">
         <div className="leftSide">
           <div className="tasksOffered">
            

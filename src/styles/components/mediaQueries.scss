@@ -1,0 +1,9 @@
+@media only screen and (max-width: 600px) {
+  .requestRightDiv,
+  .tasksToComplete,
+  .requestLeftDiv,
+  .tasksOffered,
+  .reviewsToGiveDiv {
+    max-width: 95% !important;
+  }
+}

@@ -66,7 +66,7 @@ export default class LeaveReviewPage extends Component {
     const { user, theirReviews, yourReviews } = this.state;
     return (
       <>
-      <div className="servicePage d-flex justify-content-center">
+      <div className="servicePage">
         <div className="leftSide">
           <div className="reviewsToGiveDiv">
           <>

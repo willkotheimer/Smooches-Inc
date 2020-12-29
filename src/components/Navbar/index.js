@@ -43,22 +43,22 @@ export default function MyNavbar(props) {
                 Dashboard
               </Link>
             </NavItem>
-            <NavItem>
+            <NavItem className="d-flex justify-content-center">
               <Link className="nav-link" to="/create-service">
                 Create Service
               </Link>
             </NavItem>
-            <NavItem>
+            <NavItem className="d-flex justify-content-center">
               <Link className="nav-link" to="/request-service">
                 Request Service
               </Link>
             </NavItem>
-            <NavItem>
+            <NavItem className="d-flex justify-content-center">
               <Link className="nav-link" to="/leave-review">
                 Leave Review
               </Link>
             </NavItem>
-            <NavItem>
+            <NavItem className="d-flex justify-content-center">
               <Link className="nav-link" to="/user-connect">
               Link Accounts 
               </Link>
