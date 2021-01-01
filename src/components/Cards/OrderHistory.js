@@ -8,7 +8,7 @@ export default class OrderHistory extends React.Component {
       x.firebaseKey === taskKey);
 
   return (
-    <div className="card m-2">
+    <div className="card m-2" >
       <div className="card-body" id="">
         <h5 className="card-title">{service[0] && service[0].name
         }</h5>

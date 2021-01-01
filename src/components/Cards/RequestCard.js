@@ -16,7 +16,7 @@ export default class RequestCard extends React.Component {
         </div>
         
         <div className="d-flex">
-        { (this.props.service.completedTime) && <button className="hideButton" onClick={() => this.props.hideRequest(this.props.service.firebaseKey)}><i class="fas fa-eye-slash"></i></button>}
+        { (this.props.service.completedTime) && <button className="hideButton" onClick={() => this.props.hideRequest(this.props.service.firebaseKey)}><i className="fas fa-eye-slash"></i></button>}
         <div className={(this.props.service.completedTime)? 'done status' : 'pending status'}>{(this.props.service.completedTime)? 'Done!' : 'Pending'} </div>
         </div>
       </div>

@@ -1,8 +1,8 @@
 import React from 'react';
 
-export default function ServiceCard({ service, addToOrder, index, key }) {
+export default function ServiceCard({ service, addToOrder, index }) {
   return (
-    <div key={key} className="d-flex">
+    <div key={index} className="d-flex">
       <div className="card-body" id={service.fireBaseKey}>
         <h5 className="card-title"><i>{service.name}</i></h5>
         <p className="card-text">{service.description}</p>

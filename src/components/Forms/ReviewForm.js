@@ -3,9 +3,8 @@ import getUser from '../../helpers/data/authData';
 import ReviewData from '../../helpers/data/reviewData';
 
 export default class LeaveReview extends Component {
-
   state = {
-    dateTime: Date.now().toDateString(),
+    dateTime: (new Date()).toDateString(),
     toDoid: this.props.toDoId || '',
     serviceid: this.props.taskid || '',
     firebaseKey: this.props.toDo?.firebaseKey || '',
@@ -21,7 +20,6 @@ export default class LeaveReview extends Component {
   };
 
   handleChange = e => {
-     console.warn(e.target.value);
       this.setState({
         [e.target.name]: e.target.value
       });
@@ -81,7 +79,7 @@ export default class LeaveReview extends Component {
           onChange={this.handleChange} >
             <option value="">-SELECT-</option>
             {options.map((option) => (
-              <option value={option.value}>{option.label}</option>
+              <option key={`${option}Date.now()`} value={option.value}>{option.label}</option>
             ))}
             </select>
        

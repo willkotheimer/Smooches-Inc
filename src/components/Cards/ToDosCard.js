@@ -16,7 +16,7 @@ export default class toDosCard extends React.Component {
         
         <div className="d-flex">
         { (!this.props.service.completedTime) && <button className="completeButton" onClick={() => this.props.completeTask(this.props.firebaseKey, dateTime)}>Complete Task</button>}
-        { (this.props.service.completedTime) && <button className="hideButton" onClick={() => this.props.hideTask(this.props.firebaseKey)}><i class="fas fa-eye-slash"></i></button>}
+        { (this.props.service.completedTime) && <button className="hideButton" onClick={() => this.props.hideTask(this.props.firebaseKey)}><i className="fas fa-eye-slash"></i></button>}
         <div className={(this.props.service.completedTime)? 'done status' : 'pending status'}>{(this.props.service.completedTime)? 'Done!' : 'Pending'} </div>
         </div>
       </div>
