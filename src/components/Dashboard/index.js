@@ -152,8 +152,8 @@ render() {
     const { userToDosCount, doneTodos, avgDoneToDos, todos, requested, theirReviews, services } = this.state;
   
   const showUserRequests = () => 
-    userToDosCount.map(toDo => (
-      <OrderHistory toDo={ toDo } services={services} />
+    userToDosCount.map((toDo, index ) => (
+      <OrderHistory key={index} toDo={ toDo } services={services} />
     ));
 
   const showRequests = () => 
@@ -209,7 +209,6 @@ return (
                {userToDosCount && showUserRequests()}
              </div>
            </div>
-        
        </div>
      </div>
   </div> 
