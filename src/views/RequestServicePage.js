@@ -6,7 +6,6 @@ import YourOrder from '../components/YourOrder';
 import toDoData from '../helpers/data/todoData';
 
 export default class RequestServicePage extends Component {
-
     state = {
         user: this.props.user,
         otherName: this.props.otherName,
@@ -137,7 +136,6 @@ export default class RequestServicePage extends Component {
         </div>
        <div className="rightSide d-flex flex-column">
          <div className="todos">
-             <h3>My Checkout</h3>
              <div className="requestRightDiv">
               {<YourOrder order={this.state.order} 
               submitted={this.state.submitted} 

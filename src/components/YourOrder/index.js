@@ -20,6 +20,7 @@ export default class YourOrder extends React.Component {
     
     return (
       <>
+            <h3 className="checkoutHeader">&nbsp;My Checkout</h3>
             <div className="d-flex flex-wrap container">
               <ul className="cart">{orderIds && orderIds.map(this.renderOrder)}</ul>
             </div>

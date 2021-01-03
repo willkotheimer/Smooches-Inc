@@ -46,7 +46,7 @@ export default class YourInventory extends React.Component {
     const { services, loading } = this.state;
     const showServices = () => 
       Object.values(services).map(service => (
-        <ServiceCard key={`${service.firebaseKey}Date.now()`} service={service} redrawDom={this.getServices} />
+        <ServiceCard key={`${service.firebaseKey}-${Date.now()}`} service={service} redrawDom={this.getServices} />
       ));
     return (
       <>
