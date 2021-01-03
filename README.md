@@ -36,12 +36,19 @@ React, Firebase, Boostrap, Axios
 
 ## Screenshots:
 
+Dashboard:
+
+![](src/styles/images/dashboard.png)
+
+Checkout:
+
+![](src/styles/images/checkout.png)
+
 ## Features
 
-Smooches Inc allows users to request tasks from another person, who reciprocally can request tasks from them. It is set up like an ecommerce app (payments are hearts) but the analogy breaks down there. It should be seen a cooperative and useful way to communicate, rather than a quid pro quo.
-The user will have the following screens:
+Smooches Inc allows users to request tasks from another person, who reciprocally can request tasks from them. It is set up like an ecommerce app but there are no payments. It should be seen a cooperative and useful way to communicate, rather than a quid pro quo.
+The user will have the following features:
 
-- Splash Page / User login page
 - Create User page
 - Dashboard with components that show:
   - Outstanding tasks to do
@@ -54,6 +61,9 @@ The user will have the following screens:
   - Leave a Review (Crud form that will allow reviews to be left).
     (not exhaustive)
     Stretch Goals:
+
+Future stretch goals
+
 - Limit user ability to select item.
 - Send email or text
 - Boilerplate messages sent for different circumstances (receiving user order "lost in mail", user not signed into app recently, user finishing orders on time consistently, high ratings, high usage,
@@ -72,7 +82,7 @@ export default class LinkUserCard extends React.Component {
     userKey: this.props.userKey,
     joinedUser: this.props.joinedUser
   }
- 
+
   rejectUser = () => {
     userData.deleteUserConnect(this.state.joinedUser.firebaseKey);
     this.setState({
@@ -96,7 +106,7 @@ export default class LinkUserCard extends React.Component {
   return (<>
     <div className="card m-2">
       <div className="card-body">
-      <h5 className="card-title">{otherName[Object.keys(otherName)].name} 
+      <h5 className="card-title">{otherName[Object.keys(otherName)].name}
       {joinedUser && (joinedUser.confirm) ? ' is connected' : ' is pending...'}.</h5>
       <div>{(joinedUser && (joinedUser.user2FBKey === user.uid) && (!joinedUser.confirm)) ? (
       <>
