@@ -1,6 +1,10 @@
 import React, { Component } from 'react';
-import ReviewTasks from '../components/ReviewTasks';
+import Rebase from 're-base';
+import firebase from 'firebase';
+import ServiceData from '../helpers/data/serviceData';
 import ToDoData from '../helpers/data/todoData';
+import ReviewTaskCard from '../components/Cards/ReviewTaskCard';
+import Loader from '../components/Loader';
 import ReviewData from '../helpers/data/reviewData';
 import YourPreviousReviews from '../components/YourPreviousReviews';
 import TheirPreviousReviews from '../components/TheirPreviousReviews';
@@ -11,11 +15,24 @@ export default class LeaveReviewPage extends Component {
     reviews: {},
     theirReviews: [],
     yourReviews: [],
-    todos: []
+    services: [],
+    toDos: [],
+    loading: true,
   }
 
   componentDidMount() {
     this.getReviews();
+    this.getServices();
+    this.getTodos();
+    this.setLoading();
+    const base = Rebase.createClass(firebase.database());
+    base.listenTo('review', {
+      context: this,
+      asArray: true,
+      then(){
+        this.getTodos();
+      }
+    });
   };
 
   getTodos = () => ToDoData.getCompletedToDosByUid(this.props.otherKey).then((stuff) => {
@@ -54,8 +71,26 @@ export default class LeaveReviewPage extends Component {
     });
   }
 
-  updateReviewPage = () => {
+  getServices = () => {
+    ServiceData.getAllServices().then(stuff => {
+      this.setState(
+        {
+          services: stuff
+        },
+        this.setLoading
+      );
+    });
+  };
+
+  setLoading = () => {
+    this.timer = setInterval(() => {
+      this.setState({ loading: false });
+    }, 1000);
+  };
+  
+  redrawDom = () => {
     this.getReviews();
+    this.getTodos();
   }
 
   yourPreviousReviews = () => 
@@ -69,20 +104,33 @@ export default class LeaveReviewPage extends Component {
     ));
 
   render() {
-    const { user, theirReviews, yourReviews } = this.state;
+    const { theirReviews, yourReviews, toDos, services, loading } = this.state;
+    const showUnreviewed = () => 
+    Object.values(toDos)
+    .filter((x) => x.reviewed !== true)
+    .map(toDo => (
+      <ReviewTaskCard key={toDo.firebaseKey} services={services} toDo={toDo} onUpdate={this.redrawDom} />
+    ));
+
     return (
       <>
       <div className="servicePage">
         <div className="leftSide">
           <div className="reviewsToGiveDiv">
           <>
-              <ReviewTasks user={user} 
-              otherName={this.props.otherName} 
-              otherKey={this.props.otherKey}
-              userKey={ this.props.userKey} 
-              joinedUser={ this.props.joinedUser }
-              onUpdate={ this.updateReviewPage } />
-            </> 
+        {loading ? (
+          <Loader />
+        ) : (
+          <>
+           
+            <h3 className="reviewHeader">Completed Tasks To Review:</h3>
+            <div className="d-flex flex-wrap">
+              {toDos && showUnreviewed()}
+            </div>
+            
+          </>
+        )}
+      </>
           </div>
         </div>
        <div className="rightSide">

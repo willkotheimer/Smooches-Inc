@@ -6,7 +6,6 @@ import YourOrder from '../components/YourOrder';
 import toDoData from '../helpers/data/todoData';
 
 export default class RequestServicePage extends Component {
-
     state = {
         user: this.props.user,
         otherName: this.props.otherName,
