@@ -19,7 +19,6 @@ export default class ReviewTasks extends React.Component {
     });
     this.getTodos();
     this.getServices();
-    
   }
 
   getServices = () => {

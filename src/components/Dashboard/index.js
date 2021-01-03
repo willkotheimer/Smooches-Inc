@@ -1,3 +1,5 @@
+import Rebase from 're-base';
+import firebase from 'firebase';
 import React, { Component } from 'react';
 import RequestCard from '../Cards/RequestCard';
 import ToDosCard from '../Cards/ToDosCard';
@@ -37,6 +39,26 @@ export default class Dashboard extends Component {
       this.setState({ partnerName: this.props.otherName[0][1].name })
     }
     this.getUserRequests();
+    const base = Rebase.createClass(firebase.database());
+    
+    base.listenTo('todo', {
+      context: this,
+      asArray: true,
+      then(){
+        this.getTodos();
+        this.getUserRequests();
+        this.getotheruserrequests();
+      }
+    });
+
+    base.listenTo('review', {
+      context: this,
+      asArray: true,
+      then(){
+        this.getReviews();
+      }
+    });
+
   }
 
   getReviews = () => {
@@ -103,7 +125,7 @@ export default class Dashboard extends Component {
   getTask = (firebaseKey) => this.state.services.filter((x) => x.firebaseKey === firebaseKey);
 
   theirPreviousReviews = () => 
-    this.state.theirReviews.map(review => (
+    this.state.theirReviews.slice(Math.max(this.state.theirReviews.length - 5, 1)).reverse().map(review => (
       <TheirPreviousReviews key={review.firebaseKey} previousReview={review} service={review.serviceid} otherName={this.state.partnerName} />
     ));
   

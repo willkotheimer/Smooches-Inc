@@ -137,7 +137,6 @@ export default class RequestServicePage extends Component {
         </div>
        <div className="rightSide d-flex flex-column">
          <div className="todos">
-             <h3>My Checkout</h3>
              <div className="requestRightDiv">
               {<YourOrder order={this.state.order} 
               submitted={this.state.submitted} 

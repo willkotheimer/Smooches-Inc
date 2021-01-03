@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import ReviewTasks from '../components/ReviewTasks';
+import ToDoData from '../helpers/data/todoData';
 import ReviewData from '../helpers/data/reviewData';
 import YourPreviousReviews from '../components/YourPreviousReviews';
 import TheirPreviousReviews from '../components/TheirPreviousReviews';
@@ -9,12 +10,19 @@ export default class LeaveReviewPage extends Component {
     user: this.props.user,
     reviews: {},
     theirReviews: [],
-    yourReviews: []
+    yourReviews: [],
+    todos: []
   }
 
   componentDidMount() {
     this.getReviews();
   };
+
+  getTodos = () => ToDoData.getCompletedToDosByUid(this.props.otherKey).then((stuff) => {
+    this.setState({
+      toDos: stuff
+    });
+  });
 
   getReviews = () => {
     ReviewData.getAllReviews().then(stuff => {
@@ -51,16 +59,14 @@ export default class LeaveReviewPage extends Component {
   }
 
   yourPreviousReviews = () => 
-    this.state.yourReviews.map(review => (
+    this.state.yourReviews.slice(Math.max(this.state.yourReviews.length - 5, 1)).reverse().map(review => (
       <YourPreviousReviews key={review.firebaseKey} previousReview={review} service={review.serviceid} otherName={this.props.joinedUserName} />
     ));
   
-
   theirPreviousReviews = () => 
-    this.state.theirReviews.map(review => (
+    this.state.theirReviews.slice(Math.max(this.state.theirReviews.length - 5, 1)).reverse().map(review => (
       <TheirPreviousReviews key={review.firebaseKey} previousReview={review} service={review.serviceid} otherName={this.props.joinedUserName} />
     ));
-  
 
   render() {
     const { user, theirReviews, yourReviews } = this.state;
@@ -75,7 +81,7 @@ export default class LeaveReviewPage extends Component {
               otherKey={this.props.otherKey}
               userKey={ this.props.userKey} 
               joinedUser={ this.props.joinedUser }
-              onUpdate={ this.updateReviewPage } /> 
+              onUpdate={ this.updateReviewPage } />
             </> 
           </div>
         </div>

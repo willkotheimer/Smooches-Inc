@@ -9,7 +9,7 @@ export default class LeaveReview extends Component {
     serviceid: this.props.taskid || '',
     firebaseKey: this.props.toDo?.firebaseKey || '',
     reviewText: this.props.review?.reviewText || '',
-    reviewStars: this.props.review?.reviewStars || '',
+    reviewStars: this.props.review?.reviewStars || ''
   };
 
   componentDidMount() {
@@ -65,21 +65,17 @@ export default class LeaveReview extends Component {
       }
     ];
     return (
-        
       <form onSubmit={this.handleSubmit}>
-        <h3>Leave a Review</h3>
-        <hr/>
         <div className="form-group">
-        <label htmlFor="leaveReview">Leave a Review</label>
         <textarea name="reviewText"
-          onChange={this.handleChange} className="form-control" id="leaveReviee" rows="4" required></textarea>
+          onChange={this.handleChange} className="form-control" id="leaveReview" rows="4" required></textarea>
         </div>
         <label htmlFor="leaveRating">Leave a Rating</label>
           <select name="reviewStars" id="reviewStars" className="selectpicker" value={reviewStars}
           onChange={this.handleChange} >
             <option value="">-SELECT-</option>
             {options.map((option) => (
-              <option key={`${option}Date.now()`} value={option.value}>{option.label}</option>
+              <option key={`${option.value}-${Date.now()}`} value={option.value}>{option.label}</option>
             ))}
             </select>
        
