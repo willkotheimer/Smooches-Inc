@@ -22,7 +22,6 @@ export default class DashboardView extends React.Component {
         component = (
             <>
               <Auth />
-              Not Logged in
             </>
           );
         } else {

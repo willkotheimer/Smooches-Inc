@@ -12,7 +12,6 @@ export default function Dashboard({ user, otherName, otherKey, userKey, joinedUs
         component = (
             <>
               <Auth />
-              Not Logged in
             </>
           );
         } else {
@@ -25,5 +24,5 @@ export default function Dashboard({ user, otherName, otherKey, userKey, joinedUs
     return component;
   };
 
-  return <div>{loadDashboard()}</div>;
+  return <div><h3 className="title d-flex justify-content-center">Dashboard</h3><br/>{loadDashboard()}</div>;
 }

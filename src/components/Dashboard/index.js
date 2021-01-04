@@ -203,18 +203,18 @@ return (
   <div className="servicePage">
     <div className="leftSide">
     <div className="tasksToComplete">
-         <h3 className="taskHeader">Your task to dos:</h3>
+         <h3 className="taskHeader">Services Needing Your Attention:</h3>
          {todos && showToDos()}
        </div>
        <div className="requestLeftDiv">
         
-        <h3 className="requestHeader">All Tasks Requested By You:</h3>
+        <h3 className="requestHeader">Services Requested By You:</h3>
           {requested && showRequests()}
        </div>
     </div>
    <div className="rightSide">
      <div className="reviewsGivenToYouDiv">
-     <h3 className="reviewHeader">Reviews Given to you:</h3>
+     <h3 className="reviewHeader">Reviews Given To You:</h3>
          
              {theirReviews && this.theirPreviousReviews()}
         
