@@ -12,7 +12,6 @@ export default function CreateService({ user, otherKey }) {
       component = (
         <>
           <Auth />
-          Not Logged in
         </>
       );
     } else if (user){

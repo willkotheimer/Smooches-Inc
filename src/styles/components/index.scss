@@ -9,3 +9,13 @@
 .App {
   position: relative;
 }
+
+body {
+  background-color: $background-color;
+}
+.Auth {
+  background-color: $background-color;
+  img {
+    width: 50%;
+  }
+}

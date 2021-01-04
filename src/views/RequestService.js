@@ -12,7 +12,6 @@ export default function RequestService({ user, otherName, otherKey, joinedUser }
         component = (
             <>
               <Auth />
-              Not Logged in
             </>
           );
         } else {
@@ -25,5 +24,5 @@ export default function RequestService({ user, otherName, otherKey, joinedUser }
     return component;
   };
 
-  return <div>{loadRequestService()}</div>;
+  return <div><h3 className="title d-flex justify-content-center">Request Service</h3><br/>{loadRequestService()}</div>;
 }

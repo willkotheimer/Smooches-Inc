@@ -12,8 +12,8 @@ export default class Auth extends Component {
 
   render() {
     return (
-      <div className="Auth">
-        <button className="btn btn-secondary" onClick={this.loginClickEvent}>
+      <div className="Auth d-flex justify-content-center">
+        <button className="btn" onClick={this.loginClickEvent}>
           <img src={googleImage} alt="Google Sign In Button" />
         </button>
       </div>

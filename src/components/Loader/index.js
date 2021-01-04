@@ -5,8 +5,9 @@ const Loader = () => {
   const array = [
     ["You are loved", "Even on the bad hair days"],
     ["Wow! You look so good!","I really love the new outfit."],
-    ["Humans", "We are humans too."],
+    ["You are the only one", "I'd want to be Quarantined With"],
     ["I give myself space", "To learn and grow"],
+    ["Breathe in", "Breathe out"],
     ["I am creatively inspired", "By the world around me"],
     ["I feel so lucky", "To have you"],
     ["It's not what you think up", "It's what you get down."]

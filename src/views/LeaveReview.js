@@ -11,8 +11,8 @@ export default function LeaveReview({ user, otherName, otherKey, userKey, joined
     } else if (!user) {
         component = (
             <>
+              <h3 className="title d-flex justify-content-center">Leave Review</h3><br/>
               <Auth />
-              Not Logged in
             </>
           );
         } else {

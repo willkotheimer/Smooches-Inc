@@ -12,7 +12,6 @@ export default function UserConnect({ user, otherName, otherKey, userKey, joined
         component = (
             <>
               <Auth />
-              Not Logged in
             </>
           );
         } else {
