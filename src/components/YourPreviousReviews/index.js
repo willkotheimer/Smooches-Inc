@@ -17,14 +17,13 @@ export default class YourPreviousReviews extends React.Component {
   getServiceData = (fbKey) => Services.getTaskByFBKey(fbKey);
 
   render() {
-   
     return (
       <>
           <p id={this.props.previousReview.fireBaseKey} 
           className="previousReviewsGivenByYou">Comment: 
           {this.props.previousReview.reviewText}</p>
           <p className="review">
-            {[...Array(parseInt(this.props.previousReview.reviewStars,10))]
+            {[...Array(parseInt(this.props.previousReview.reviewStars,10) || 5)]
             .map((e, i) => 
             <span className="stars" key={i}>
               <i className="hearts fas fa-heart"></i></span>)} to <strong><i>
