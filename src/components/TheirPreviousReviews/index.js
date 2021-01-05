@@ -24,7 +24,8 @@ export default class TheirPreviousReviews extends React.Component {
           className="previousReviewsGivenByYou">
             Comment: {this.props.previousReview.reviewText}
           </p>
-          <p className="review">{[...Array(parseInt(this.props.previousReview.reviewStars,10))].map((e, i) => 
+          <p className="review">{[...Array(parseInt(this.props.previousReview.reviewStars,10) || 5)]
+            .map((e, i) => 
           <span className="stars" 
           key={i}><i className="hearts fas fa-heart"></i></span>) } 
              from <strong><i>{ this.props.otherName  } </i></strong> 
