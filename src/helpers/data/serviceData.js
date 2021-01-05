@@ -58,15 +58,8 @@ const getUserServices = (userId) =>
       });
   });
 
-  const deleteService = (firebaseKey) =>
-  new Promise((resolve, reject) => {
-    const setDelete = { status: "deleted" }
-    axios
-      .patch(`${baseUrl}/services/${firebaseKey}.json`, setDelete)
-      .then(response => {
-        resolve(response.data);
-      });
-  });
+const deleteService = firebaseKey =>
+  axios.delete(`${baseUrl}/services/${firebaseKey}.json`);
 
   // eslint-disable-next-line
   export default {

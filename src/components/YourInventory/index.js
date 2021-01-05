@@ -23,11 +23,9 @@ export default class YourInventory extends React.Component {
   getServices = () => {
     const UID = getUid();
     ServiceData.getUserServices(UID).then(response => {
-      const goodServices = Object.values(response.data).filter(x => x.status!=='deleted');
-
       this.setState(
         {
-          services: goodServices
+          services: response.data
         },
         this.setLoading
       );
