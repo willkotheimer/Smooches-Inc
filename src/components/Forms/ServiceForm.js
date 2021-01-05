@@ -40,6 +40,7 @@ export default class ServiceForm extends Component {
         this.props.toggle();
       });
     } else {
+      // add in a check to see if deleted
       ServiceData.updateService(this.state).then(() => {
         // rerender / update state in the services component
         this.props.onUpdate();
