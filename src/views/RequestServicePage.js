@@ -38,9 +38,11 @@ export default class RequestServicePage extends Component {
       getServices = () => {
         const UID = this.state.otherKey;
         ServiceData.getUserServices(UID).then(response => {
+          const goodServices = Object.values(response.data).filter(x => x.status!=='deleted');
+
           this.setState(
             {
-              services: response.data
+              services: goodServices
             },
             this.setLoading()
           );
