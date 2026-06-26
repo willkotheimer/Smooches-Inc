@@ -1,6 +1,6 @@
-import React, { Component } from 'react';
+import { useFormik } from 'formik';
 import getUser from '../../helpers/data/authData';
-import ReviewData from '../../helpers/data/reviewData';
+import { useCreateReview } from '../../data/useReviewData';
 import type { Review, ToDo } from '../../types';
 
 interface Props {
@@ -12,80 +12,61 @@ interface Props {
   onUpdate: () => void;
 }
 
-type State = Review;
+const starOptions = [
+  { label: '1', value: '1' },
+  { label: '2', value: '2' },
+  { label: '3', value: '3' },
+  { label: '4', value: '4' },
+  { label: '5', value: '5' },
+];
 
-export default class LeaveReview extends Component<Props, State> {
-  state: State = {
-    dateTime: new Date().toDateString(),
-    toDoid: this.props.toDoId || '',
-    serviceid: this.props.taskid || '',
-    firebaseKey: this.props.toDo?.firebaseKey || '',
-    reviewText: this.props.review?.reviewText || '',
-    reviewStars: this.props.review?.reviewStars || '',
-    uid: '',
-  };
+export default function ReviewForm({ toDoId, taskid, toDo, review, onUpdate }: Props) {
+  const createReview = useCreateReview();
 
-  componentDidMount() {
-    const userId = getUser();
-    this.setState({
-      uid: userId,
-    });
-  }
+  const formik = useFormik<Review>({
+    enableReinitialize: true,
+    initialValues: {
+      dateTime: new Date().toDateString(),
+      toDoid: toDoId || '',
+      serviceid: taskid || '',
+      firebaseKey: toDo?.firebaseKey || '',
+      reviewText: review?.reviewText || '',
+      reviewStars: review?.reviewStars || '',
+      uid: getUser(),
+    },
+    onSubmit: (values) => {
+      createReview.mutate(values, { onSuccess: () => onUpdate() });
+    },
+  });
 
-  handleChange = (e: React.ChangeEvent<HTMLTextAreaElement | HTMLSelectElement>) => {
-    this.setState({
-      [e.target.name]: e.target.value,
-    } as unknown as Pick<State, keyof State>);
-  };
-
-  handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (this.state.firebaseKey === '') {
-      this.setState({
-        firebaseKey: this.props.firebaseKey,
-      });
-    }
-
-    ReviewData.createReview(this.state).then(() => this.props.onUpdate());
-  };
-
-  render() {
-    const { reviewStars } = this.state;
-    const options = [
-      { label: '1', value: '1' },
-      { label: '2', value: '2' },
-      { label: '3', value: '3' },
-      { label: '4', value: '4' },
-      { label: '5', value: '5' },
-    ];
-    return (
-      <form onSubmit={this.handleSubmit}>
-        <div className="form-group">
-          <textarea
-            name="reviewText"
-            onChange={this.handleChange}
-            className="form-control"
-            id="leaveReview"
-            rows={4}
-            required
-          ></textarea>
-        </div>
-        <label htmlFor="leaveRating">Leave a Rating</label>
-        <select
-          name="reviewStars"
-          id="reviewStars"
-          className="selectpicker"
-          value={reviewStars}
-          onChange={this.handleChange}
-        >
-          {options.map((option) => (
-            <option key={option.value} value={option.value}>
-              {option.label}
-            </option>
-          ))}
-        </select>
-        <button>Submit</button>
-      </form>
-    );
-  }
+  return (
+    <form onSubmit={formik.handleSubmit}>
+      <div className="form-group">
+        <textarea
+          name="reviewText"
+          value={formik.values.reviewText}
+          onChange={formik.handleChange}
+          className="form-control"
+          id="leaveReview"
+          rows={4}
+          required
+        ></textarea>
+      </div>
+      <label htmlFor="leaveRating">Leave a Rating</label>
+      <select
+        name="reviewStars"
+        id="reviewStars"
+        className="selectpicker"
+        value={formik.values.reviewStars}
+        onChange={formik.handleChange}
+      >
+        {starOptions.map((option) => (
+          <option key={option.value} value={option.value}>
+            {option.label}
+          </option>
+        ))}
+      </select>
+      <button type="submit">Submit</button>
+    </form>
+  );
 }

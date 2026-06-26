@@ -1,7 +1,7 @@
-import React, { Component } from 'react';
+import { useFormik } from 'formik';
 import getUser from '../../helpers/data/authData';
-import userData from '../../helpers/data/userData';
-import type { User } from '../../types';
+import { useCreateUserJoin } from '../../data/useUserData';
+import type { User, UserJoin } from '../../types';
 
 interface Props {
   usersToConnect: User[];
@@ -9,61 +9,42 @@ interface Props {
   joinedUser?: any;
 }
 
-interface State {
-  user1FBKey: string;
-  user2FBKey: string;
-  confirm: boolean;
-}
+export default function UserRequest({ usersToConnect, otherUser }: Props) {
+  const createUserJoin = useCreateUserJoin();
 
-export default class UserRequest extends Component<Props, State> {
-  state: State = {
-    user1FBKey: '',
-    user2FBKey: this.props.otherUser?.firebaseKey || '',
-    confirm: false,
-  };
+  const formik = useFormik({
+    enableReinitialize: true,
+    initialValues: {
+      user1FBKey: getUser(),
+      user2FBKey: otherUser?.firebaseKey || '',
+      confirm: false,
+    },
+    onSubmit: (values) => {
+      // backend assigns firebaseKey on create.
+      createUserJoin.mutate(values as unknown as UserJoin, {
+        onSuccess: () => console.warn('made user', values),
+      });
+    },
+  });
 
-  componentDidMount() {
-    const userId = getUser();
-    this.setState({
-      user1FBKey: userId,
-    });
-  }
-
-  handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    this.setState({
-      [e.target.name]: e.target.value,
-    } as unknown as Pick<State, keyof State>);
-  };
-
-  handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    // state has no firebaseKey yet; the backend assigns it on create.
-    userData.createUserJoin(this.state as any).then(() => {
-      console.warn('made user', this.state);
-    });
-  };
-
-  render() {
-    const arr = Object.values(this.props.usersToConnect).map((option) => (
-      <option key={option.uid} value={option.uid}>
-        {option.name}
-      </option>
-    ));
-    return (
-      <form onSubmit={this.handleSubmit}>
-        <h3>User Request Form</h3>
-        (No users will be linked to until confirmed)
-        User available to link to:
-        <select
-          className="browser-default custom-select"
-          name="user2FBKey"
-          onChange={this.handleChange}
-        >
-          <option>select a user</option>
-          {arr}
-        </select>
-        <button>Submit</button>
-      </form>
-    );
-  }
+  return (
+    <form onSubmit={formik.handleSubmit}>
+      <h3>User Request Form</h3>
+      (No users will be linked to until confirmed) User available to link to:
+      <select
+        className="browser-default custom-select"
+        name="user2FBKey"
+        value={formik.values.user2FBKey}
+        onChange={formik.handleChange}
+      >
+        <option>select a user</option>
+        {Object.values(usersToConnect).map((option) => (
+          <option key={option.uid} value={option.uid}>
+            {option.name}
+          </option>
+        ))}
+      </select>
+      <button type="submit">Submit</button>
+    </form>
+  );
 }
