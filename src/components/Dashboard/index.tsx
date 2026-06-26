@@ -1,0 +1,283 @@
+import Rebase from 're-base';
+import firebase from 'firebase/app';
+import 'firebase/database';
+import React, { Component } from 'react';
+import RequestCard from '../Cards/RequestCard';
+import ToDosCard from '../Cards/ToDosCard';
+import ServiceData from '../../helpers/data/serviceData';
+import ToDoData from '../../helpers/data/todoData';
+import ReviewData from '../../helpers/data/reviewData';
+import TheirPreviousReviews from '../TheirPreviousReviews';
+import LeaderBoardData from '../../helpers/data/leaderboardData';
+import OrderHistory from '../Cards/OrderHistory';
+import type { Review, Service, ToDo } from '../../types';
+
+interface Props {
+  user?: any;
+  otherName?: any;
+  otherKey?: string;
+  userKey?: string;
+  joinedUser?: any;
+}
+
+interface State {
+  user: any;
+  otherName: any;
+  otherKey?: string;
+  userKey?: string;
+  joinedUser: any;
+  services: Service[];
+  todos: ToDo[];
+  requested: ToDo[];
+  partnerName: string;
+  doneTodos: number | null;
+  avgDoneToDos: number | null;
+  starValues: number[];
+  userToDosCount: [string, number][];
+  otherUserToDosCount: any[];
+  reviews?: Record<string, Review>;
+  theirReviews?: Review[];
+}
+
+export default class Dashboard extends Component<Props, State> {
+  state: State = {
+    user: this.props.user,
+    otherName: this.props.otherName,
+    otherKey: this.props.otherKey,
+    userKey: this.props.userKey,
+    joinedUser: this.props.joinedUser,
+    services: [],
+    todos: [],
+    requested: [],
+    partnerName: '',
+    doneTodos: null,
+    avgDoneToDos: null,
+    starValues: [],
+    userToDosCount: [],
+    otherUserToDosCount: [],
+  };
+
+  componentDidMount() {
+    this.getServices();
+    this.getTodos();
+    this.getReviews();
+    this.getotheruserrequests();
+    this.getLeaderBoardInfo();
+    if (this.props.otherName) {
+      this.setState({ partnerName: this.props.otherName[0][1].name });
+    }
+    this.getUserRequests();
+    const base = Rebase.createClass(firebase.database());
+
+    base.listenTo('todo', {
+      context: this,
+      asArray: true,
+      then() {
+        this.getTodos();
+        this.getUserRequests();
+        this.getotheruserrequests();
+      },
+    });
+
+    base.listenTo('review', {
+      context: this,
+      asArray: true,
+      then() {
+        this.getReviews();
+      },
+    });
+  }
+
+  getReviews = () => {
+    ReviewData.getAllReviews().then((stuff) => {
+      this.setState({
+        reviews: stuff,
+      });
+
+      const theirReviews: Review[] = [];
+      Object.values(stuff).forEach((item) => {
+        if (item.uid !== this.state.user.uid && this.state.user.uid !== undefined) {
+          theirReviews.push(item);
+        }
+      });
+
+      if (theirReviews.length) {
+        this.reviewsGottenData(theirReviews);
+        this.setState({
+          theirReviews,
+        });
+      }
+    });
+  };
+
+  getServices = () =>
+    ServiceData.getAllServices().then((services) => {
+      this.setState({
+        services,
+      });
+    });
+
+  getTodos = () =>
+    ToDoData.getUserToDosArrayByUid(this.state.userKey as string).then((toDos) => {
+      this.setState({
+        requested: toDos,
+      });
+    });
+
+  getotheruserrequests = () =>
+    ToDoData.getUserToDosArrayByUid(this.state.otherKey as string).then((toDos) => {
+      this.setState({
+        todos: toDos,
+      });
+    });
+
+  completeTask = (firebaseKey: string, time: string | Date) => {
+    ToDoData.completeTask(firebaseKey, time).then(() => {
+      this.getTodos();
+    });
+  };
+
+  hideTask = (firebaseKey: string) => {
+    ToDoData.hideTask(firebaseKey).then(() => {
+      this.getTodos();
+    });
+  };
+
+  hideRequest = (firebaseKey: string) => {
+    ToDoData.hideTask(firebaseKey).then(() => {
+      this.getotheruserrequests();
+    });
+  };
+
+  getTask = (firebaseKey: string) =>
+    this.state.services.filter((x) => x.firebaseKey === firebaseKey);
+
+  theirPreviousReviews = () =>
+    this.state
+      .theirReviews!.slice(Math.max(this.state.theirReviews!.length - 5, 1))
+      .reverse()
+      .map((review) => (
+        <TheirPreviousReviews
+          key={review.firebaseKey}
+          previousReview={review}
+          service={review.serviceid}
+          otherName={this.state.partnerName}
+        />
+      ));
+
+  getUserRequests = () => {
+    ToDoData.getUserToDosCountArrayByUid(this.state.userKey as string).then((data) => {
+      this.setState({
+        userToDosCount: data,
+      });
+    });
+  };
+
+  reviewsGottenData = (theirReviews: Review[]) => {
+    let one = 0;
+    let two = 0;
+    let three = 0;
+    let four = 0;
+    let five = 0;
+    const revData: number[] = [];
+    theirReviews.forEach((review) => {
+      if (review.reviewStars === '1') {
+        one++;
+      } else if (review.reviewStars === '2') {
+        two++;
+      } else if (review.reviewStars === '3') {
+        three += 1;
+      } else if (review.reviewStars === '4') {
+        four += 1;
+      } else if (review.reviewStars === '5') {
+        five += 1;
+      }
+    });
+    revData.push(one, two, three, four, five);
+    this.setState({
+      starValues: revData,
+    });
+  };
+
+  getLeaderBoardInfo = () => {
+    LeaderBoardData.getTaskLeaderBoards(this.state.userKey as string).then((array) => {
+      this.setState({
+        doneTodos: array.numberToDos,
+        avgDoneToDos: array.avgToDos,
+      });
+    });
+  };
+
+  render() {
+    const { userToDosCount, doneTodos, avgDoneToDos, todos, requested, theirReviews, services } =
+      this.state;
+
+    const showUserRequests = () =>
+      userToDosCount.map((toDo, index) => (
+        <OrderHistory key={index} toDo={toDo} services={services} />
+      ));
+
+    const showRequests = () =>
+      todos
+        .filter((service) => service.hidden !== true)
+        .map((service) => (
+          <RequestCard
+            key={service.firebaseKey + Date.now()}
+            service={service}
+            hideRequest={this.hideRequest}
+            task={this.getTask(service.taskId)}
+          />
+        ));
+
+    const showToDos = () =>
+      requested
+        .filter((service) => service.hidden !== true)
+        .map((service) => (
+          <ToDosCard
+            key={service.firebaseKey + Date.now()}
+            firebaseKey={service.firebaseKey}
+            service={service}
+            completeTask={this.completeTask}
+            hideTask={this.hideTask}
+            otherName={this.props.otherName}
+            task={this.getTask(service.taskId)}
+          />
+        ));
+
+    return (
+      <>
+        <div className="servicePage">
+          <div className="leftSide">
+            <div className="tasksToComplete">
+              <h3 className="taskHeader">Services Needing Your Attention:</h3>
+              {todos && showToDos()}
+            </div>
+            <div className="requestLeftDiv">
+              <h3 className="requestHeader">Services Requested By You:</h3>
+              {requested && showRequests()}
+            </div>
+          </div>
+          <div className="rightSide">
+            <div className="reviewsGivenToYouDiv">
+              <h3 className="reviewHeader">Reviews Given To You:</h3>
+              {theirReviews && this.theirPreviousReviews()}
+            </div>
+            <div className="servicesData">
+              <div className="card-body">
+                <h5 className="card-title">Tasks Data</h5>
+                <p className="card-text">Finished Tasks: {doneTodos}</p>
+                <p className="card-text">
+                  Percent done: {((avgDoneToDos as number) * 100).toFixed(2)}%
+                </p>
+                <div>
+                  <h1>other user requests</h1>
+                  {userToDosCount && showUserRequests()}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </>
+    );
+  }
+}
