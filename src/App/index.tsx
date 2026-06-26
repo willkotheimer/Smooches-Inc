@@ -6,6 +6,7 @@ import Navbar from '../Components/Navbar';
 import Routes from '../helpers/routes';
 import userData from '../helpers/data/userData';
 import getUid from '../helpers/data/authData';
+import { AppContext, type AppContextValue } from '../context/AppContext';
 
 fbConnection();
 
@@ -49,19 +50,23 @@ export default function App() {
     return unsubscribe;
   }, []);
 
+  const contextValue: AppContextValue = {
+    user,
+    userKey,
+    otherKey,
+    otherName,
+    joinedUser,
+    joinedUserName,
+  };
+
   return (
-    <div className="App">
-      <Router>
-        <Navbar user={user} />
-        <Routes
-          joinedUser={joinedUser}
-          otherName={otherName}
-          user={user}
-          userKey={userKey}
-          otherKey={otherKey}
-          joinedUserName={joinedUserName}
-        />
-      </Router>
-    </div>
+    <AppContext.Provider value={contextValue}>
+      <div className="App">
+        <Router>
+          <Navbar />
+          <Routes />
+        </Router>
+      </div>
+    </AppContext.Provider>
   );
 }

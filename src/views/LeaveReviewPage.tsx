@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import { useEffect, useState } from 'react';
 import Rebase from 're-base';
 import firebase from 'firebase/app';
 import 'firebase/database';
@@ -9,184 +9,132 @@ import Loader from '../Components/Loader';
 import ReviewData from '../helpers/data/reviewData';
 import YourPreviousReviews from '../Components/YourPreviousReviews';
 import TheirPreviousReviews from '../Components/TheirPreviousReviews';
+import { useAppContext } from '../context/AppContext';
 import type { Review, Service, ToDo } from '../types';
 
-interface Props {
-  user?: any;
-  otherKey?: string;
-  joinedUserName?: string;
-  otherName?: any;
-  userKey?: string;
-  joinedUser?: any;
-}
+export default function LeaveReviewPage() {
+  const { user, otherKey, joinedUserName } = useAppContext();
 
-interface State {
-  user: any;
-  reviews: Record<string, Review> | {};
-  theirReviews: Review[];
-  yourReviews: Review[];
-  services: Service[];
-  toDos: ToDo[];
-  loading: boolean;
-}
+  const [theirReviews, setTheirReviews] = useState<Review[]>([]);
+  const [yourReviews, setYourReviews] = useState<Review[]>([]);
+  const [services, setServices] = useState<Service[]>([]);
+  const [toDos, setToDos] = useState<ToDo[]>([]);
+  const [loading, setLoading] = useState(true);
 
-export default class LeaveReviewPage extends Component<Props, State> {
-  timer?: ReturnType<typeof setInterval>;
+  const getTodos = () =>
+    ToDoData.getCompletedToDosByUid(otherKey).then((stuff) => setToDos(stuff));
 
-  state: State = {
-    user: this.props.user,
-    reviews: {},
-    theirReviews: [],
-    yourReviews: [],
-    services: [],
-    toDos: [],
-    loading: true,
-  };
-
-  componentDidMount() {
-    this.getReviews();
-    this.getServices();
-    this.getTodos();
-    this.setLoading();
-    const base = Rebase.createClass(firebase.database());
-    base.listenTo('review', {
-      context: this,
-      asArray: true,
-      then() {
-        this.getTodos();
-      },
-    });
-  }
-
-  getTodos = () =>
-    ToDoData.getCompletedToDosByUid(this.props.otherKey as string).then((stuff) => {
-      this.setState({
-        toDos: stuff,
-      });
-    });
-
-  getReviews = () => {
+  const getReviews = () => {
     ReviewData.getAllReviews().then((stuff) => {
-      this.setState({
-        reviews: stuff,
-      });
-      const yourReviews: Review[] = [];
-      const theirReviews: Review[] = [];
+      const yours: Review[] = [];
+      const theirs: Review[] = [];
       Object.values(stuff).forEach((item) => {
-        if (item.uid === this.state.user.uid && this.state.user.uid !== undefined) {
-          yourReviews.push(item);
+        if (item.uid === (user as any)?.uid && (user as any)?.uid !== undefined) {
+          yours.push(item);
         } else {
-          theirReviews.push(item);
+          theirs.push(item);
         }
       });
-      if (yourReviews.length) {
-        this.setState({
-          yourReviews,
-        });
-      }
-      if (theirReviews.length) {
-        this.setState({
-          theirReviews,
-        });
-      }
+      if (yours.length) setYourReviews(yours);
+      if (theirs.length) setTheirReviews(theirs);
     });
   };
 
-  getServices = () => {
-    ServiceData.getAllServices().then((stuff) => {
-      this.setState(
-        {
-          services: stuff,
-        },
-        this.setLoading,
-      );
+  const getServices = () => ServiceData.getAllServices().then((stuff) => setServices(stuff));
+
+  const redrawDom = () => {
+    getReviews();
+    getTodos();
+  };
+
+  // Initial fetches, loading delay, and a realtime review listener (subscription).
+  useEffect(() => {
+    getReviews();
+    getServices();
+    getTodos();
+    const timer = setTimeout(() => setLoading(false), 1000);
+
+    const base = Rebase.createClass(firebase.database());
+    const reviewRef = base.listenTo('review', {
+      context: {},
+      asArray: true,
+      then() {
+        getTodos();
+      },
     });
-  };
 
-  setLoading = () => {
-    this.timer = setInterval(() => {
-      this.setState({ loading: false });
-    }, 1000);
-  };
+    return () => {
+      clearTimeout(timer);
+      base.removeBinding(reviewRef);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [otherKey]);
 
-  redrawDom = () => {
-    this.getReviews();
-    this.getTodos();
-  };
-
-  yourPreviousReviews = () =>
-    this.state.yourReviews
-      .slice(Math.max(this.state.yourReviews.length - 5, 1))
+  const yourPreviousReviews = () =>
+    yourReviews
+      .slice(Math.max(yourReviews.length - 5, 1))
       .reverse()
       .map((review) => (
         <YourPreviousReviews
           key={review.firebaseKey}
           previousReview={review}
           service={review.serviceid}
-          otherName={this.props.joinedUserName as string}
+          otherName={joinedUserName as string}
         />
       ));
 
-  theirPreviousReviews = () =>
-    this.state.theirReviews
-      .slice(Math.max(this.state.theirReviews.length - 5, 1))
+  const theirPreviousReviews = () =>
+    theirReviews
+      .slice(Math.max(theirReviews.length - 5, 1))
       .reverse()
       .map((review) => (
         <TheirPreviousReviews
           key={review.firebaseKey}
           previousReview={review}
           service={review.serviceid}
-          otherName={this.props.joinedUserName as string}
+          otherName={joinedUserName as string}
         />
       ));
 
-  render() {
-    const { theirReviews, yourReviews, toDos, services, loading } = this.state;
-    const showUnreviewed = () =>
-      Object.values(toDos)
-        // FIXME: ToDo has no `reviewed` field (it uses `reviewId`); this filter is
-        // always true. Preserved from the original JS.
-        .filter((x) => (x as any).reviewed !== true)
-        .map((toDo) => (
-          <ReviewTaskCard
-            key={toDo.firebaseKey}
-            services={services}
-            toDo={toDo}
-            onUpdate={this.redrawDom}
-          />
-        ));
+  const showUnreviewed = () =>
+    Object.values(toDos)
+      // FIXME: ToDo has no `reviewed` field (it uses `reviewId`); this filter is
+      // always true. Preserved from the original JS.
+      .filter((x) => (x as any).reviewed !== true)
+      .map((toDo) => (
+        <ReviewTaskCard key={toDo.firebaseKey} services={services} toDo={toDo} onUpdate={redrawDom} />
+      ));
 
-    return (
-      <>
-        <div className="servicePage">
-          <div className="leftSide">
-            <div className="reviewsToGiveDiv">
-              <>
-                {loading ? (
-                  <Loader />
-                ) : (
-                  <>
-                    <h3 className="reviewHeader">Completed Tasks To Review:</h3>
-                    <div className="d-flex flex-wrap">{toDos && showUnreviewed()}</div>
-                  </>
-                )}
-              </>
-            </div>
-          </div>
-          <div className="rightSide">
-            <div className="previousReviewsGivenDiv">
-              <h4>Previous Reviews Given</h4>
-              <div className="fullLine"></div>
-              {yourReviews && this.yourPreviousReviews()}
-            </div>
-            <div className="reviewsGivenToYouDiv">
-              <h4>Reviews Given To You</h4>
-              <div className="fullLine"></div>
-              {theirReviews !== undefined && this.theirPreviousReviews()}
-            </div>
+  return (
+    <>
+      <div className="servicePage">
+        <div className="leftSide">
+          <div className="reviewsToGiveDiv">
+            <>
+              {loading ? (
+                <Loader />
+              ) : (
+                <>
+                  <h3 className="reviewHeader">Completed Tasks To Review:</h3>
+                  <div className="d-flex flex-wrap">{toDos && showUnreviewed()}</div>
+                </>
+              )}
+            </>
           </div>
         </div>
-      </>
-    );
-  }
+        <div className="rightSide">
+          <div className="previousReviewsGivenDiv">
+            <h4>Previous Reviews Given</h4>
+            <div className="fullLine"></div>
+            {yourReviews && yourPreviousReviews()}
+          </div>
+          <div className="reviewsGivenToYouDiv">
+            <h4>Reviews Given To You</h4>
+            <div className="fullLine"></div>
+            {theirReviews !== undefined && theirPreviousReviews()}
+          </div>
+        </div>
+      </div>
+    </>
+  );
 }

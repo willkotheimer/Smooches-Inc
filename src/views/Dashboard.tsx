@@ -1,49 +1,15 @@
-import React from 'react';
 import Auth from '../Components/Auth';
 import Loader from '../Components/Loader';
 import DashboardView from './DashboardView';
+import { useAppContext } from '../context/AppContext';
 
-interface Props {
-  user?: any;
-  otherName?: any;
-  otherKey?: string;
-  userKey?: string;
-  joinedUser?: any;
-  joinedUserName?: string;
-}
-
-export default function Dashboard({ user, otherName, otherKey, userKey, joinedUser }: Props) {
-  const loadDashboard = (): React.ReactNode => {
-    let component: React.ReactNode = '';
-    if (user === null) {
-      component = <Loader />;
-    } else if (!user) {
-      component = (
-        <>
-          <Auth />
-        </>
-      );
-    } else {
-      component = (
-        <>
-          <DashboardView
-            user={user}
-            otherName={otherName}
-            otherKey={otherKey}
-            userKey={userKey}
-            joinedUser={joinedUser}
-          />
-        </>
-      );
-    }
-    return component;
-  };
-
+export default function Dashboard() {
+  const { user } = useAppContext();
   return (
     <div>
       <h3 className="title d-flex justify-content-center">Dashboard</h3>
       <br />
-      {loadDashboard()}
+      {user ? <DashboardView /> : user === null ? <Loader /> : <Auth />}
     </div>
   );
 }

@@ -1,48 +1,15 @@
-import React from 'react';
 import Auth from '../Components/Auth';
 import Loader from '../Components/Loader';
 import LinkAccountsPage from './LinkAccountsPage';
+import { useAppContext } from '../context/AppContext';
 
-interface Props {
-  user?: any;
-  otherName?: any;
-  otherKey?: string;
-  userKey?: string;
-  joinedUser?: any;
-}
-
-export default function UserConnect({ user, otherName, otherKey, userKey, joinedUser }: Props) {
-  const loadUserConnect = (): React.ReactNode => {
-    let component: React.ReactNode = '';
-    if (user === null) {
-      component = <Loader />;
-    } else if (!user) {
-      component = (
-        <>
-          <Auth />
-        </>
-      );
-    } else {
-      component = (
-        <>
-          <LinkAccountsPage
-            user={user}
-            otherName={otherName}
-            otherKey={otherKey}
-            userKey={userKey}
-            joinedUser={joinedUser}
-          />
-        </>
-      );
-    }
-    return component;
-  };
-
+export default function UserConnect() {
+  const { user } = useAppContext();
   return (
     <div>
       <h3 className="title d-flex justify-content-center">Connect with a user</h3>
       <br />
-      {loadUserConnect()}
+      {user ? <LinkAccountsPage /> : user === null ? <Loader /> : <Auth />}
     </div>
   );
 }

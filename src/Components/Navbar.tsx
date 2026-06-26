@@ -14,17 +14,15 @@ import {
   DropdownItem,
 } from 'reactstrap';
 import Logo from '../styles/icons/smooches-inc-logo.png';
+import { useAppContext } from '../context/AppContext';
 
-interface NavbarProps {
-  user: firebase.User | false | null;
-}
+export default function MyNavbar() {
+  const { user } = useAppContext();
 
-export default function MyNavbar(props: NavbarProps) {
   const logMeOut = (e: React.MouseEvent) => {
     e.preventDefault();
     firebase.auth().signOut();
   };
-  const { user } = props;
   const [isOpen, setIsOpen] = useState(false);
   const toggle = () => setIsOpen(!isOpen);
   return (
@@ -67,7 +65,11 @@ export default function MyNavbar(props: NavbarProps) {
           </Nav>
           {user && (
             <>
-              <img className="userInfo" src={user.photoURL ?? undefined} alt={user.displayName ?? undefined} />
+              <img
+                className="userInfo"
+                src={user.photoURL ?? undefined}
+                alt={user.displayName ?? undefined}
+              />
               <UncontrolledDropdown>
                 <DropdownToggle nav caret></DropdownToggle>
                 <DropdownMenu right>
