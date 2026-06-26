@@ -3,6 +3,7 @@
 import firebase from 'firebase/app';
 import axios from 'axios';
 import firebaseConfig from '../apiKeys';
+import { filterJoinedUsersByUid } from '../../Helper/UserDataHelper';
 import type { User, UserJoin } from '../../types';
 
 const baseUrl = firebaseConfig.databaseURL;
@@ -60,15 +61,10 @@ const getJoinedUser = (UID: string) =>
     axios
       .get(`${baseUrl}/userjoin.json`)
       .then((response) => {
-        const arr: UserJoin[] = [];
-        if (response.data) {
-          Object.values(response.data as Record<string, UserJoin>).forEach((entry) => {
-            if (entry.user1FBKey === UID || entry.user2FBKey === UID) {
-              arr.push(entry);
-            }
-          });
-        }
-        resolve(arr);
+        const all = response.data
+          ? Object.values(response.data as Record<string, UserJoin>)
+          : [];
+        resolve(filterJoinedUsersByUid(all, UID));
       })
       .catch((error) => reject(error));
   });

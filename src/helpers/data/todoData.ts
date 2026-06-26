@@ -1,5 +1,6 @@
 import axios from 'axios';
 import firebaseConfig from '../apiKeys';
+import { countTodosByTask, filterCompletedUnreviewed } from '../../Helper/TodoDataHelper';
 import type { ToDo } from '../../types';
 
 const baseUrl = firebaseConfig.databaseURL;
@@ -70,30 +71,20 @@ const getUserToDosArrayByUid = (userId: string) =>
 
 const getCompletedToDosByUid = (otherKey: string) =>
   new Promise<ToDo[]>((resolve, reject) => {
-    const myArray: ToDo[] = [];
     axios
       .get(`${baseUrl}/todo.json?orderBy="uid"&equalTo="${otherKey}"`)
       .then((response) => {
-        Object.values(response.data as Record<string, ToDo>).forEach((item) => {
-          if (item.completedTime !== '' && item.reviewId === '') {
-            myArray.push(item);
-          }
-        });
-        resolve(myArray);
+        resolve(filterCompletedUnreviewed(Object.values(response.data as Record<string, ToDo>)));
       })
       .catch((error) => reject(error));
   });
 
 const getUserToDosCountArrayByUid = (userId: string) =>
   new Promise<[string, number][]>((resolve) => {
-    const counts: Record<string, number> = {};
     axios
       .get(`${baseUrl}/todo.json?orderBy="uid"&equalTo="${userId}"`)
       .then((response) => {
-        Object.entries(response.data as Record<string, ToDo>).forEach((item) => {
-          counts[item[1].taskId] = counts[item[1].taskId] ? counts[item[1].taskId] + 1 : 1;
-        });
-        resolve(Object.entries(counts));
+        resolve(countTodosByTask(Object.values(response.data as Record<string, ToDo>)));
       });
   }).catch((error) => {
     console.warn(error);

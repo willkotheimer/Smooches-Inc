@@ -10,6 +10,7 @@ import ReviewData from '../helpers/data/reviewData';
 import TheirPreviousReviews from './TheirPreviousReviews';
 import LeaderBoardData from '../helpers/data/leaderboardData';
 import OrderHistory from './Cards/OrderHistory';
+import { tallyReviewStars } from '../Helper/LeaderboardDataHelper';
 import type { Review, Service, ToDo } from '../types';
 
 interface Props {
@@ -174,28 +175,8 @@ export default class Dashboard extends Component<Props, State> {
   };
 
   reviewsGottenData = (theirReviews: Review[]) => {
-    let one = 0;
-    let two = 0;
-    let three = 0;
-    let four = 0;
-    let five = 0;
-    const revData: number[] = [];
-    theirReviews.forEach((review) => {
-      if (review.reviewStars === '1') {
-        one++;
-      } else if (review.reviewStars === '2') {
-        two++;
-      } else if (review.reviewStars === '3') {
-        three += 1;
-      } else if (review.reviewStars === '4') {
-        four += 1;
-      } else if (review.reviewStars === '5') {
-        five += 1;
-      }
-    });
-    revData.push(one, two, three, four, five);
     this.setState({
-      starValues: revData,
+      starValues: tallyReviewStars(theirReviews),
     });
   };
 
