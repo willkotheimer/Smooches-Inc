@@ -4,11 +4,11 @@ import firebase from 'firebase/app';
 import 'firebase/database';
 import ServiceData from '../helpers/data/serviceData';
 import ToDoData from '../helpers/data/todoData';
-import ReviewTaskCard from '../components/Cards/ReviewTaskCard';
-import Loader from '../components/Loader';
+import ReviewTaskCard from '../Components/Cards/ReviewTaskCard';
+import Loader from '../Components/Loader';
 import ReviewData from '../helpers/data/reviewData';
-import YourPreviousReviews from '../components/YourPreviousReviews';
-import TheirPreviousReviews from '../components/TheirPreviousReviews';
+import YourPreviousReviews from '../Components/YourPreviousReviews';
+import TheirPreviousReviews from '../Components/TheirPreviousReviews';
 import type { Review, Service, ToDo } from '../types';
 
 interface Props {

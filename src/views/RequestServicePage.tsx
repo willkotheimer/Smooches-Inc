@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import YourCheckout from '../components/YourCheckout';
+import YourCheckout from '../Components/YourCheckout';
 import ServiceData from '../helpers/data/serviceData';
 import getUid from '../helpers/data/authData';
-import YourOrder from '../components/YourOrder';
+import YourOrder from '../Components/YourOrder';
 import toDoData from '../helpers/data/todoData';
 import type { Service } from '../types';
 

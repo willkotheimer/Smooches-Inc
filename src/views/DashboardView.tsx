@@ -1,7 +1,7 @@
 import React from 'react';
-import Auth from '../components/Auth';
-import Loader from '../components/Loader';
-import Dashboard from '../components/Dashboard';
+import Auth from '../Components/Auth';
+import Loader from '../Components/Loader';
+import Dashboard from '../Components/Dashboard';
 
 interface Props {
   user?: any;

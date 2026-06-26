@@ -13,7 +13,7 @@ import {
   DropdownMenu,
   DropdownItem,
 } from 'reactstrap';
-import Logo from '../../styles/icons/smooches-inc-logo.png';
+import Logo from '../styles/icons/smooches-inc-logo.png';
 
 interface NavbarProps {
   user: firebase.User | false | null;

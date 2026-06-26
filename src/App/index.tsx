@@ -2,7 +2,7 @@ import React from 'react';
 import firebase from 'firebase/app';
 import { BrowserRouter as Router } from 'react-router-dom';
 import fbConnection from '../helpers/data/connection';
-import Navbar from '../components/Navbar';
+import Navbar from '../Components/Navbar';
 import Routes from '../helpers/routes';
 import userData from '../helpers/data/userData';
 import getUid from '../helpers/data/authData';

@@ -1,6 +1,6 @@
 import React from 'react';
-import Services from '../../helpers/data/serviceData';
-import type { Review, Service } from '../../types';
+import Services from '../helpers/data/serviceData';
+import type { Review, Service } from '../types';
 
 interface Props {
   service: string;

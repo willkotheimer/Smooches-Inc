@@ -1,7 +1,7 @@
 import React from 'react';
 import firebase from 'firebase/app';
-import Auth from '../components/Auth';
-import Loader from '../components/Loader';
+import Auth from '../Components/Auth';
+import Loader from '../Components/Loader';
 import CreateServicePage from './CreateServicePage';
 
 interface Props {

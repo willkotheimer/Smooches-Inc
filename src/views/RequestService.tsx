@@ -1,6 +1,6 @@
 import React from 'react';
-import Auth from '../components/Auth';
-import Loader from '../components/Loader';
+import Auth from '../Components/Auth';
+import Loader from '../Components/Loader';
 import RequestServicePage from './RequestServicePage';
 
 interface Props {

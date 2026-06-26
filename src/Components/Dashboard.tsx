@@ -2,15 +2,15 @@ import Rebase from 're-base';
 import firebase from 'firebase/app';
 import 'firebase/database';
 import React, { Component } from 'react';
-import RequestCard from '../Cards/RequestCard';
-import ToDosCard from '../Cards/ToDosCard';
-import ServiceData from '../../helpers/data/serviceData';
-import ToDoData from '../../helpers/data/todoData';
-import ReviewData from '../../helpers/data/reviewData';
-import TheirPreviousReviews from '../TheirPreviousReviews';
-import LeaderBoardData from '../../helpers/data/leaderboardData';
-import OrderHistory from '../Cards/OrderHistory';
-import type { Review, Service, ToDo } from '../../types';
+import RequestCard from './Cards/RequestCard';
+import ToDosCard from './Cards/ToDosCard';
+import ServiceData from '../helpers/data/serviceData';
+import ToDoData from '../helpers/data/todoData';
+import ReviewData from '../helpers/data/reviewData';
+import TheirPreviousReviews from './TheirPreviousReviews';
+import LeaderBoardData from '../helpers/data/leaderboardData';
+import OrderHistory from './Cards/OrderHistory';
+import type { Review, Service, ToDo } from '../types';
 
 interface Props {
   user?: any;

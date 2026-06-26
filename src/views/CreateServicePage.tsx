@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import YourInventory from '../components/YourInventory';
+import YourInventory from '../Components/YourInventory';
 import ServiceData from '../helpers/data/serviceData';
 import type { Service } from '../types';
 

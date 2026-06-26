@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import UserJoin from '../components/UserJoin';
+import UserJoin from '../Components/UserJoin';
 
 interface Props {
   user?: any;

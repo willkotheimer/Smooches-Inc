@@ -1,8 +1,8 @@
 import React from 'react';
-import CheckoutCard from '../Cards/CheckoutCard';
-import Loader from '../Loader';
-import getUid from '../../helpers/data/authData';
-import type { Service } from '../../types';
+import CheckoutCard from './Cards/CheckoutCard';
+import Loader from './Loader';
+import getUid from '../helpers/data/authData';
+import type { Service } from '../types';
 
 type ServiceCollection = Service[] | Record<string, Service>;
 

@@ -1,10 +1,10 @@
 import React from 'react';
-import userData from '../../helpers/data/userData';
-import LinkUserCard from '../Cards/LinkUserCard';
-import UserRequest from '../Forms/UserRequest';
-import Loader from '../Loader';
-import AppModal from '../AppModal';
-import type { User } from '../../types';
+import userData from '../helpers/data/userData';
+import LinkUserCard from './Cards/LinkUserCard';
+import UserRequest from './Forms/UserRequest';
+import Loader from './Loader';
+import AppModal from './AppModal';
+import type { User } from '../types';
 
 interface Props {
   user?: any;

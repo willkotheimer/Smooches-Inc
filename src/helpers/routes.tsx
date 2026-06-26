@@ -7,7 +7,7 @@ import CreateService from '../views/CreateService';
 import LeaveReview from '../views/LeaveReview';
 import UserConnect from '../views/UserConnect';
 import NotFound from '../views/NotFound';
-import ServiceForm from '../components/Forms/ServiceForm';
+import ServiceForm from '../Components/Forms/ServiceForm';
 
 export interface RoutesProps {
   user: firebase.User | false | null;

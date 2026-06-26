@@ -1,11 +1,11 @@
 import React from 'react';
-import ServiceData from '../../helpers/data/serviceData';
-import ServiceCard from '../Cards/ServiceCard';
-import ServiceForm from '../Forms/ServiceForm';
-import Loader from '../Loader';
-import getUid from '../../helpers/data/authData';
-import AppModal from '../AppModal';
-import type { Service } from '../../types';
+import ServiceData from '../helpers/data/serviceData';
+import ServiceCard from './Cards/ServiceCard';
+import ServiceForm from './Forms/ServiceForm';
+import Loader from './Loader';
+import getUid from '../helpers/data/authData';
+import AppModal from './AppModal';
+import type { Service } from '../types';
 
 interface State {
   services: Record<string, Service> | Service[];
