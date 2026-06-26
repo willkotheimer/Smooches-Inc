@@ -1,98 +1,72 @@
-import React from 'react';
+import { useEffect, useState } from 'react';
 import firebase from 'firebase/app';
 import { BrowserRouter as Router } from 'react-router-dom';
 import fbConnection from '../helpers/data/connection';
-import Navbar from '../components/Navbar';
+import Navbar from '../Components/Navbar';
 import Routes from '../helpers/routes';
 import userData from '../helpers/data/userData';
 import getUid from '../helpers/data/authData';
+import { AppContext, type AppContextValue } from '../context/AppContext';
 
 fbConnection();
 
-interface State {
-  user: firebase.User | false | null;
-  joinedUser: any;
-  userKey: string;
-  otherKey: string;
-  otherName: any;
-  currenUserId: string;
-  joinedUserName: string;
-}
+export default function App() {
+  const [user, setUser] = useState<firebase.User | false | null>(null);
+  const [joinedUser, setJoinedUser] = useState<any>('');
+  const [userKey, setUserKey] = useState('');
+  const [otherKey, setOtherKey] = useState('');
+  const [otherName, setOtherName] = useState<any>('');
+  const [joinedUserName, setJoinedUserName] = useState('');
 
-export default class App extends React.Component<{}, State> {
-  removeListener?: firebase.Unsubscribe;
-
-  state: State = {
-    user: null,
-    joinedUser: '',
-    userKey: '',
-    otherKey: '',
-    otherName: '',
-    currenUserId: '',
-    joinedUserName: '',
-  };
-
-  getYourJoinedUser = () =>
+  const getYourJoinedUser = (currentUser: firebase.User) => {
     userData.getJoinedUser(getUid()).then((response) => {
-      this.setState({
-        joinedUser: response[0],
-      });
-
-      if (this.state.joinedUser) {
-        if ((this.state.user as firebase.User).uid === response[0].user1FBKey) {
-          this.setState({
-            userKey: response[0].user1FBKey,
-            otherKey: response[0].user2FBKey,
-          });
-        } else {
-          this.setState({
-            userKey: response[0].user2FBKey,
-            otherKey: response[0].user1FBKey,
-          });
-        }
-        userData.getUserByUid(this.state.otherKey).then((value) => {
-          this.setState({
-            otherName: value,
-            joinedUserName: value[0][1].name,
-          });
+      const joined = response[0];
+      setJoinedUser(joined);
+      if (joined) {
+        const isUser1 = currentUser.uid === joined.user1FBKey;
+        const myKey = isUser1 ? joined.user1FBKey : joined.user2FBKey;
+        const partnerKey = isUser1 ? joined.user2FBKey : joined.user1FBKey;
+        setUserKey(myKey);
+        setOtherKey(partnerKey);
+        userData.getUserByUid(partnerKey).then((value) => {
+          setOtherName(value);
+          setJoinedUserName(value[0][1].name);
         });
       }
     });
+  };
 
-  componentDidMount() {
-    this.removeListener = firebase.auth().onAuthStateChanged((user) => {
-      if (user) {
-        userData.setCurrentUser(user);
-        this.setState({ currenUserId: user.uid, user });
-        this.getYourJoinedUser();
+  // The auth listener is a real subscription, so useEffect is genuinely needed here.
+  useEffect(() => {
+    const unsubscribe = firebase.auth().onAuthStateChanged((authUser) => {
+      if (authUser) {
+        userData.setCurrentUser(authUser);
+        setUser(authUser);
+        getYourJoinedUser(authUser);
       } else {
-        this.setState({ user: false });
+        setUser(false);
       }
     });
-  }
+    return unsubscribe;
+  }, []);
 
-  componentWillUnmount() {
-    if (this.removeListener) {
-      this.removeListener();
-    }
-  }
+  const contextValue: AppContextValue = {
+    user,
+    userKey,
+    otherKey,
+    otherName,
+    joinedUser,
+    joinedUserName,
+  };
 
-  render() {
-    const { user, otherName, otherKey, userKey, joinedUser, joinedUserName } = this.state;
-    return (
+  return (
+    <AppContext.Provider value={contextValue}>
       <div className="App">
         <Router>
-          <Navbar user={user} />
-          <Routes
-            joinedUser={joinedUser}
-            otherName={otherName}
-            user={user}
-            userKey={userKey}
-            otherKey={otherKey}
-            joinedUserName={joinedUserName}
-          />
+          <Navbar />
+          <Routes />
         </Router>
       </div>
-    );
-  }
+    </AppContext.Provider>
+  );
 }

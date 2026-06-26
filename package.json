@@ -6,9 +6,10 @@
   "dependencies": {
     "@fortawesome/fontawesome-free": "^5.15.1",
     "@material-ui/core": "^4.11.2",
-    "axios": "^0.21.0",
+    "@tanstack/react-query": "^4.44.0",
     "bootstrap": "^4.5.3",
     "firebase": "^8.2.1",
+    "formik": "^2.4.9",
     "prop-types": "^15.7.2",
     "re-base": "^4.0.0",
     "react": "^17.0.1",
@@ -21,7 +22,9 @@
     "dev": "vite",
     "start": "vite",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "test": "vitest",
+    "test:run": "vitest run"
   },
   "browserslist": {
     "production": [
@@ -44,6 +47,7 @@
     "eslint-config-prettier": "^6.15.0",
     "sass": "^1.62.0",
     "typescript": "^5.6.3",
-    "vite": "^5.4.10"
+    "vite": "^5.4.10",
+    "vitest": "^2.1.9"
   }
 }
