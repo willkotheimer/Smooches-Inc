@@ -6,6 +6,9 @@ dist/
 .firebase/
 .env
 
+# local data backups / migration dumps (contain real user emails)
+/migration
+
 # dependencies
 /node_modules
 /.pnp

@@ -1,0 +1,7 @@
+# Netlify deploys are being retired in favor of Azure.
+# The `ignore` command cancels every build: Netlify skips the build when this
+# command exits 0, so no more "deploy failed" notifications.
+# To fully remove Netlify, also disconnect/delete the site in the Netlify dashboard
+# (Site configuration -> Build & deploy -> Continuous deployment).
+[build]
+  ignore = "exit 0"
