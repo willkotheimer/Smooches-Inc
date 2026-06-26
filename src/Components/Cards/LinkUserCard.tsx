@@ -1,18 +1,20 @@
 import { useState } from 'react';
-import userData from '../../helpers/data/userData';
 import { useAppContext } from '../../context/AppContext';
+import { useConfirmUserJoin, useDeleteUserConnect } from '../../data/useUserData';
 
 export default function LinkUserCard() {
   const { user, otherName, joinedUser: initialJoined } = useAppContext();
   const [joinedUser, setJoinedUser] = useState<any>(initialJoined);
+  const confirmUserJoin = useConfirmUserJoin();
+  const deleteUserConnect = useDeleteUserConnect();
 
   const rejectUser = () => {
-    userData.deleteUserConnect(joinedUser.firebaseKey);
+    deleteUserConnect.mutate(joinedUser.firebaseKey);
     setJoinedUser(null);
   };
 
   const connectToUser = () => {
-    userData.confirmUserJoin(joinedUser);
+    confirmUserJoin.mutate(joinedUser);
     setJoinedUser({ ...joinedUser, confirm: true });
     console.warn('connect');
   };

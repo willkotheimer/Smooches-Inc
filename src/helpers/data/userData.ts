@@ -1,4 +1,5 @@
-// Userdata
+// User data used by the imperative auth bootstrap in <App>. Component data access
+// goes through the React Query hooks in src/data/ instead.
 
 import firebase from 'firebase/app';
 import { apiRequest } from './apiClient';
@@ -22,37 +23,15 @@ const checkIfUserExistsInFirebase = (user: NewUser): void => {
     .catch((error) => console.error(error));
 };
 
-const createUserJoin = (userJoinObj: UserJoin) =>
-  apiRequest<{ name: string }>('/userjoin.json', 'POST', userJoinObj).then((res) =>
-    apiRequest(`/userjoin/${res.name}.json`, 'PATCH', { firebaseKey: res.name }),
-  );
-
-const confirmUserJoin = (userJoinObj: UserJoin): Promise<unknown> =>
-  apiRequest(`/userjoin/${userJoinObj.firebaseKey}.json`, 'PATCH', { confirm: true });
-
-const getUserByfirebaseKey = (firebaseKey: string) =>
-  apiRequest<User>(`/users/${firebaseKey}.json`);
-
 const getJoinedUser = (UID: string) =>
   apiRequest<Record<string, UserJoin> | null>('/userjoin.json').then((data) =>
     filterJoinedUsersByUid(data ? Object.values(data) : [], UID),
   );
 
-const deleteUserConnect = (firebaseKey: string) =>
-  apiRequest(`/userjoin/${firebaseKey}.json`, 'DELETE');
-
-const getAllUsers = () =>
-  apiRequest<Record<string, User> | null>('/users.json').then((data) => data ?? {});
-
 const getUserByUid = (uid: string) =>
   apiRequest<Record<string, User> | null>(
     `/users.json?orderBy="uid"&equalTo="${uid}"`,
   ).then((data) => (data ? Object.entries(data) : []));
-
-const getUserNameByUid = (uid: string) =>
-  apiRequest<Record<string, User> | null>(
-    `/users.json?orderBy="uid"&equalTo="${uid}"`,
-  ).then((data) => (data ? Object.values(data) : []));
 
 const setCurrentUser = (userObj: firebase.User): NewUser => {
   const user: NewUser = {
@@ -72,12 +51,6 @@ const setCurrentUser = (userObj: firebase.User): NewUser => {
 
 export default {
   setCurrentUser,
-  createUserJoin,
-  getUserByfirebaseKey,
   getJoinedUser,
-  getAllUsers,
   getUserByUid,
-  getUserNameByUid,
-  confirmUserJoin,
-  deleteUserConnect,
 };
