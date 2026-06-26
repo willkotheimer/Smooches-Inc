@@ -1,4 +1,3 @@
-import React from 'react';
 import AppModal from '../AppModal';
 import ReviewForm from '../Forms/ReviewForm';
 import type { Service, ToDo } from '../../types';
@@ -9,21 +8,19 @@ interface Props {
   onUpdate: () => void;
 }
 
-export default class ReviewTaskCard extends React.Component<Props> {
-  render() {
-    const taskKey = this.props.toDo.taskId;
-    const toDoId = this.props.toDo.firebaseKey;
-    const service = Object.values(this.props.services).filter((x) => x.firebaseKey === taskKey);
+export default function ReviewTaskCard({ toDo, services, onUpdate }: Props) {
+  const taskKey = toDo.taskId;
+  const toDoId = toDo.firebaseKey;
+  const service = Object.values(services).filter((x) => x.firebaseKey === taskKey);
 
-    return (
-      <div className="card m-2">
-        <div className="card-body" id="">
-          <h5 className="card-title">{service && service[0].name}</h5>
-          <AppModal title={'Leave a Review'} buttonLabel={'Leave a Review'}>
-            <ReviewForm toDoId={toDoId} taskid={taskKey} onUpdate={this.props.onUpdate} />
-          </AppModal>
-        </div>
+  return (
+    <div className="card m-2">
+      <div className="card-body" id="">
+        <h5 className="card-title">{service && service[0].name}</h5>
+        <AppModal title={'Leave a Review'} buttonLabel={'Leave a Review'}>
+          <ReviewForm toDoId={toDoId} taskid={taskKey} onUpdate={onUpdate} />
+        </AppModal>
       </div>
-    );
-  }
+    </div>
+  );
 }

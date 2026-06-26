@@ -1,4 +1,3 @@
-import React from 'react';
 import type { Service, ToDo } from '../../types';
 
 interface Props {
@@ -10,42 +9,34 @@ interface Props {
   otherName?: any;
 }
 
-export default class toDosCard extends React.Component<Props> {
-  render() {
-    const { name, description } = this.props.task[0] || ({} as Service);
-    const dateTime = new Date();
-    return (
-      <div className="card m-2">
-        <div className="card-body d-flex justify-content-between" id="">
-          <div>
-            <h5 className="card-title">{name}</h5>
-            <p className="card-text description">{description}</p>
-            <p className="card-text date">{this.props.service.requestedTime}</p>
-          </div>
+export default function ToDosCard({ task, service, firebaseKey, completeTask, hideTask }: Props) {
+  const { name, description } = task[0] || ({} as Service);
+  const dateTime = new Date();
+  return (
+    <div className="card m-2">
+      <div className="card-body d-flex justify-content-between" id="">
+        <div>
+          <h5 className="card-title">{name}</h5>
+          <p className="card-text description">{description}</p>
+          <p className="card-text date">{service.requestedTime}</p>
+        </div>
 
-          <div className="d-flex">
-            {!this.props.service.completedTime && (
-              <button
-                className="completeButton"
-                onClick={() => this.props.completeTask(this.props.firebaseKey, dateTime)}
-              >
-                Complete Task
-              </button>
-            )}
-            {this.props.service.completedTime && (
-              <button
-                className="hideButton"
-                onClick={() => this.props.hideTask(this.props.firebaseKey)}
-              >
-                <i className="fas fa-eye-slash"></i>
-              </button>
-            )}
-            <div className={this.props.service.completedTime ? 'done status' : 'pending status'}>
-              {this.props.service.completedTime ? 'Done!' : 'Pending'}{' '}
-            </div>
+        <div className="d-flex">
+          {!service.completedTime && (
+            <button className="completeButton" onClick={() => completeTask(firebaseKey, dateTime)}>
+              Complete Task
+            </button>
+          )}
+          {service.completedTime && (
+            <button className="hideButton" onClick={() => hideTask(firebaseKey)}>
+              <i className="fas fa-eye-slash"></i>
+            </button>
+          )}
+          <div className={service.completedTime ? 'done status' : 'pending status'}>
+            {service.completedTime ? 'Done!' : 'Pending'}{' '}
           </div>
         </div>
       </div>
-    );
-  }
+    </div>
+  );
 }
