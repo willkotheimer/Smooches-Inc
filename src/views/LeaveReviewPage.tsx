@@ -1,74 +1,61 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo } from 'react';
 import Rebase from 're-base';
 import firebase from 'firebase/app';
 import 'firebase/database';
-import ServiceData from '../helpers/data/serviceData';
-import ToDoData from '../helpers/data/todoData';
+import { useQueryClient } from '@tanstack/react-query';
 import ReviewTaskCard from '../Components/Cards/ReviewTaskCard';
 import Loader from '../Components/Loader';
-import ReviewData from '../helpers/data/reviewData';
 import YourPreviousReviews from '../Components/YourPreviousReviews';
 import TheirPreviousReviews from '../Components/TheirPreviousReviews';
 import { useAppContext } from '../context/AppContext';
-import type { Review, Service, ToDo } from '../types';
+import { useAllReviews } from '../data/useReviewData';
+import { useAllServices } from '../data/useServiceData';
+import { useCompletedUnreviewed } from '../data/useTodoData';
+import type { Review } from '../types';
 
 export default function LeaveReviewPage() {
   const { user, otherKey, joinedUserName } = useAppContext();
+  const queryClient = useQueryClient();
 
-  const [theirReviews, setTheirReviews] = useState<Review[]>([]);
-  const [yourReviews, setYourReviews] = useState<Review[]>([]);
-  const [services, setServices] = useState<Service[]>([]);
-  const [toDos, setToDos] = useState<ToDo[]>([]);
-  const [loading, setLoading] = useState(true);
+  const { data: reviews = {}, isLoading: reviewsLoading } = useAllReviews();
+  const { data: services = [], isLoading: servicesLoading } = useAllServices();
+  const { data: toDos = [] } = useCompletedUnreviewed(otherKey);
 
-  const getTodos = () =>
-    ToDoData.getCompletedToDosByUid(otherKey).then((stuff) => setToDos(stuff));
+  const loading = reviewsLoading || servicesLoading;
 
-  const getReviews = () => {
-    ReviewData.getAllReviews().then((stuff) => {
-      const yours: Review[] = [];
-      const theirs: Review[] = [];
-      Object.values(stuff).forEach((item) => {
-        if (item.uid === (user as any)?.uid && (user as any)?.uid !== undefined) {
-          yours.push(item);
-        } else {
-          theirs.push(item);
-        }
-      });
-      if (yours.length) setYourReviews(yours);
-      if (theirs.length) setTheirReviews(theirs);
+  // Split reviews into yours/theirs; recomputed only when reviews/user change.
+  const { yourReviews, theirReviews } = useMemo(() => {
+    const yours: Review[] = [];
+    const theirs: Review[] = [];
+    Object.values(reviews).forEach((item) => {
+      if (item.uid === (user as any)?.uid && (user as any)?.uid !== undefined) {
+        yours.push(item);
+      } else {
+        theirs.push(item);
+      }
     });
-  };
+    return { yourReviews: yours, theirReviews: theirs };
+  }, [reviews, user]);
 
-  const getServices = () => ServiceData.getAllServices().then((stuff) => setServices(stuff));
-
-  const redrawDom = () => {
-    getReviews();
-    getTodos();
-  };
-
-  // Initial fetches, loading delay, and a realtime review listener (subscription).
+  // Realtime review listener is a subscription, so useEffect is needed. On a
+  // change it just invalidates the queries and lets React Query refetch.
   useEffect(() => {
-    getReviews();
-    getServices();
-    getTodos();
-    const timer = setTimeout(() => setLoading(false), 1000);
-
     const base = Rebase.createClass(firebase.database());
     const reviewRef = base.listenTo('review', {
       context: {},
       asArray: true,
       then() {
-        getTodos();
+        queryClient.invalidateQueries(['reviews']);
+        queryClient.invalidateQueries(['completedUnreviewed']);
       },
     });
+    return () => base.removeBinding(reviewRef);
+  }, [queryClient]);
 
-    return () => {
-      clearTimeout(timer);
-      base.removeBinding(reviewRef);
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [otherKey]);
+  const redrawDom = () => {
+    queryClient.invalidateQueries(['reviews']);
+    queryClient.invalidateQueries(['completedUnreviewed']);
+  };
 
   const yourPreviousReviews = () =>
     yourReviews

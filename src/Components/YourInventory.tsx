@@ -1,37 +1,22 @@
-import { useEffect, useState } from 'react';
-import ServiceData from '../helpers/data/serviceData';
 import ServiceCard from './Cards/ServiceCard';
 import ServiceForm from './Forms/ServiceForm';
 import Loader from './Loader';
 import getUid from '../helpers/data/authData';
 import AppModal from './AppModal';
-import type { Service } from '../types';
+import { useUserServices } from '../data/useServiceData';
 
 export default function YourInventory() {
-  const [services, setServices] = useState<Record<string, Service> | Service[]>([]);
-  const [loading, setLoading] = useState(true);
-
-  const getServices = () => {
-    const UID = getUid();
-    ServiceData.getUserServices(UID).then((response: any) => {
-      setServices(response.data);
-      setLoading(false);
-    });
-  };
-
-  // On-mount data fetch: genuine side effect, so useEffect is needed.
-  useEffect(() => {
-    getServices();
-  }, []);
+  const uid = getUid();
+  const { data: services = {}, isLoading, refetch } = useUserServices(uid);
 
   const showServices = () =>
     Object.values(services).map((service, index) => (
-      <ServiceCard key={index} service={service} redrawDom={getServices} />
+      <ServiceCard key={index} service={service} redrawDom={() => refetch()} />
     ));
 
   return (
     <>
-      {loading ? (
+      {isLoading ? (
         <Loader />
       ) : (
         <>
@@ -41,7 +26,7 @@ export default function YourInventory() {
 
           <div className="createServiceButton">
             <AppModal title={'Create A New Task'} buttonLabel={'Create A New Task +'}>
-              <ServiceForm onUpdate={getServices} />
+              <ServiceForm onUpdate={() => refetch()} />
             </AppModal>
           </div>
         </>

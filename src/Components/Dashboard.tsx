@@ -1,115 +1,81 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo } from 'react';
 import Rebase from 're-base';
 import firebase from 'firebase/app';
 import 'firebase/database';
+import { useQueryClient } from '@tanstack/react-query';
 import RequestCard from './Cards/RequestCard';
 import ToDosCard from './Cards/ToDosCard';
-import ServiceData from '../helpers/data/serviceData';
-import ToDoData from '../helpers/data/todoData';
-import ReviewData from '../helpers/data/reviewData';
 import TheirPreviousReviews from './TheirPreviousReviews';
-import LeaderBoardData from '../helpers/data/leaderboardData';
 import OrderHistory from './Cards/OrderHistory';
 import { useAppContext } from '../context/AppContext';
-import type { Review, Service, ToDo } from '../types';
+import { useAllServices } from '../data/useServiceData';
+import { useCompleteTask, useHideTask, useTodoCounts, useUserTodos } from '../data/useTodoData';
+import { useAllReviews } from '../data/useReviewData';
+import { useTaskLeaderboard } from '../data/useLeaderboardData';
 
 export default function Dashboard() {
   const { user, userKey, otherKey, otherName } = useAppContext();
+  const queryClient = useQueryClient();
 
-  const [services, setServices] = useState<Service[]>([]);
-  const [todos, setTodos] = useState<ToDo[]>([]);
-  const [requested, setRequested] = useState<ToDo[]>([]);
-  const [doneTodos, setDoneTodos] = useState<number | null>(null);
-  const [avgDoneToDos, setAvgDoneToDos] = useState<number | null>(null);
-  const [userToDosCount, setUserToDosCount] = useState<[string, number][]>([]);
-  const [theirReviews, setTheirReviews] = useState<Review[] | undefined>(undefined);
+  const { data: services = [] } = useAllServices();
+  const { data: requested = [] } = useUserTodos(userKey);
+  const { data: todos = [] } = useUserTodos(otherKey);
+  const { data: reviews = {} } = useAllReviews();
+  const { data: userToDosCount = [] } = useTodoCounts(userKey);
+  const { data: leaderboard } = useTaskLeaderboard(userKey);
 
-  // Derived from the partner record; recomputed only when otherName changes.
+  const completeTaskMutation = useCompleteTask();
+  const hideTaskMutation = useHideTask();
+
+  // Derived values — recomputed only when their inputs change.
   const partnerName = useMemo(() => (otherName ? otherName[0][1].name : ''), [otherName]);
+  const theirReviews = useMemo(
+    () =>
+      Object.values(reviews).filter(
+        (item) => item.uid !== (user as any)?.uid && (user as any)?.uid !== undefined,
+      ),
+    [reviews, user],
+  );
 
-  const getServices = () => ServiceData.getAllServices().then((s) => setServices(s));
+  const doneTodos = leaderboard?.numberToDos ?? null;
+  const avgDoneToDos = leaderboard?.avgToDos ?? null;
 
-  const getTodos = () =>
-    ToDoData.getUserToDosArrayByUid(userKey).then((toDos) => setRequested(toDos));
-
-  const getotheruserrequests = () =>
-    ToDoData.getUserToDosArrayByUid(otherKey).then((toDos) => setTodos(toDos));
-
-  const getReviews = () => {
-    ReviewData.getAllReviews().then((stuff) => {
-      const theirs: Review[] = [];
-      Object.values(stuff).forEach((item) => {
-        if (item.uid !== (user as any)?.uid && (user as any)?.uid !== undefined) {
-          theirs.push(item);
-        }
-      });
-      if (theirs.length) {
-        setTheirReviews(theirs);
-      }
-    });
-  };
-
-  const getUserRequests = () =>
-    ToDoData.getUserToDosCountArrayByUid(userKey).then((data) => setUserToDosCount(data));
-
-  const getLeaderBoardInfo = () =>
-    LeaderBoardData.getTaskLeaderBoards(userKey).then((array) => {
-      setDoneTodos(array.numberToDos);
-      setAvgDoneToDos(array.avgToDos);
-    });
-
-  const completeTask = (firebaseKey: string, time: string | Date) => {
-    ToDoData.completeTask(firebaseKey, time).then(() => getTodos());
-  };
-
-  const hideTask = (firebaseKey: string) => {
-    ToDoData.hideTask(firebaseKey).then(() => getTodos());
-  };
-
-  const hideRequest = (firebaseKey: string) => {
-    ToDoData.hideTask(firebaseKey).then(() => getotheruserrequests());
-  };
-
-  const getTask = (firebaseKey: string) => services.filter((x) => x.firebaseKey === firebaseKey);
-
-  // Initial fetches + realtime listeners. A subscription with cleanup, so
-  // useEffect is genuinely needed. Re-runs if the user/partner keys change.
+  // re-base realtime listeners are subscriptions, so useEffect is needed. On a
+  // change they invalidate the relevant queries and React Query refetches.
   useEffect(() => {
-    getServices();
-    getTodos();
-    getReviews();
-    getotheruserrequests();
-    getLeaderBoardInfo();
-    getUserRequests();
-
     const base = Rebase.createClass(firebase.database());
     const todoRef = base.listenTo('todo', {
       context: {},
       asArray: true,
       then() {
-        getTodos();
-        getUserRequests();
-        getotheruserrequests();
+        queryClient.invalidateQueries(['todos']);
+        queryClient.invalidateQueries(['todoCounts']);
+        queryClient.invalidateQueries(['taskLeaderboard']);
       },
     });
     const reviewRef = base.listenTo('review', {
       context: {},
       asArray: true,
       then() {
-        getReviews();
+        queryClient.invalidateQueries(['reviews']);
       },
     });
-
     return () => {
       base.removeBinding(todoRef);
       base.removeBinding(reviewRef);
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [userKey, otherKey]);
+  }, [queryClient]);
+
+  const completeTask = (firebaseKey: string, time: string | Date) =>
+    completeTaskMutation.mutate({ firebaseKey, time });
+
+  const hideTask = (firebaseKey: string) => hideTaskMutation.mutate(firebaseKey);
+
+  const getTask = (firebaseKey: string) => services.filter((x) => x.firebaseKey === firebaseKey);
 
   const theirPreviousReviews = () =>
-    theirReviews!
-      .slice(Math.max(theirReviews!.length - 5, 1))
+    theirReviews
+      .slice(Math.max(theirReviews.length - 5, 1))
       .reverse()
       .map((review) => (
         <TheirPreviousReviews
@@ -132,7 +98,7 @@ export default function Dashboard() {
         <RequestCard
           key={service.firebaseKey + Date.now()}
           service={service}
-          hideRequest={hideRequest}
+          hideRequest={hideTask}
           task={getTask(service.taskId)}
         />
       ));

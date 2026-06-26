@@ -1,5 +1,4 @@
-import axios from 'axios';
-import firebaseConfig from '../apiKeys';
+import { apiRequest } from './apiClient';
 import {
   calcTaskCompletion,
   tallyReviewStars,
@@ -7,32 +6,15 @@ import {
 } from '../../Helper/LeaderboardDataHelper';
 import type { Review, ToDo } from '../../types';
 
-const baseUrl = firebaseConfig.databaseURL;
+const getTaskLeaderBoards = (userId: string): Promise<TaskCompletion> =>
+  apiRequest<Record<string, ToDo> | null>(
+    `/todo.json?orderBy="uid"&equalTo="${userId}"`,
+  ).then((data) => calcTaskCompletion(data ? Object.values(data) : []));
 
-const getTaskLeaderBoards = (userId: string) =>
-  new Promise<TaskCompletion>((resolve, reject) => {
-    axios
-      .get(`${baseUrl}/todo.json?orderBy="uid"&equalTo="${userId}"`)
-      .then((response) => {
-        resolve(calcTaskCompletion(Object.values(response.data as Record<string, ToDo>)));
-      })
-      .catch((error) => reject(error));
-  });
-
-const getReviewLeaderBoards = (userId: string) =>
-  new Promise<number[]>((resolve, reject) => {
-    axios
-      .get(`${baseUrl}/review.json`)
-      .then((response) => {
-        if (response.data !== null && response.data !== undefined) {
-          const reviews = Object.values(response.data as Record<string, Review>).filter(
-            (x) => x.uid !== userId,
-          );
-          resolve(tallyReviewStars(reviews));
-        }
-      })
-      .catch((error) => reject(error));
-  });
+const getReviewLeaderBoards = (userId: string): Promise<number[]> =>
+  apiRequest<Record<string, Review> | null>('/review.json').then((data) =>
+    tallyReviewStars(data ? Object.values(data).filter((x) => x.uid !== userId) : []),
+  );
 
 export default {
   getTaskLeaderBoards,

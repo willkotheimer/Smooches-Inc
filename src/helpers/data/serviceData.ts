@@ -1,72 +1,31 @@
-import axios from 'axios';
-import firebaseConfig from '../apiKeys';
+import { apiRequest } from './apiClient';
 import type { Service } from '../../types';
 
-const baseUrl = firebaseConfig.databaseURL;
-
 const getUserServices = (userId: string) =>
-  new Promise((resolve, reject) => {
-    axios
-      .get(`${baseUrl}/services.json?orderBy="uid"&equalTo="${userId}"`)
-      .then((response) => {
-        resolve(response);
-      })
-      .catch((error) => reject(error));
-  });
+  apiRequest<Record<string, Service> | null>(
+    `/services.json?orderBy="uid"&equalTo="${userId}"`,
+  ).then((data) => data ?? {});
 
 const getTaskByFBKey = (fbKey: string) =>
-  new Promise<Service[]>((resolve, reject) => {
-    axios
-      .get(`${baseUrl}/services.json`)
-      .then((response) => {
-        const myData: Service[] = [];
-        if (response) {
-          myData.push(
-            Object.values(response.data as Record<string, Service>).find(
-              (item) => item.firebaseKey === fbKey,
-            ) as Service,
-          );
-        }
-        resolve(myData);
-      })
-      .catch((error) => reject(error));
-  });
+  apiRequest<Record<string, Service> | null>('/services.json').then((data) =>
+    data ? Object.values(data).find((item) => item.firebaseKey === fbKey) : undefined,
+  );
 
 const getAllServices = () =>
-  new Promise<Service[]>((resolve, reject) => {
-    axios
-      .get(`${baseUrl}/services.json`)
-      .then((response) => {
-        if (response.data !== null && response.data !== undefined) {
-          const myData: Service[] = [];
-          Object.values(response.data as Record<string, Service>).forEach((item) => {
-            myData.push(item);
-          });
-          resolve(myData);
-        }
-      })
-      .catch((error) => reject(error));
-  });
+  apiRequest<Record<string, Service> | null>('/services.json').then((data) =>
+    data ? Object.values(data) : [],
+  );
 
 const createService = (serviceObj: Service) =>
-  axios.post(`${baseUrl}/services.json`, serviceObj).then((response) => {
-    const update = { firebaseKey: response.data.name };
-    axios
-      .patch(`${baseUrl}/services/${response.data.name}.json`, update)
-      .catch((error) => console.warn(error));
-  });
+  apiRequest<{ name: string }>('/services.json', 'POST', serviceObj).then((res) =>
+    apiRequest(`/services/${res.name}.json`, 'PATCH', { firebaseKey: res.name }),
+  );
 
 const updateService = (serviceObj: Service) =>
-  new Promise((resolve) => {
-    axios
-      .patch(`${baseUrl}/services/${serviceObj.firebaseKey}.json`, serviceObj)
-      .then((response) => {
-        resolve(response.data);
-      });
-  });
+  apiRequest<Service>(`/services/${serviceObj.firebaseKey}.json`, 'PATCH', serviceObj);
 
 const deleteService = (firebaseKey: string) =>
-  axios.delete(`${baseUrl}/services/${firebaseKey}.json`);
+  apiRequest(`/services/${firebaseKey}.json`, 'DELETE');
 
 export default {
   getUserServices,

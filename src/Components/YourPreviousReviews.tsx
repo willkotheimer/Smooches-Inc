@@ -1,6 +1,5 @@
-import { useEffect, useState } from 'react';
-import Services from '../helpers/data/serviceData';
-import type { Review, Service } from '../types';
+import { useServiceByKey } from '../data/useServiceData';
+import type { Review } from '../types';
 
 interface Props {
   service: string;
@@ -9,11 +8,7 @@ interface Props {
 }
 
 export default function YourPreviousReviews({ service, previousReview, otherName }: Props) {
-  const [serviceInfo, setServiceInfo] = useState<Service | undefined>(undefined);
-
-  useEffect(() => {
-    Services.getTaskByFBKey(service).then((value) => setServiceInfo(value[0]));
-  }, [service]);
+  const { data: serviceInfo } = useServiceByKey(service);
 
   return (
     <>

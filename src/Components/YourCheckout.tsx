@@ -1,4 +1,3 @@
-import { useEffect, useState } from 'react';
 import CheckoutCard from './Cards/CheckoutCard';
 import Loader from './Loader';
 import { useAppContext } from '../context/AppContext';
@@ -9,17 +8,11 @@ type ServiceCollection = Service[] | Record<string, Service>;
 interface Props {
   services: ServiceCollection;
   addToOrder: (index: number | string) => void;
+  loading?: boolean;
 }
 
-export default function YourCheckout({ services, addToOrder }: Props) {
+export default function YourCheckout({ services, addToOrder, loading }: Props) {
   const { otherName } = useAppContext();
-  const [loading, setLoading] = useState(true);
-
-  // Brief loading delay before showing the partner's services.
-  useEffect(() => {
-    const timer = setTimeout(() => setLoading(false), 1000);
-    return () => clearTimeout(timer);
-  }, []);
 
   const showServices = () =>
     Object.values(services).map((service) => (

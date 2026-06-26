@@ -1,31 +1,16 @@
-import axios from 'axios';
-import firebaseConfig from '../apiKeys';
+import { apiRequest } from './apiClient';
 import ToDoData from './todoData';
 import type { Review } from '../../types';
 
-const baseUrl = firebaseConfig.databaseURL;
-
 const createReview = (reviewObj: Review) =>
-  axios.post(`${baseUrl}/review.json`, reviewObj).then((response) => {
-    const update = { firebaseKey: response.data.name };
-    axios
-      .patch(`${baseUrl}/review/${response.data.name}.json`, update)
-      .catch((error) => console.warn(error));
+  apiRequest<{ name: string }>('/review.json', 'POST', reviewObj).then((res) => {
+    apiRequest(`/review/${res.name}.json`, 'PATCH', { firebaseKey: res.name });
     // mark the todo reviewed:
-    ToDoData.markReviewed(reviewObj.toDoid, response.data.name);
+    ToDoData.markReviewed(reviewObj.toDoid, res.name);
   });
 
 const getAllReviews = () =>
-  new Promise<Record<string, Review>>((resolve, reject) => {
-    axios
-      .get(`${baseUrl}/review.json`)
-      .then((response) => {
-        if (response.data !== null && response.data !== undefined) {
-          resolve(response.data);
-        }
-      })
-      .catch((error) => reject(error));
-  });
+  apiRequest<Record<string, Review> | null>('/review.json').then((data) => data ?? {});
 
 export default {
   createReview,
