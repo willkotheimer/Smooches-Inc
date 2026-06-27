@@ -1,3 +1,5 @@
+import Card from '../../ui/Card';
+import Button from '../../ui/Button';
 import type { Service } from '../../types';
 
 interface Props {
@@ -6,19 +8,16 @@ interface Props {
   index: number | string;
 }
 
-export default function ServiceCard({ service, addToOrder, index }: Props) {
+export default function CheckoutCard({ service, addToOrder, index }: Props) {
   return (
-    <div key={index} className="d-flex">
-      {/* FIXME: `fireBaseKey` is a typo for `firebaseKey`; preserved from original. */}
-      <div className="card-body" id={(service as any).fireBaseKey}>
-        <h5 className="card-title">
-          <i>{service.name}</i>
-        </h5>
-        <p className="card-text">{service.description}</p>
+    <Card tone="blue" className="flex items-center justify-between gap-3">
+      <div className="min-w-0">
+        <h3 className="font-bold">{service.name}</h3>
+        <p className="text-sm text-muted">{service.description}</p>
       </div>
-      <button className="checkoutButton" onClick={() => addToOrder(index)}>
-        <i className="far fa-heart">+</i>
-      </button>
-    </div>
+      <Button size="sm" onClick={() => addToOrder(index)}>
+        <i className="fa-solid fa-plus" aria-hidden /> Add
+      </Button>
+    </Card>
   );
 }

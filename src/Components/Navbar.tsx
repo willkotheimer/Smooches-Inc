@@ -2,7 +2,6 @@ import { useState } from 'react';
 import firebase from 'firebase/app';
 import 'firebase/auth';
 import { Link, NavLink } from 'react-router-dom';
-import Logo from '../styles/icons/smooches-inc-logo.png';
 import { useAppContext } from '../context/AppContext';
 
 export default function MyNavbar() {
@@ -17,12 +16,10 @@ export default function MyNavbar() {
       <div className="mx-auto flex max-w-5xl items-center justify-between px-4 py-3">
         <Link
           to="/"
-          className="flex items-center gap-2.5 font-heading text-lg font-extrabold tracking-wide"
+          className="flex items-center gap-3 font-heading text-lg font-extrabold tracking-wide"
         >
-          <img src={Logo} alt="" className="h-7 w-7 rounded-card object-contain" />
-          <span>
-            <i className="fa-solid fa-heart mr-1.5 text-accent" aria-hidden /> SMOOCHES
-          </span>
+          <i className="fa-solid fa-mobile-screen-button text-3xl text-accent" aria-hidden />
+          SMOOCHES
         </Link>
 
         <nav className="flex items-center gap-1">

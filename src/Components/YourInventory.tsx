@@ -3,6 +3,7 @@ import ServiceForm from './Forms/ServiceForm';
 import Loader from './Loader';
 import getUid from '../helpers/data/authData';
 import AppModal from './AppModal';
+import SectionHeading from '../ui/SectionHeading';
 import { useUserServices } from '../data/useServiceData';
 
 export default function YourInventory() {
@@ -14,23 +15,17 @@ export default function YourInventory() {
       <ServiceCard key={index} service={service} redrawDom={() => refetch()} />
     ));
 
+  if (isLoading) return <Loader />;
+
   return (
     <>
-      {isLoading ? (
-        <Loader />
-      ) : (
-        <>
-          <h3 className="taskHeader">Tasks You Offer:</h3>
-
-          {services && showServices()}
-
-          <div className="createServiceButton">
-            <AppModal title={'Create A New Task'} buttonLabel={'Create A New Task +'}>
-              <ServiceForm onUpdate={() => refetch()} />
-            </AppModal>
-          </div>
-        </>
-      )}
+      <SectionHeading icon="fa-solid fa-store">Tasks You Offer</SectionHeading>
+      {services && showServices()}
+      <div className="mt-3">
+        <AppModal title={'Create A New Task'} buttonLabel={'Create A New Task +'}>
+          <ServiceForm onUpdate={() => refetch()} />
+        </AppModal>
+      </div>
     </>
   );
 }

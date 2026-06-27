@@ -2,6 +2,7 @@ import AppModal from '../AppModal';
 import DeleteModal from '../DeleteModal';
 import ServiceForm from '../Forms/ServiceForm';
 import DeleteService from '../Forms/DeleteService';
+import Card from '../../ui/Card';
 import type { Service } from '../../types';
 
 interface Props {
@@ -11,12 +12,10 @@ interface Props {
 
 export default function ServiceCard({ service, redrawDom }: Props) {
   return (
-    <div className="card m-2">
-      <div className="card-body">
-        <h5 className="card-title">{service.name}</h5>
-        <p className="card-text">{service.description}</p>
-        <div className="create-delete-btn"></div>
-
+    <Card tone="blue">
+      <h3 className="font-bold">{service.name}</h3>
+      <p className="text-sm text-muted">{service.description}</p>
+      <div className="mt-2 flex gap-2">
         <AppModal title={'Edit Service'} buttonLabel={'Edit Service'}>
           <ServiceForm service={service} onUpdate={redrawDom} />
         </AppModal>
@@ -25,6 +24,6 @@ export default function ServiceCard({ service, redrawDom }: Props) {
           <DeleteService service={service} redrawDom={redrawDom} />
         </DeleteModal>
       </div>
-    </div>
+    </Card>
   );
 }

@@ -1,5 +1,6 @@
 import AppModal from '../AppModal';
 import ReviewForm from '../Forms/ReviewForm';
+import Card from '../../ui/Card';
 import type { Service, ToDo } from '../../types';
 
 interface Props {
@@ -14,13 +15,11 @@ export default function ReviewTaskCard({ toDo, services, onUpdate }: Props) {
   const service = Object.values(services).filter((x) => x.firebaseKey === taskKey);
 
   return (
-    <div className="card m-2">
-      <div className="card-body" id="">
-        <h5 className="card-title">{service && service[0].name}</h5>
-        <AppModal title={'Leave a Review'} buttonLabel={'Leave a Review'}>
-          <ReviewForm toDoId={toDoId} taskid={taskKey} onUpdate={onUpdate} />
-        </AppModal>
-      </div>
-    </div>
+    <Card tone="blue" className="flex items-center justify-between gap-3">
+      <h3 className="font-bold">{service && service[0] && service[0].name}</h3>
+      <AppModal title={'Leave a Review'} buttonLabel={'Leave a Review'}>
+        <ReviewForm toDoId={toDoId} taskid={taskKey} onUpdate={onUpdate} />
+      </AppModal>
+    </Card>
   );
 }

@@ -16,11 +16,13 @@ export default {
         foreground: '#f4ece7', // warm white text
         muted: '#c0adba',
         line: '#4a3550', // purple-tinted divider
-        // rose accent (locked)
+        // accent: the heartbeat-loader red (replaced rose)
         accent: {
-          DEFAULT: '#e0759a',
+          DEFAULT: '#ff4b4b',
           foreground: '#1f1410',
         },
+        // secondary blue (used as an outline color on non-Dashboard pages)
+        blue: '#6ea8fe',
       },
       fontFamily: {
         heading: ['Montserrat', 'system-ui', 'sans-serif'],

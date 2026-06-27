@@ -1,3 +1,6 @@
+import Button from '../ui/Button';
+import Card from '../ui/Card';
+import SectionHeading from '../ui/SectionHeading';
 import type { Service } from '../types';
 
 interface Props {
@@ -17,41 +20,44 @@ export default function YourOrder({
 }: Props) {
   const orderIds = Object.keys(order);
 
-  const renderOrder = (key: string) => {
-    const task = services[key];
-    const count = order[key];
-    const myKey = `${key}-${Date.now()}`;
-    return (
-      <>
-        <li key={myKey}>
-          {count} {task.name}{' '}
-          <button className="removeItemButton" onClick={() => removeFromOrder(key)}>
-            <strong>-</strong>
-          </button>
-        </li>
-      </>
-    );
-  };
-
   return (
-    <>
-      <h3 className="checkoutHeader">&nbsp;My Checkout</h3>
-      <div className="d-flex flex-wrap container">
-        <ul className="cart">{orderIds && orderIds.map(renderOrder)}</ul>
-      </div>
-      <div className="total">
-        <div className="fullLine"></div>
-      </div>
-      <button onClick={() => submitOrder()} className="requestCheckoutButton">
-        Place Order
-      </button>
+    <div className="mt-4">
+      <SectionHeading icon="fa-solid fa-cart-shopping">My Checkout</SectionHeading>
+      <Card tone="blue">
+        {orderIds.length === 0 ? (
+          <p className="text-sm text-muted">Nothing added yet.</p>
+        ) : (
+          <ul className="space-y-1.5">
+            {orderIds.map((key) => {
+              const task = services[key];
+              const count = order[key];
+              return (
+                <li key={`${key}-${Date.now()}`} className="flex items-center justify-between text-sm">
+                  <span>
+                    {count} &times; {task.name}
+                  </span>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => removeFromOrder(key)}
+                    aria-label="Remove"
+                  >
+                    <i className="fa-solid fa-minus" aria-hidden />
+                  </Button>
+                </li>
+              );
+            })}
+          </ul>
+        )}
+      </Card>
+      <Button className="mt-2" onClick={() => submitOrder()}>
+        <i className="fa-solid fa-paper-plane" aria-hidden /> Place Order
+      </Button>
       {submitted && (
-        <div className="orderConfirm">
-          <h3>Order Confirmed</h3>
-          <br />
-          (Please check dashboard for Progress)
-        </div>
+        <p className="mt-2 text-sm text-accent">
+          Order confirmed — check the dashboard for progress.
+        </p>
       )}
-    </>
+    </div>
   );
 }

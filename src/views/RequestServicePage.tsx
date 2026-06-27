@@ -39,7 +39,7 @@ export default function RequestServicePage() {
 
   const addToOrder = (key: string) => {
     setOrder((prev) => ({ ...prev, [key]: 1 }));
-    setSubmitted(false); // reset submit confirmation
+    setSubmitted(false);
   };
 
   const removeFromOrder = (key: string) => {
@@ -51,30 +51,15 @@ export default function RequestServicePage() {
   };
 
   return (
-    <>
-      <div className="servicePage">
-        <div className="leftSide">
-          <div className="createService">
-            <h3>Your Smooch's Inc partner's Inventory:</h3>
-            {<YourCheckout addToOrder={addToOrder} services={services} loading={isLoading} />}
-          </div>
-        </div>
-        <div className="rightSide d-flex flex-column">
-          <div className="todos">
-            <div className="requestRightDiv">
-              {
-                <YourOrder
-                  order={order}
-                  submitted={submitted}
-                  services={services}
-                  submitOrder={submitOrder}
-                  removeFromOrder={removeFromOrder}
-                />
-              }
-            </div>
-          </div>
-        </div>
-      </div>
-    </>
+    <div>
+      <YourCheckout addToOrder={addToOrder} services={services} loading={isLoading} />
+      <YourOrder
+        order={order}
+        submitted={submitted}
+        services={services}
+        submitOrder={submitOrder}
+        removeFromOrder={removeFromOrder}
+      />
+    </div>
   );
 }
