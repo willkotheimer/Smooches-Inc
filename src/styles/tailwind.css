@@ -1,0 +1,30 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-background text-foreground font-body antialiased;
+  }
+  h1,
+  h2,
+  h3,
+  h4 {
+    @apply font-heading;
+  }
+}
+
+@layer components {
+  /* Short rose underline used beneath page titles. */
+  .title-rule {
+    @apply mt-1 mb-3.5 h-1 w-14 rounded-sm bg-accent;
+  }
+
+  /* Primary nav links (active state via react-router NavLink activeClassName). */
+  .nav-link {
+    @apply rounded-card px-3.5 py-2 text-sm font-semibold text-foreground/90 hover:bg-surface-elevated;
+  }
+  .nav-link.active {
+    @apply bg-accent text-accent-foreground hover:bg-accent;
+  }
+}

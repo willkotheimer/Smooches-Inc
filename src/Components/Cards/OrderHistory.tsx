@@ -1,3 +1,4 @@
+import Card from '../../ui/Card';
 import type { Service } from '../../types';
 
 interface Props {
@@ -10,11 +11,9 @@ export default function OrderHistory({ toDo, services }: Props) {
   const service = Object.values(services).filter((x) => x.firebaseKey === taskKey);
 
   return (
-    <div className="card m-2">
-      <div className="card-body" id="">
-        <h5 className="card-title">{service[0] && service[0].name}</h5>
-        <div>amount {toDo[1]} </div>
-      </div>
-    </div>
+    <Card className="flex items-center justify-between gap-3">
+      <h3 className="font-semibold">{service[0] && service[0].name}</h3>
+      <span className="text-sm text-muted">&times;{toDo[1]}</span>
+    </Card>
   );
 }

@@ -1,3 +1,6 @@
+import Card from '../../ui/Card';
+import Button from '../../ui/Button';
+import Chip from '../../ui/Chip';
 import type { Service, ToDo } from '../../types';
 
 interface Props {
@@ -8,27 +11,22 @@ interface Props {
 
 export default function RequestCard({ task, service, hideRequest }: Props) {
   const { name, description } = task[0] || ({} as Service);
+  const done = Boolean(service.completedTime);
   return (
-    <div className="card m-2">
-      {/* Original had a duplicate `id` attribute; kept the meaningful firebaseKey one. */}
-      <div id={service.firebaseKey} className="card-body d-flex justify-content-between">
-        <div>
-          <h5 className="card-title">{name}</h5>
-          <p className="card-text description">{description}</p>
-          <p className="card-text date">Requested: {service.requestedTime}</p>
-        </div>
-
-        <div className="d-flex">
-          {service.completedTime && (
-            <button className="hideButton" onClick={() => hideRequest(service.firebaseKey)}>
-              <i className="fas fa-eye-slash"></i>
-            </button>
-          )}
-          <div className={service.completedTime ? 'done status' : 'pending status'}>
-            {service.completedTime ? 'Done!' : 'Pending'}{' '}
-          </div>
-        </div>
+    <Card className="flex items-center justify-between gap-3">
+      <div className="min-w-0">
+        <h3 className="font-bold">{name}</h3>
+        <p className="text-sm text-muted">{description}</p>
+        <p className="text-xs text-muted">Requested: {service.requestedTime}</p>
       </div>
-    </div>
+      <div className="flex shrink-0 items-center gap-2.5">
+        {done && (
+          <Button variant="ghost" size="sm" onClick={() => hideRequest(service.firebaseKey)} aria-label="Hide">
+            <i className="fa-solid fa-eye-slash" aria-hidden />
+          </Button>
+        )}
+        <Chip tone={done ? 'accent' : 'neutral'}>{done ? 'Done!' : 'Pending'}</Chip>
+      </div>
+    </Card>
   );
 }

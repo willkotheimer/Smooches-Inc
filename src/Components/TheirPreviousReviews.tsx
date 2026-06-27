@@ -1,3 +1,4 @@
+import Card from '../ui/Card';
 import { useServiceByKey } from '../data/useServiceData';
 import type { Review } from '../types';
 
@@ -9,29 +10,20 @@ interface Props {
 
 export default function TheirPreviousReviews({ service, previousReview, otherName }: Props) {
   const { data: serviceInfo } = useServiceByKey(service);
+  const stars = parseInt(previousReview.reviewStars, 10) || 5;
 
   return (
-    <>
-      {/* FIXME: `fireBaseKey` is a typo for `firebaseKey` in the original JS,
-          so this id has always been undefined. Preserved for now. */}
-      <p id={(previousReview as any).fireBaseKey} className="previousReviewsGivenByYou">
-        Comment: {previousReview.reviewText}
+    <Card>
+      <p className="text-sm">&ldquo;{previousReview.reviewText}&rdquo;</p>
+      <div className="my-1.5 text-accent">
+        {[...Array(stars)].map((_, i) => (
+          <i key={i} className="fa-solid fa-heart mr-0.5" aria-hidden />
+        ))}
+      </div>
+      <p className="text-xs text-muted">
+        from <strong className="text-foreground">{otherName}</strong> ·{' '}
+        {serviceInfo && serviceInfo.name}
       </p>
-      <p className="review">
-        {[...Array(parseInt(previousReview.reviewStars, 10) || 5)].map((e, i) => (
-          <span className="stars" key={i}>
-            <i className="hearts fas fa-heart"></i>
-          </span>
-        ))}{' '}
-        from{' '}
-        <strong>
-          <i>{otherName} </i>
-        </strong>
-        for{' '}
-        <strong>
-          <i>{serviceInfo && serviceInfo.name}</i>
-        </strong>{' '}
-      </p>
-    </>
+    </Card>
   );
 }

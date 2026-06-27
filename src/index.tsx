@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import './styles/index.scss';
+import './styles/tailwind.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 

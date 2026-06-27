@@ -1,90 +1,93 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import firebase from 'firebase/app';
 import 'firebase/auth';
-import { Link } from 'react-router-dom';
-import {
-  Collapse,
-  Navbar,
-  NavbarToggler,
-  Nav,
-  NavItem,
-  UncontrolledDropdown,
-  DropdownToggle,
-  DropdownMenu,
-  DropdownItem,
-} from 'reactstrap';
+import { Link, NavLink } from 'react-router-dom';
 import Logo from '../styles/icons/smooches-inc-logo.png';
 import { useAppContext } from '../context/AppContext';
 
 export default function MyNavbar() {
   const { user } = useAppContext();
+  const [menuOpen, setMenuOpen] = useState(false);
 
-  const logMeOut = (e: React.MouseEvent) => {
-    e.preventDefault();
-    firebase.auth().signOut();
-  };
-  const [isOpen, setIsOpen] = useState(false);
-  const toggle = () => setIsOpen(!isOpen);
+  const logout = () => firebase.auth().signOut();
+  const closeMenu = () => setMenuOpen(false);
+
   return (
-    <div>
-      <Navbar color="dark" dark expand="md" className="justify-content-between">
-        <Link className="navbar-brand" to="/">
-          <img src={Logo} alt={'Smooches Inc logo'} className="logo" />
+    <header className="border-b border-line bg-surface">
+      <div className="mx-auto flex max-w-5xl items-center justify-between px-4 py-3">
+        <Link
+          to="/"
+          className="flex items-center gap-2.5 font-heading text-lg font-extrabold tracking-wide"
+        >
+          <img src={Logo} alt="" className="h-7 w-7 rounded-card object-contain" />
+          <span>
+            <i className="fa-solid fa-heart mr-1.5 text-accent" aria-hidden /> SMOOCHES
+          </span>
         </Link>
 
-        <Link className="navbar-brand" to="/"></Link>
-        <NavbarToggler onClick={toggle} />
+        <nav className="flex items-center gap-1">
+          <NavLink exact to="/" className="nav-link" activeClassName="active">
+            Dashboard
+          </NavLink>
+          <NavLink to="/request-service" className="nav-link" activeClassName="active">
+            Request
+          </NavLink>
+          <NavLink to="/leave-review" className="nav-link" activeClassName="active">
+            Reviews
+          </NavLink>
 
-        <Collapse isOpen={isOpen} navbar>
-          <Nav className="mr-auto" navbar>
-            <NavItem className="d-flex justify-content-center">
-              <Link className="nav-link" to="/">
-                Dashboard
-              </Link>
-            </NavItem>
-            <NavItem className="d-flex justify-content-center">
-              <Link className="nav-link" to="/create-service">
-                Create Service
-              </Link>
-            </NavItem>
-            <NavItem className="d-flex justify-content-center">
-              <Link className="nav-link" to="/request-service">
-                Request Service
-              </Link>
-            </NavItem>
-            <NavItem className="d-flex justify-content-center">
-              <Link className="nav-link" to="/leave-review">
-                Leave Review
-              </Link>
-            </NavItem>
-            <NavItem className="d-flex justify-content-center">
-              <Link className="nav-link" to="/user-connect">
-                Link Accounts
-              </Link>
-            </NavItem>
-          </Nav>
           {user && (
-            <>
-              <img
-                className="userInfo"
-                src={user.photoURL ?? undefined}
-                alt={user.displayName ?? undefined}
-              />
-              <UncontrolledDropdown>
-                <DropdownToggle nav caret></DropdownToggle>
-                <DropdownMenu right>
-                  <DropdownItem>{user.displayName}</DropdownItem>
-                  <DropdownItem>
-                    <div className="nav-link btn btn-danger" onClick={(e) => logMeOut(e)}>
+            <div className="relative ml-1">
+              <button
+                onClick={() => setMenuOpen((o) => !o)}
+                className="flex h-9 w-9 items-center justify-center rounded-card border border-line text-foreground hover:border-accent"
+                aria-label="More"
+              >
+                {user.photoURL ? (
+                  <img src={user.photoURL} alt="" className="h-7 w-7 rounded-card object-cover" />
+                ) : (
+                  <i className="fa-solid fa-ellipsis-vertical" aria-hidden />
+                )}
+              </button>
+
+              {menuOpen && (
+                <>
+                  {/* click-away backdrop */}
+                  <div className="fixed inset-0 z-10" onClick={closeMenu} />
+                  <div className="absolute right-0 z-20 mt-2 w-52 overflow-hidden rounded-card border border-line bg-surface-elevated py-1 shadow-lg">
+                    {user.displayName && (
+                      <div className="border-b border-line px-3 py-2 text-xs text-muted">
+                        {user.displayName}
+                      </div>
+                    )}
+                    <Link
+                      to="/create-service"
+                      onClick={closeMenu}
+                      className="flex items-center gap-2.5 px-3 py-2 text-sm hover:bg-surface"
+                    >
+                      <i className="fa-solid fa-plus w-4 text-accent" aria-hidden /> Create service
+                    </Link>
+                    <Link
+                      to="/user-connect"
+                      onClick={closeMenu}
+                      className="flex items-center gap-2.5 px-3 py-2 text-sm hover:bg-surface"
+                    >
+                      <i className="fa-solid fa-link w-4 text-accent" aria-hidden /> Link accounts
+                    </Link>
+                    <button
+                      onClick={logout}
+                      className="flex w-full items-center gap-2.5 px-3 py-2 text-left text-sm hover:bg-surface"
+                    >
+                      <i className="fa-solid fa-arrow-right-from-bracket w-4 text-accent" aria-hidden />{' '}
                       Logout
-                    </div>
-                  </DropdownItem>
-                </DropdownMenu>
-              </UncontrolledDropdown>
-            </>
+                    </button>
+                  </div>
+                </>
+              )}
+            </div>
           )}
-        </Collapse>
-      </Navbar>
-    </div>
+        </nav>
+      </div>
+    </header>
   );
 }

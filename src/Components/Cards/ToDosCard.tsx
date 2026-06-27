@@ -1,3 +1,6 @@
+import Card from '../../ui/Card';
+import Button from '../../ui/Button';
+import Chip from '../../ui/Chip';
 import type { Service, ToDo } from '../../types';
 
 interface Props {
@@ -12,31 +15,27 @@ interface Props {
 export default function ToDosCard({ task, service, firebaseKey, completeTask, hideTask }: Props) {
   const { name, description } = task[0] || ({} as Service);
   const dateTime = new Date();
+  const done = Boolean(service.completedTime);
   return (
-    <div className="card m-2">
-      <div className="card-body d-flex justify-content-between" id="">
-        <div>
-          <h5 className="card-title">{name}</h5>
-          <p className="card-text description">{description}</p>
-          <p className="card-text date">{service.requestedTime}</p>
-        </div>
-
-        <div className="d-flex">
-          {!service.completedTime && (
-            <button className="completeButton" onClick={() => completeTask(firebaseKey, dateTime)}>
-              Complete Task
-            </button>
-          )}
-          {service.completedTime && (
-            <button className="hideButton" onClick={() => hideTask(firebaseKey)}>
-              <i className="fas fa-eye-slash"></i>
-            </button>
-          )}
-          <div className={service.completedTime ? 'done status' : 'pending status'}>
-            {service.completedTime ? 'Done!' : 'Pending'}{' '}
-          </div>
-        </div>
+    <Card className="flex items-center justify-between gap-3">
+      <div className="min-w-0">
+        <h3 className="font-bold">{name}</h3>
+        <p className="text-sm text-muted">{description}</p>
+        <p className="text-xs text-muted">{service.requestedTime}</p>
       </div>
-    </div>
+      <div className="flex shrink-0 items-center gap-2.5">
+        {!done && (
+          <Button size="sm" onClick={() => completeTask(firebaseKey, dateTime)}>
+            <i className="fa-solid fa-check" aria-hidden /> Complete
+          </Button>
+        )}
+        {done && (
+          <Button variant="ghost" size="sm" onClick={() => hideTask(firebaseKey)} aria-label="Hide">
+            <i className="fa-solid fa-eye-slash" aria-hidden />
+          </Button>
+        )}
+        <Chip tone={done ? 'accent' : 'neutral'}>{done ? 'Done!' : 'Pending'}</Chip>
+      </div>
+    </Card>
   );
 }

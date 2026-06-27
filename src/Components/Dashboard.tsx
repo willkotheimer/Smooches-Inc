@@ -7,6 +7,8 @@ import RequestCard from './Cards/RequestCard';
 import ToDosCard from './Cards/ToDosCard';
 import TheirPreviousReviews from './TheirPreviousReviews';
 import OrderHistory from './Cards/OrderHistory';
+import Card from '../ui/Card';
+import SectionHeading from '../ui/SectionHeading';
 import { useAppContext } from '../context/AppContext';
 import { useAllServices } from '../data/useServiceData';
 import { useCompleteTask, useHideTask, useTodoCounts, useUserTodos } from '../data/useTodoData';
@@ -119,36 +121,37 @@ export default function Dashboard() {
       ));
 
   return (
-    <>
-      <div className="servicePage">
-        <div className="leftSide">
-          <div className="tasksToComplete">
-            <h3 className="taskHeader">Services Needing Your Attention:</h3>
-            {todos && showToDos()}
+    <div>
+      <SectionHeading icon="fa-solid fa-bell">Services Needing Your Attention</SectionHeading>
+      {todos.length ? showToDos() : <p className="text-sm text-muted">Nothing right now.</p>}
+
+      <SectionHeading icon="fa-solid fa-list-check">Services Requested By You</SectionHeading>
+      {requested.length ? showRequests() : <p className="text-sm text-muted">No requests yet.</p>}
+
+      <SectionHeading icon="fa-solid fa-heart">Reviews Given To You</SectionHeading>
+      {theirReviews && theirReviews.length ? (
+        theirPreviousReviews()
+      ) : (
+        <p className="text-sm text-muted">No reviews yet.</p>
+      )}
+
+      <SectionHeading icon="fa-solid fa-chart-simple">Your Stats</SectionHeading>
+      <Card>
+        <p className="text-sm">
+          Finished tasks: <span className="font-bold">{doneTodos}</span>
+        </p>
+        <p className="text-sm text-muted">
+          Completion rate: {((avgDoneToDos as number) * 100).toFixed(2)}%
+        </p>
+        {userToDosCount && userToDosCount.length > 0 && (
+          <div className="mt-2">
+            <p className="mb-1 text-xs font-semibold uppercase tracking-wide text-muted">
+              Order history
+            </p>
+            {showUserRequests()}
           </div>
-          <div className="requestLeftDiv">
-            <h3 className="requestHeader">Services Requested By You:</h3>
-            {requested && showRequests()}
-          </div>
-        </div>
-        <div className="rightSide">
-          <div className="reviewsGivenToYouDiv">
-            <h3 className="reviewHeader">Reviews Given To You:</h3>
-            {theirReviews && theirPreviousReviews()}
-          </div>
-          <div className="servicesData">
-            <div className="card-body">
-              <h5 className="card-title">Tasks Data</h5>
-              <p className="card-text">Finished Tasks: {doneTodos}</p>
-              <p className="card-text">Percent done: {((avgDoneToDos as number) * 100).toFixed(2)}%</p>
-              <div>
-                <h1>other user requests</h1>
-                {userToDosCount && showUserRequests()}
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </>
+        )}
+      </Card>
+    </div>
   );
 }

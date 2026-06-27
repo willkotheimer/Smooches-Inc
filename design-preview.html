@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<!-- Throwaway design preview for the shadcn/Tailwind redesign. Open in a browser.
+     Not part of the app build. Flip accent colors with the buttons up top. -->
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Smooches — design preview</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&family=Montserrat:wght@700;800&family=Inter:wght@400;600;700&family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Space+Grotesk:wght@500;700&family=Rubik:wght@400;600;800&display=swap"
+    />
+    <style>
+      :root {
+        --bg: #1f1410;          /* dark chocolate (page) */
+        --surface: #3a1730;     /* Berry — cards + header (LOCKED) */
+        --surface-2: #4a2040;   /* hover / elevated */
+        --border: #4a3550;      /* purple-tinted divider */
+        --text: #f4ece7;        /* warm white */
+        --muted: #c0adba;       /* muted */
+        --accent: #e0759a;      /* rose (LOCKED) */
+        --accent-ink: #1f1410;  /* text on accent */
+        --radius: 3px;          /* material-throwback: nearly square */
+        --font-head: 'Montserrat'; /* swapped by the buttons */
+        --font-body: 'Inter';
+      }
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--text);
+        font-family: var(--font-body), 'Segoe UI', system-ui, -apple-system, sans-serif;
+        line-height: 1.5;
+      }
+      /* ---- accent switcher (preview-only chrome) ---- */
+      .switcher {
+        display: flex; gap: 8px; align-items: center;
+        padding: 10px 16px; background: #160e0b; border-bottom: 1px solid var(--border);
+        font-size: 13px; color: var(--muted); flex-wrap: wrap;
+      }
+      .swatch {
+        cursor: pointer; border: 2px solid transparent; border-radius: var(--radius);
+        padding: 6px 12px; background: var(--surface); color: var(--text);
+        font-weight: 600; font-size: 13px; display: inline-flex; gap: 8px; align-items: center;
+      }
+      .swatch .dot { width: 12px; height: 12px; border-radius: 2px; display: inline-block; }
+      .swatch.active { border-color: var(--text); }
+
+      /* ---- top nav (chocolate bar, decluttered) ---- */
+      .nav {
+        display: flex; align-items: center; justify-content: space-between;
+        padding: 14px 22px; background: var(--surface); border-bottom: 1px solid var(--border);
+      }
+      .brand { font-family: var(--font-head), sans-serif; font-weight: 800; letter-spacing: .5px; font-size: 18px; display: flex; gap: 10px; align-items: center; }
+      .brand .fa-heart { color: var(--accent); }
+      .nav-links { display: flex; gap: 4px; align-items: center; }
+      .nav-links a {
+        color: var(--text); text-decoration: none; padding: 8px 14px; border-radius: var(--radius);
+        font-size: 14px; font-weight: 600;
+      }
+      .nav-links a.active { color: var(--accent-ink); background: var(--accent); }
+      .nav-links a:not(.active):hover { background: var(--surface-2); }
+      .menu-btn {
+        background: var(--surface-2); color: var(--text); border: 1px solid var(--border);
+        width: 38px; height: 38px; border-radius: var(--radius); cursor: pointer; font-size: 15px;
+      }
+
+      /* ---- centered narrow column ---- */
+      .page { max-width: 760px; margin: 0 auto; padding: 18px 16px 32px; }
+      h1.title { font-family: var(--font-head), sans-serif; font-size: 30px; font-weight: 800; margin: 0 0 4px; letter-spacing: -.3px; }
+      .title-rule { width: 54px; height: 4px; background: var(--accent); border-radius: 2px; margin-bottom: 14px; }
+      h2.section { font-family: var(--font-head), sans-serif; font-size: 18px; font-weight: 700; margin: 18px 0 8px; display: flex; align-items: center; gap: 10px; }
+      h2.section .fa-solid { color: var(--accent); font-size: 15px; }
+
+      /* ---- narrow material cards (nearly square corners) ---- */
+      .card {
+        background: var(--surface);
+        border: 1px solid color-mix(in srgb, var(--accent) 60%, transparent); /* thin rose outline */
+        border-radius: var(--radius);
+        padding: 11px 13px; margin-bottom: 7px; display: flex; align-items: center; justify-content: space-between; gap: 14px;
+      }
+      .card:hover { background: var(--surface-2); border-color: var(--accent); }
+      .card .info h3 { margin: 0; font-size: 15px; font-weight: 700; }
+      .card .info p { margin: 2px 0 0; font-size: 13px; color: var(--muted); }
+      .right { display: flex; align-items: center; gap: 12px; flex-shrink: 0; }
+
+      .btn {
+        background: var(--accent); color: var(--accent-ink); border: none; border-radius: var(--radius);
+        padding: 8px 14px; font-weight: 700; font-size: 13px; cursor: pointer; display: inline-flex; gap: 8px; align-items: center;
+      }
+      .btn.ghost { background: transparent; color: var(--muted); border: 1px solid var(--border); }
+      .chip { font-size: 12px; font-weight: 700; padding: 4px 10px; border-radius: var(--radius); }
+      .chip.pending { background: var(--surface-2); color: var(--muted); }
+      .chip.done { background: color-mix(in srgb, var(--accent) 22%, transparent); color: var(--accent); }
+
+      .review { display: block; }
+      .review .hearts { color: var(--accent); letter-spacing: 2px; margin: 6px 0; }
+      .review .who { color: var(--muted); font-size: 13px; }
+      .muted { color: var(--muted); }
+    </style>
+  </head>
+  <body>
+    <div class="switcher">
+      <span><i class="fa-solid fa-font"></i> font:</span>
+      <button class="swatch" data-head="Poppins" data-body="Poppins" style="font-family:'Poppins'">
+        Poppins
+      </button>
+      <button class="swatch active" data-head="Montserrat" data-body="Inter" style="font-family:'Montserrat'">
+        Montserrat / Inter
+      </button>
+      <button class="swatch" data-head="Fraunces" data-body="Inter" style="font-family:'Fraunces'">
+        Fraunces / Inter
+      </button>
+      <button class="swatch" data-head="Space Grotesk" data-body="Inter" style="font-family:'Space Grotesk'">
+        Space Grotesk / Inter
+      </button>
+      <button class="swatch" data-head="Rubik" data-body="Rubik" style="font-family:'Rubik'">
+        Rubik
+      </button>
+      <span style="margin-left:auto">chocolate · mauve cards · rose accent (locked)</span>
+    </div>
+
+    <nav class="nav">
+      <div class="brand"><i class="fa-solid fa-heart"></i> SMOOCHES</div>
+      <div class="nav-links">
+        <a href="#" class="active">Dashboard</a>
+        <a href="#">Request</a>
+        <a href="#">Reviews</a>
+        <button class="menu-btn" title="Create service, Link accounts, Logout…">
+          <i class="fa-solid fa-ellipsis-vertical"></i>
+        </button>
+      </div>
+    </nav>
+
+    <main class="page">
+      <h1 class="title">Dashboard</h1>
+      <div class="title-rule"></div>
+
+      <h2 class="section"><i class="fa-solid fa-bell"></i> Tasks Needing You</h2>
+      <div class="card">
+        <div class="info">
+          <h3>Clean the car</h3>
+          <p>Full service car wash · requested Fri</p>
+        </div>
+        <div class="right">
+          <button class="btn"><i class="fa-solid fa-check"></i> Complete</button>
+          <span class="chip pending">Pending</span>
+        </div>
+      </div>
+      <div class="card">
+        <div class="info">
+          <h3>Bring coffee to work</h3>
+          <p>Pikes place, 2 sugars · requested Thu</p>
+        </div>
+        <div class="right">
+          <span class="chip done">Done!</span>
+          <button class="btn ghost"><i class="fa-solid fa-eye-slash"></i></button>
+        </div>
+      </div>
+
+      <h2 class="section"><i class="fa-solid fa-list-check"></i> Requested By You</h2>
+      <div class="card">
+        <div class="info">
+          <h3>Vacuum the living room</h3>
+          <p>Under the couch too · requested Sat</p>
+        </div>
+        <div class="right"><span class="chip pending">Pending</span></div>
+      </div>
+
+      <h2 class="section"><i class="fa-solid fa-heart"></i> Reviews Given To You</h2>
+      <div class="card review">
+        <p style="margin:0;font-size:15px">“You did such a great job on vacuuming!”</p>
+        <div class="hearts">
+          <i class="fa-solid fa-heart"></i><i class="fa-solid fa-heart"></i><i class="fa-solid fa-heart"></i><i class="fa-solid fa-heart"></i><i class="fa-solid fa-heart"></i>
+        </div>
+        <span class="who">from <strong>Rachel</strong> · for Vacuum the living room</span>
+      </div>
+
+      <h2 class="section"><i class="fa-solid fa-chart-simple"></i> Your Stats</h2>
+      <div class="card">
+        <div class="info">
+          <h3>Finished tasks: 14</h3>
+          <p>Completion rate · 87.5%</p>
+        </div>
+        <div class="right"><span class="chip done"><i class="fa-solid fa-trophy"></i> nice</span></div>
+      </div>
+    </main>
+
+    <script>
+      const swatches = document.querySelectorAll('.swatch');
+      swatches.forEach((b) =>
+        b.addEventListener('click', () => {
+          document.documentElement.style.setProperty('--font-head', `'${b.dataset.head}'`);
+          document.documentElement.style.setProperty('--font-body', `'${b.dataset.body}'`);
+          swatches.forEach((s) => s.classList.remove('active'));
+          b.classList.add('active');
+        }),
+      );
+    </script>
+  </body>
+</html>
