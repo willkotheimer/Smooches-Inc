@@ -11,7 +11,7 @@ export default function Chip({ tone = 'neutral', children }: Props) {
     <span
       className={cn(
         'rounded-card px-2.5 py-1 text-xs font-bold',
-        tone === 'accent' ? 'bg-accent/20 text-accent' : 'bg-surface-elevated text-muted',
+        tone === 'accent' ? 'bg-accent/20 text-accent' : 'bg-foreground/15 text-foreground/80',
       )}
     >
       {children}
