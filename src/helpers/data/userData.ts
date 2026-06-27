@@ -3,18 +3,15 @@
 
 import firebase from 'firebase/app';
 import { apiRequest } from './apiClient';
-import { filterJoinedUsersByUid } from '../../Helper/UserDataHelper';
 import type { User, UserJoin } from '../../types';
 
 type NewUser = Omit<User, 'firebaseKey'>;
 
 const checkIfUserExistsInFirebase = (user: NewUser): void => {
-  apiRequest<Record<string, User> | null>(`/users.json?orderBy="uid"&equalTo="${user.uid}"`)
-    .then((data) => {
-      if (!data || Object.values(data).length === 0) {
-        apiRequest<{ name: string }>('/users.json', 'POST', user)
-          .then((res) => apiRequest(`/users/${res.name}.json`, 'PATCH', { firebaseKey: res.name }))
-          .catch((error) => console.warn(error));
+  apiRequest<User[]>(`/users?uid=${user.uid}`)
+    .then((existing) => {
+      if (!existing || existing.length === 0) {
+        apiRequest('/users', 'POST', user).catch((error) => console.warn(error));
       } else {
         console.warn('User Already Exists');
       }
@@ -23,15 +20,14 @@ const checkIfUserExistsInFirebase = (user: NewUser): void => {
     .catch((error) => console.error(error));
 };
 
-const getJoinedUser = (UID: string) =>
-  apiRequest<Record<string, UserJoin> | null>('/userjoin.json').then((data) =>
-    filterJoinedUsersByUid(data ? Object.values(data) : [], UID),
-  );
+// The server filters joins to those where the uid is either participant.
+const getJoinedUser = (UID: string) => apiRequest<UserJoin[]>(`/userjoins?uid=${UID}`);
 
+// Returned as [firebaseKey, user] entries to match the existing <App> usage.
 const getUserByUid = (uid: string) =>
-  apiRequest<Record<string, User> | null>(
-    `/users.json?orderBy="uid"&equalTo="${uid}"`,
-  ).then((data) => (data ? Object.entries(data) : []));
+  apiRequest<User[]>(`/users?uid=${uid}`).then((list) =>
+    (list ?? []).map((u) => [u.firebaseKey, u] as [string, User]),
+  );
 
 const setCurrentUser = (userObj: firebase.User): NewUser => {
   const user: NewUser = {

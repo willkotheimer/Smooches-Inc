@@ -11,8 +11,12 @@ dist/
 
 # dependencies
 /node_modules
+server/node_modules
 /.pnp
 .pnp.js
+
+# keep the server's lockfile for reproducible backend installs
+!server/package-lock.json
 
 # testing
 /coverage

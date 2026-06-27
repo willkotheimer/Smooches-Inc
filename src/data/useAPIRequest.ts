@@ -1,8 +1,7 @@
 import { useCallback } from 'react';
-import firebaseConfig from '../helpers/apiKeys';
 
-// Firebase Realtime Database REST endpoint. All paths end in `.json`.
-const baseUrl = firebaseConfig.databaseURL;
+// Express API base (MERN). e.g. http://localhost:4000/api
+const baseUrl = import.meta.env.VITE_API_BASE_URL;
 
 interface RequestOptions {
   successMessage?: string;

@@ -1,7 +1,5 @@
-import firebaseConfig from '../apiKeys';
-
-// Firebase Realtime Database REST endpoint. All paths end in `.json`.
-const baseUrl = firebaseConfig.databaseURL;
+// Express API base (MERN). Used by the imperative auth bootstrap in <App>.
+const baseUrl = import.meta.env.VITE_API_BASE_URL;
 
 type Method = 'GET' | 'POST' | 'PUT' | 'PATCH' | 'DELETE';
 

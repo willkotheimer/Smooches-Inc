@@ -5,10 +5,11 @@ import type { User, UserJoin } from '../types';
 
 export function useAllUsers() {
   const { get } = useAPIRequest();
-  return useQuery<Record<string, User>>(
-    ['users'],
-    async () => (await get<Record<string, User> | null>(apiRoutes.users)) ?? {},
-  );
+  // Keyed by firebaseKey to match the existing consumers (they Object.values it).
+  return useQuery<Record<string, User>>(['users'], async () => {
+    const list = await get<User[]>(apiRoutes.users);
+    return Object.fromEntries(list.map((u) => [u.firebaseKey, u]));
+  });
 }
 
 const invalidateJoins = (queryClient: ReturnType<typeof useQueryClient>) => {
@@ -17,15 +18,10 @@ const invalidateJoins = (queryClient: ReturnType<typeof useQueryClient>) => {
 };
 
 export function useCreateUserJoin() {
-  const { post, patch } = useAPIRequest();
+  const { post } = useAPIRequest();
   const queryClient = useQueryClient();
-  return useMutation<unknown, Error, UserJoin>(
-    async (userJoin) => {
-      const res = await post<{ name: string }>(apiRoutes.userJoins, userJoin, {
-        successMessage: 'Link request sent.',
-      });
-      return patch(apiRoutes.userJoin(res.name), { firebaseKey: res.name });
-    },
+  return useMutation<UserJoin, Error, UserJoin>(
+    (userJoin) => post<UserJoin>(apiRoutes.userJoins, userJoin, { successMessage: 'Link request sent.' }),
     { onSuccess: () => invalidateJoins(queryClient) },
   );
 }

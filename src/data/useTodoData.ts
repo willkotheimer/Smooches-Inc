@@ -6,24 +6,16 @@ import type { ToDo } from '../types';
 
 export function useUserTodos(uid: string) {
   const { get } = useAPIRequest();
-  return useQuery<ToDo[]>(
-    ['todos', uid],
-    async () => {
-      const data = await get<Record<string, ToDo> | null>(apiRoutes.todosByUid(uid));
-      return data ? Object.values(data) : [];
-    },
-    { enabled: Boolean(uid) },
-  );
+  return useQuery<ToDo[]>(['todos', uid], () => get<ToDo[]>(apiRoutes.todosByUid(uid)), {
+    enabled: Boolean(uid),
+  });
 }
 
 export function useCompletedUnreviewed(uid: string) {
   const { get } = useAPIRequest();
   return useQuery<ToDo[]>(
     ['completedUnreviewed', uid],
-    async () => {
-      const data = await get<Record<string, ToDo> | null>(apiRoutes.todosByUid(uid));
-      return filterCompletedUnreviewed(data ? Object.values(data) : []);
-    },
+    async () => filterCompletedUnreviewed(await get<ToDo[]>(apiRoutes.todosByUid(uid))),
     { enabled: Boolean(uid) },
   );
 }
@@ -32,15 +24,11 @@ export function useTodoCounts(uid: string) {
   const { get } = useAPIRequest();
   return useQuery<[string, number][]>(
     ['todoCounts', uid],
-    async () => {
-      const data = await get<Record<string, ToDo> | null>(apiRoutes.todosByUid(uid));
-      return countTodosByTask(data ? Object.values(data) : []);
-    },
+    async () => countTodosByTask(await get<ToDo[]>(apiRoutes.todosByUid(uid))),
     { enabled: Boolean(uid) },
   );
 }
 
-// Any todo write affects the lists, the per-task counts and the leaderboard.
 const invalidateTodos = (queryClient: ReturnType<typeof useQueryClient>) => {
   queryClient.invalidateQueries(['todos']);
   queryClient.invalidateQueries(['completedUnreviewed']);
@@ -49,15 +37,10 @@ const invalidateTodos = (queryClient: ReturnType<typeof useQueryClient>) => {
 };
 
 export function useCreateToDo() {
-  const { post, patch } = useAPIRequest();
+  const { post } = useAPIRequest();
   const queryClient = useQueryClient();
-  return useMutation<unknown, Error, ToDo>(
-    async (todo) => {
-      const res = await post<{ name: string }>(apiRoutes.todos, todo, {
-        successMessage: 'Request created.',
-      });
-      return patch(apiRoutes.todo(res.name), { firebaseKey: res.name });
-    },
+  return useMutation<ToDo, Error, ToDo>(
+    (todo) => post<ToDo>(apiRoutes.todos, todo, { successMessage: 'Request created.' }),
     { onSuccess: () => invalidateTodos(queryClient) },
   );
 }
