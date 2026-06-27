@@ -5,17 +5,18 @@ import type { Service } from '../types';
 
 export function useAllServices() {
   const { get } = useAPIRequest();
-  return useQuery<Service[]>(['services'], async () => {
-    const data = await get<Record<string, Service> | null>(apiRoutes.services);
-    return data ? Object.values(data) : [];
-  });
+  return useQuery<Service[]>(['services'], () => get<Service[]>(apiRoutes.services));
 }
 
 export function useUserServices(uid: string) {
   const { get } = useAPIRequest();
+  // Returned keyed by firebaseKey because some callers do services[key].
   return useQuery<Record<string, Service>>(
     ['userServices', uid],
-    async () => (await get<Record<string, Service> | null>(apiRoutes.servicesByUid(uid))) ?? {},
+    async () => {
+      const list = await get<Service[]>(apiRoutes.servicesByUid(uid));
+      return Object.fromEntries(list.map((s) => [s.firebaseKey, s]));
+    },
     { enabled: Boolean(uid) },
   );
 }
@@ -25,8 +26,8 @@ export function useServiceByKey(fbKey: string) {
   return useQuery<Service | undefined>(
     ['serviceByKey', fbKey],
     async () => {
-      const data = await get<Record<string, Service> | null>(apiRoutes.services);
-      return data ? Object.values(data).find((s) => s.firebaseKey === fbKey) : undefined;
+      const list = await get<Service[]>(apiRoutes.services);
+      return list.find((s) => s.firebaseKey === fbKey);
     },
     { enabled: Boolean(fbKey) },
   );
@@ -38,16 +39,14 @@ const invalidateServices = (queryClient: ReturnType<typeof useQueryClient>) => {
 };
 
 export function useCreateService() {
-  const { post, patch } = useAPIRequest();
+  const { post } = useAPIRequest();
   const queryClient = useQueryClient();
-  return useMutation<unknown, Error, Service>(
-    async (service) => {
-      const res = await post<{ name: string }>(apiRoutes.services, service, {
+  return useMutation<Service, Error, Service>(
+    (service) =>
+      post<Service>(apiRoutes.services, service, {
         successMessage: 'Service created.',
         errorMessage: 'Service not created.',
-      });
-      return patch(apiRoutes.service(res.name), { firebaseKey: res.name });
-    },
+      }),
     { onSuccess: () => invalidateServices(queryClient) },
   );
 }
@@ -55,9 +54,9 @@ export function useCreateService() {
 export function useUpdateService() {
   const { patch } = useAPIRequest();
   const queryClient = useQueryClient();
-  return useMutation<unknown, Error, Service>(
+  return useMutation<Service, Error, Service>(
     (service) =>
-      patch(apiRoutes.service(service.firebaseKey), service, {
+      patch<Service>(apiRoutes.service(service.firebaseKey), service, {
         successMessage: 'Service updated.',
         errorMessage: 'Service not updated.',
       }),

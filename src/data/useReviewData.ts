@@ -5,24 +5,25 @@ import type { Review } from '../types';
 
 export function useAllReviews() {
   const { get } = useAPIRequest();
-  return useQuery<Record<string, Review>>(
-    ['reviews'],
-    async () => (await get<Record<string, Review> | null>(apiRoutes.reviews)) ?? {},
-  );
+  // Keyed by firebaseKey to match the existing consumers (they Object.values it).
+  return useQuery<Record<string, Review>>(['reviews'], async () => {
+    const list = await get<Review[]>(apiRoutes.reviews);
+    return Object.fromEntries(list.map((r) => [r.firebaseKey, r]));
+  });
 }
 
 export function useCreateReview() {
   const { post, patch } = useAPIRequest();
   const queryClient = useQueryClient();
-  return useMutation<unknown, Error, Review>(
+  return useMutation<Review, Error, Review>(
     async (review) => {
-      const res = await post<{ name: string }>(apiRoutes.reviews, review, {
+      const created = await post<Review>(apiRoutes.reviews, review, {
         successMessage: 'Review submitted.',
         errorMessage: 'Review not submitted.',
       });
-      await patch(apiRoutes.review(res.name), { firebaseKey: res.name });
-      // mark the related todo reviewed
-      return patch(apiRoutes.todo(review.toDoid), { reviewId: res.name });
+      // Mark the related todo reviewed (links it to this review).
+      await patch(apiRoutes.todo(review.toDoid), { reviewId: created.firebaseKey });
+      return created;
     },
     {
       onSuccess: () => {
