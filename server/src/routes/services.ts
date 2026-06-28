@@ -2,20 +2,20 @@ import { Router } from 'express';
 import { Service } from '../models/Service';
 import { asyncHandler } from '../lib/asyncHandler';
 
-// A Router is a mini Express app — a group of related routes we mount under a
-// base path (here, /api/services) in index.ts.
 const router = Router();
 
-// GET /api/services  -> list all services
+// GET /api/services?uid=&active=
+//   ?uid filters to one owner; ?active=true|false filters by offered state.
 router.get(
   '/',
-  asyncHandler(async (_req, res) => {
-    const services = await Service.find();
-    res.json(services);
+  asyncHandler(async (req, res) => {
+    const filter: Record<string, unknown> = {};
+    if (req.query.uid) filter.uid = String(req.query.uid);
+    if (req.query.active !== undefined) filter.active = req.query.active === 'true';
+    res.json(await Service.find(filter));
   }),
 );
 
-// GET /api/services/:id  -> one service by its MongoDB _id
 router.get(
   '/:id',
   asyncHandler(async (req, res) => {
@@ -28,16 +28,13 @@ router.get(
   }),
 );
 
-// POST /api/services  -> create (body is the new service)
 router.post(
   '/',
   asyncHandler(async (req, res) => {
-    const created = await Service.create(req.body);
-    res.status(201).json(created);
+    res.status(201).json(await Service.create(req.body));
   }),
 );
 
-// PATCH /api/services/:id  -> partial update
 router.patch(
   '/:id',
   asyncHandler(async (req, res) => {
@@ -50,15 +47,21 @@ router.patch(
   }),
 );
 
-// DELETE /api/services/:id
+// DELETE — only services the user actually created (source: 'custom').
+// Preset-sourced ones can be deactivated but not deleted.
 router.delete(
   '/:id',
   asyncHandler(async (req, res) => {
-    const deleted = await Service.findByIdAndDelete(req.params.id);
-    if (!deleted) {
+    const service = await Service.findById(req.params.id);
+    if (!service) {
       res.status(404).json({ error: 'Service not found' });
       return;
     }
+    if ((service as { source?: string }).source === 'preset') {
+      res.status(403).json({ error: 'Preset services can be deactivated but not deleted' });
+      return;
+    }
+    await service.deleteOne();
     res.status(204).end();
   }),
 );

@@ -1,0 +1,20 @@
+meta {
+  name: Cleanup - reclassify preset
+  type: http
+  seq: 10
+}
+
+patch {
+  url: {{baseUrl}}/services/{{presetId}}
+  body: json
+}
+
+body:json {
+  {
+    "source": "custom"
+  }
+}
+
+assert {
+  res.status: eq 200
+}

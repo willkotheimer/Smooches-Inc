@@ -10,7 +10,8 @@ export default function RequestServicePage() {
   const { user, otherKey } = useAppContext();
   const uid = (user as any)?.uid;
 
-  const { data: services = {}, isLoading } = useUserServices(otherKey);
+  // Partner only sees the tasks the owner has activated (offered).
+  const { data: services = {}, isLoading } = useUserServices(otherKey, true);
   const createToDo = useCreateToDo();
 
   const [order, setOrder] = useState<Record<string, number>>({});

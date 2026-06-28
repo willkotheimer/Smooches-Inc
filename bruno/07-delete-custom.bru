@@ -1,0 +1,19 @@
+meta {
+  name: Services - delete custom
+  type: http
+  seq: 7
+}
+
+delete {
+  url: {{baseUrl}}/services/{{customId}}
+}
+
+assert {
+  res.status: eq 204
+}
+
+tests {
+  test("custom services can be deleted", function () {
+    expect(res.status).to.equal(204);
+  });
+}

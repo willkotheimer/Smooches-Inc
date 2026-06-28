@@ -3,6 +3,7 @@ import * as Yup from 'yup';
 import getUser from '../../helpers/data/authData';
 import Button from '../../ui/Button';
 import { useCreateService, useUpdateService } from '../../data/useServiceData';
+import { servicePresets } from '../../data/servicePresets';
 import type { Service } from '../../types';
 
 interface Props {
@@ -17,15 +18,6 @@ const validationSchema = Yup.object({
   description: Yup.string().required('Description is required'),
 });
 
-// Common favors a user can one-click into the form (or write their own below).
-const PRESETS = [
-  { name: 'Bring me coffee', description: 'Just how I like it' },
-  { name: 'Give me a massage', description: '15 minutes' },
-  { name: 'Make me breakfast', description: 'Eggs, bacon, toast' },
-  { name: 'Do the dishes', description: 'Including the pans' },
-  { name: 'My special request', description: '(you know the one) 😉' },
-];
-
 export default function ServiceForm({ service, onUpdate, toggle }: Props) {
   const createService = useCreateService();
   const updateService = useUpdateService();
@@ -38,6 +30,8 @@ export default function ServiceForm({ service, onUpdate, toggle }: Props) {
       uid: service?.uid || getUser(),
       description: service?.description || '',
       offerDescription: service?.offerDescription || '',
+      active: service?.active ?? true,
+      source: service?.source ?? 'custom',
     },
     validationSchema,
     onSubmit: (values) => {
@@ -46,7 +40,8 @@ export default function ServiceForm({ service, onUpdate, toggle }: Props) {
         toggle?.();
       };
       if (values.firebaseKey === '') {
-        createService.mutate(values, { onSuccess: done });
+        // Anything created here is the user's own task, so it stays deletable.
+        createService.mutate({ ...values, source: 'custom', active: true }, { onSuccess: done });
       } else {
         updateService.mutate(values, { onSuccess: done });
       }
@@ -59,7 +54,7 @@ export default function ServiceForm({ service, onUpdate, toggle }: Props) {
         <div>
           <span className="field-label">Quick pick a common favor</span>
           <div className="flex flex-wrap gap-2">
-            {PRESETS.map((preset) => (
+            {servicePresets.map((preset) => (
               <button
                 key={preset.name}
                 type="button"

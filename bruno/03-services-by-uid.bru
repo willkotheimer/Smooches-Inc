@@ -1,0 +1,22 @@
+meta {
+  name: Services - filter by uid
+  type: http
+  seq: 3
+}
+
+get {
+  url: {{baseUrl}}/services?uid={{seedUid}}
+}
+
+assert {
+  res.status: eq 200
+}
+
+tests {
+  test("every result belongs to the requested uid", function () {
+    expect(res.body).to.be.an("array");
+    res.body.forEach(function (s) {
+      expect(s.uid).to.equal(bru.getEnvVar("seedUid"));
+    });
+  });
+}

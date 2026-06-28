@@ -1,0 +1,30 @@
+meta {
+  name: Services - deactivate
+  type: http
+  seq: 6
+}
+
+patch {
+  url: {{baseUrl}}/services/{{customId}}
+  body: json
+}
+
+body:json {
+  {
+    "active": false
+  }
+}
+
+assert {
+  res.status: eq 200
+}
+
+tests {
+  test("active flips to false", function () {
+    expect(res.body.active).to.equal(false);
+  });
+
+  test("source is unchanged", function () {
+    expect(res.body.source).to.equal("custom");
+  });
+}

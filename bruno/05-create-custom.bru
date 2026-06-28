@@ -1,0 +1,41 @@
+meta {
+  name: Services - create custom
+  type: http
+  seq: 5
+}
+
+post {
+  url: {{baseUrl}}/services
+  body: json
+}
+
+body:json {
+  {
+    "uid": "{{seedUid}}",
+    "name": "Bruno custom task",
+    "description": "created by bruno test",
+    "source": "custom"
+  }
+}
+
+script:post-response {
+  bru.setVar("customId", res.body._id);
+}
+
+assert {
+  res.status: eq 201
+}
+
+tests {
+  test("defaults active to true", function () {
+    expect(res.body.active).to.equal(true);
+  });
+
+  test("keeps the custom source", function () {
+    expect(res.body.source).to.equal("custom");
+  });
+
+  test("returns an id", function () {
+    expect(res.body._id).to.be.a("string").and.not.empty;
+  });
+}

@@ -1,0 +1,19 @@
+meta {
+  name: Services - delete preset blocked
+  type: http
+  seq: 9
+}
+
+delete {
+  url: {{baseUrl}}/services/{{presetId}}
+}
+
+assert {
+  res.status: eq 403
+}
+
+tests {
+  test("preset services cannot be deleted", function () {
+    expect(res.status).to.equal(403);
+  });
+}

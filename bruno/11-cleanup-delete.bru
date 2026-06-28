@@ -1,0 +1,13 @@
+meta {
+  name: Cleanup - delete test service
+  type: http
+  seq: 11
+}
+
+delete {
+  url: {{baseUrl}}/services/{{presetId}}
+}
+
+assert {
+  res.status: eq 204
+}

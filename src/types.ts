@@ -17,6 +17,8 @@ export interface Service {
   name: string;
   description: string;
   offerDescription: string;
+  active?: boolean; // offered to the partner when true
+  source?: 'custom' | 'preset'; // custom = user-created (deletable)
 }
 
 export interface ToDo {

@@ -1,0 +1,33 @@
+meta {
+  name: Services - create preset
+  type: http
+  seq: 8
+}
+
+post {
+  url: {{baseUrl}}/services
+  body: json
+}
+
+body:json {
+  {
+    "uid": "{{seedUid}}",
+    "name": "Bruno preset task",
+    "description": "added from the bank",
+    "source": "preset"
+  }
+}
+
+script:post-response {
+  bru.setVar("presetId", res.body._id);
+}
+
+assert {
+  res.status: eq 201
+}
+
+tests {
+  test("keeps the preset source", function () {
+    expect(res.body.source).to.equal("preset");
+  });
+}

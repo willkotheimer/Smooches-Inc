@@ -8,13 +8,14 @@ export function useAllServices() {
   return useQuery<Service[]>(['services'], () => get<Service[]>(apiRoutes.services));
 }
 
-export function useUserServices(uid: string) {
+export function useUserServices(uid: string, activeOnly = false) {
   const { get } = useAPIRequest();
   // Returned keyed by firebaseKey because some callers do services[key].
   return useQuery<Record<string, Service>>(
-    ['userServices', uid],
+    ['userServices', uid, activeOnly],
     async () => {
-      const list = await get<Service[]>(apiRoutes.servicesByUid(uid));
+      const url = `${apiRoutes.servicesByUid(uid)}${activeOnly ? '&active=true' : ''}`;
+      const list = await get<Service[]>(url);
       return Object.fromEntries(list.map((s) => [s.firebaseKey, s]));
     },
     { enabled: Boolean(uid) },
@@ -60,6 +61,16 @@ export function useUpdateService() {
         successMessage: 'Service updated.',
         errorMessage: 'Service not updated.',
       }),
+    { onSuccess: () => invalidateServices(queryClient) },
+  );
+}
+
+export function useSetServiceActive() {
+  const { patch } = useAPIRequest();
+  const queryClient = useQueryClient();
+  return useMutation<Service, Error, { firebaseKey: string; active: boolean }>(
+    ({ firebaseKey, active }) =>
+      patch<Service>(apiRoutes.service(firebaseKey), { active }),
     { onSuccess: () => invalidateServices(queryClient) },
   );
 }

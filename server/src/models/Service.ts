@@ -7,6 +7,10 @@ const serviceSchema = createSchema({
   name: { type: String, required: true },
   description: { type: String, default: '' },
   offerDescription: { type: String, default: '' },
+  // Offered to the partner when true; deactivating keeps it in the owner's bank.
+  active: { type: Boolean, default: true },
+  // 'custom' (user-created, deletable) | 'preset' (added from the template list)
+  source: { type: String, default: 'custom' },
 });
 
 export type ServiceDoc = InferSchemaType<typeof serviceSchema>;

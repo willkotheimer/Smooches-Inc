@@ -1,0 +1,22 @@
+meta {
+  name: Services - active only
+  type: http
+  seq: 4
+}
+
+get {
+  url: {{baseUrl}}/services?uid={{seedUid}}&active=true
+}
+
+assert {
+  res.status: eq 200
+}
+
+tests {
+  test("only active services are returned", function () {
+    expect(res.body).to.be.an("array");
+    res.body.forEach(function (s) {
+      expect(s.active).to.equal(true);
+    });
+  });
+}
