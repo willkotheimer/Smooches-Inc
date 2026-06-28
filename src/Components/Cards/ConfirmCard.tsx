@@ -1,12 +1,10 @@
-export default function Modal() {
+import Card from '../../ui/Card';
+
+export default function ConfirmCard() {
   return (
-    <>
-      <div className="confirmModal">
-        <div className="confirm-message">Thank you for your order!</div>
-        <div className="confirm-description">
-          Please be patient... your order is being processed!
-        </div>
-      </div>
-    </>
+    <Card tone="blue" className="text-center">
+      <p className="font-bold">Thank you for your order!</p>
+      <p className="text-sm text-muted">Please be patient — your order is being processed.</p>
+    </Card>
   );
 }

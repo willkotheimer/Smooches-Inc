@@ -1,37 +1,35 @@
 import React, { useState } from 'react';
-import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
+import Button from '../ui/Button';
 
 interface AppModalProps {
   buttonLabel: React.ReactNode;
   className?: string;
   title: React.ReactNode;
-  // Cloned with an injected `toggle` prop; callers may also pass a string fallback.
+  // Cloned with an injected `toggle` prop so the form can close the modal.
   children: any;
 }
 
-const AppModal = (props: AppModalProps) => {
-  const { buttonLabel, className, title } = props;
-
-  const [modal, setModal] = useState(false);
-
-  const toggle = () => setModal(!modal);
+export default function AppModal({ buttonLabel, title, children }: AppModalProps) {
+  const [open, setOpen] = useState(false);
+  const toggle = () => setOpen((o) => !o);
 
   return (
-    <div>
-      <Button color="btn-primary-outline accentColor" onClick={toggle}>
-        {buttonLabel}
-      </Button>
-      <Modal isOpen={modal} toggle={toggle} className={className}>
-        <ModalHeader toggle={toggle}>{title}</ModalHeader>
-        <ModalBody>{React.cloneElement(props.children, { toggle })}</ModalBody>
-        <ModalFooter>
-          <Button color="secondary" onClick={toggle}>
-            Cancel
-          </Button>
-        </ModalFooter>
-      </Modal>
-    </div>
+    <>
+      <Button onClick={toggle}>{buttonLabel}</Button>
+      {open && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+          <div className="absolute inset-0 bg-black/60" onClick={toggle} aria-hidden />
+          <div className="relative z-10 w-full max-w-md rounded-card border border-accent/60 bg-surface p-4 shadow-xl">
+            <div className="mb-3 flex items-center justify-between">
+              <h3 className="text-lg font-bold">{title}</h3>
+              <button onClick={toggle} aria-label="Close" className="text-muted hover:text-foreground">
+                <i className="fa-solid fa-xmark" aria-hidden />
+              </button>
+            </div>
+            {React.cloneElement(children, { toggle })}
+          </div>
+        </div>
+      )}
+    </>
   );
-};
-
-export default AppModal;
+}

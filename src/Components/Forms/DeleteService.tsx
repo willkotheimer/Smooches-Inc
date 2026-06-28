@@ -1,4 +1,5 @@
 import React from 'react';
+import Button from '../../ui/Button';
 import { useDeleteService } from '../../data/useServiceData';
 import type { Service } from '../../types';
 
@@ -8,8 +9,6 @@ interface Props {
   redrawDom: () => void;
 }
 
-// No input fields, so Formik would be pure ceremony here — a plain function
-// component with the delete mutation is clearer.
 export default function DeleteService({ service, redrawDom }: Props) {
   const deleteService = useDeleteService();
 
@@ -19,10 +18,11 @@ export default function DeleteService({ service, redrawDom }: Props) {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <h3 className="deleteService">{service.name}</h3>
-      <input type="hidden" name="firebaseKey" value={service.firebaseKey} />
-      <button type="submit">Delete</button>
+    <form onSubmit={handleSubmit} className="space-y-3">
+      <p className="font-bold">{service.name}</p>
+      <Button type="submit">
+        <i className="fa-solid fa-trash" aria-hidden /> Delete
+      </Button>
     </form>
   );
 }

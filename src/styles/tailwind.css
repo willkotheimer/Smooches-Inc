@@ -27,4 +27,29 @@
   .nav-link.active {
     @apply bg-accent text-accent-foreground hover:bg-accent;
   }
+
+  /* Form controls */
+  .field {
+    @apply w-full rounded-card border border-line bg-background px-3 py-2 text-sm text-foreground placeholder:text-muted focus:border-accent focus:outline-none;
+  }
+  .field-error {
+    @apply mt-1 text-xs text-accent;
+  }
+  .field-label {
+    @apply mb-1 block text-sm font-semibold;
+  }
+}
+
+/* Flashing-hearts loader animation (kept from the original). */
+@keyframes heartbeat {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  25% {
+    transform: scale(1.3);
+  }
+}
+.heart-beat {
+  animation: heartbeat 1.2s ease-in-out infinite;
 }

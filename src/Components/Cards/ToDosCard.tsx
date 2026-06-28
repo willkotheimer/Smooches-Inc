@@ -30,7 +30,7 @@ export default function ToDosCard({ task, service, firebaseKey, completeTask, hi
           </Button>
         )}
         {done && (
-          <Button variant="ghost" size="sm" onClick={() => hideTask(firebaseKey)} aria-label="Hide">
+          <Button size="sm" onClick={() => hideTask(firebaseKey)} aria-label="Hide">
             <i className="fa-solid fa-eye-slash" aria-hidden />
           </Button>
         )}

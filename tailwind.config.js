@@ -14,7 +14,7 @@ export default {
           elevated: '#4a2040',
         },
         foreground: '#f4ece7', // warm white text
-        muted: '#c6c2cc', // secondary text (lighter grey so it doesn't blend into Berry)
+        muted: '#d8d4de', // secondary text (light grey)
         line: '#8d8a95', // lighter grey divider/border (was purple)
         // accent: the heartbeat-loader red (replaced rose)
         accent: {

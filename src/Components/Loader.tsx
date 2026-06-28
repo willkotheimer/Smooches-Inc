@@ -1,5 +1,4 @@
-// Words of affirmation appearing on screen while loader processes.
-// Hmmm... :)
+// Words of affirmation while things load. Hmmm... :)
 
 const Loader = () => {
   const array: [string, string][] = [
@@ -12,15 +11,17 @@ const Loader = () => {
     ['I feel so lucky', 'To have you'],
     ["It's not what you think up", "It's what you get down."],
   ];
-  const arrayLength = array.length;
-  const myArr = array[Math.floor(Math.random() * Math.floor(arrayLength))];
+  const myArr = array[Math.floor(Math.random() * array.length)];
+
   return (
-    <div className="text-center">
-      <h1 className="message">{myArr[0]}</h1>
-      <h3 className="message">{myArr[1]}</h3>
-      <span className="space heartbeat-loader">Loading...</span>
-      <span className="space heartbeat-loader">Loading...</span>
-      <span className="space heartbeat-loader">Loading...</span>
+    <div className="py-10 text-center">
+      <h1 className="text-2xl font-extrabold">{myArr[0]}</h1>
+      <h3 className="mt-1 text-muted">{myArr[1]}</h3>
+      <div className="mt-4 flex justify-center gap-3 text-2xl text-accent">
+        <i className="fa-solid fa-heart heart-beat" style={{ animationDelay: '0ms' }} aria-hidden />
+        <i className="fa-solid fa-heart heart-beat" style={{ animationDelay: '200ms' }} aria-hidden />
+        <i className="fa-solid fa-heart heart-beat" style={{ animationDelay: '400ms' }} aria-hidden />
+      </div>
     </div>
   );
 };

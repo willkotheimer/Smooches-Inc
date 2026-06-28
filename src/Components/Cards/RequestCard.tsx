@@ -21,7 +21,7 @@ export default function RequestCard({ task, service, hideRequest }: Props) {
       </div>
       <div className="flex shrink-0 items-center gap-2.5">
         {done && (
-          <Button variant="ghost" size="sm" onClick={() => hideRequest(service.firebaseKey)} aria-label="Hide">
+          <Button size="sm" onClick={() => hideRequest(service.firebaseKey)} aria-label="Hide">
             <i className="fa-solid fa-eye-slash" aria-hidden />
           </Button>
         )}

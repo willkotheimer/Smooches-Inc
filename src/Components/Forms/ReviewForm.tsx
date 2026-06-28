@@ -1,5 +1,7 @@
 import { useFormik } from 'formik';
+import * as Yup from 'yup';
 import getUser from '../../helpers/data/authData';
+import Button from '../../ui/Button';
 import { useCreateReview } from '../../data/useReviewData';
 import type { Review, ToDo } from '../../types';
 
@@ -10,17 +12,17 @@ interface Props {
   review?: Review;
   firebaseKey?: string;
   onUpdate: () => void;
+  toggle?: () => void; // injected by AppModal
 }
 
-const starOptions = [
-  { label: '1', value: '1' },
-  { label: '2', value: '2' },
-  { label: '3', value: '3' },
-  { label: '4', value: '4' },
-  { label: '5', value: '5' },
-];
+const validationSchema = Yup.object({
+  reviewText: Yup.string().required('Please write a review'),
+  reviewStars: Yup.string().required('Please choose a rating'),
+});
 
-export default function ReviewForm({ toDoId, taskid, toDo, review, onUpdate }: Props) {
+const starOptions = ['1', '2', '3', '4', '5'];
+
+export default function ReviewForm({ toDoId, taskid, toDo, review, onUpdate, toggle }: Props) {
   const createReview = useCreateReview();
 
   const formik = useFormik<Review>({
@@ -34,39 +36,60 @@ export default function ReviewForm({ toDoId, taskid, toDo, review, onUpdate }: P
       reviewStars: review?.reviewStars || '',
       uid: getUser(),
     },
+    validationSchema,
     onSubmit: (values) => {
-      createReview.mutate(values, { onSuccess: () => onUpdate() });
+      createReview.mutate(values, {
+        onSuccess: () => {
+          onUpdate();
+          toggle?.();
+        },
+      });
     },
   });
 
   return (
-    <form onSubmit={formik.handleSubmit}>
-      <div className="form-group">
+    <form onSubmit={formik.handleSubmit} className="space-y-3">
+      <div>
+        <label htmlFor="reviewText" className="field-label">
+          Your review
+        </label>
         <textarea
+          id="reviewText"
           name="reviewText"
+          rows={4}
+          className="field"
           value={formik.values.reviewText}
           onChange={formik.handleChange}
-          className="form-control"
-          id="leaveReview"
-          rows={4}
-          required
-        ></textarea>
+          onBlur={formik.handleBlur}
+        />
+        {formik.touched.reviewText && formik.errors.reviewText && (
+          <p className="field-error">{formik.errors.reviewText}</p>
+        )}
       </div>
-      <label htmlFor="leaveRating">Leave a Rating</label>
-      <select
-        name="reviewStars"
-        id="reviewStars"
-        className="selectpicker"
-        value={formik.values.reviewStars}
-        onChange={formik.handleChange}
-      >
-        {starOptions.map((option) => (
-          <option key={option.value} value={option.value}>
-            {option.label}
-          </option>
-        ))}
-      </select>
-      <button type="submit">Submit</button>
+      <div>
+        <label htmlFor="reviewStars" className="field-label">
+          Rating
+        </label>
+        <select
+          id="reviewStars"
+          name="reviewStars"
+          className="field"
+          value={formik.values.reviewStars}
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+        >
+          <option value="">Choose…</option>
+          {starOptions.map((s) => (
+            <option key={s} value={s}>
+              {s} ♥
+            </option>
+          ))}
+        </select>
+        {formik.touched.reviewStars && formik.errors.reviewStars && (
+          <p className="field-error">{formik.errors.reviewStars}</p>
+        )}
+      </div>
+      <Button type="submit">Submit Review</Button>
     </form>
   );
 }

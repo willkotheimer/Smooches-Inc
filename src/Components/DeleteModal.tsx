@@ -1,36 +1,36 @@
-import React, { useState } from 'react';
-import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
+import { useState, type ReactNode } from 'react';
+import Button from '../ui/Button';
 
 interface DeleteModalProps {
-  buttonLabel: React.ReactNode;
+  buttonLabel: ReactNode;
   className?: string;
-  title: React.ReactNode;
-  children?: React.ReactNode;
+  title: ReactNode;
+  children?: ReactNode;
 }
 
-const DeleteModal = (props: DeleteModalProps) => {
-  const { buttonLabel, className, title } = props;
-
-  const [modal, setModal] = useState(false);
-
-  const toggle = () => setModal(!modal);
+export default function DeleteModal({ buttonLabel, title, children }: DeleteModalProps) {
+  const [open, setOpen] = useState(false);
+  const toggle = () => setOpen((o) => !o);
 
   return (
-    <div>
-      <Button color="btn-primary-outline accentColor" onClick={toggle}>
+    <>
+      <Button variant="ghost" onClick={toggle}>
         {buttonLabel}
       </Button>
-      <Modal isOpen={modal} toggle={toggle} className={className}>
-        <ModalHeader toggle={toggle}>{title}</ModalHeader>
-        <ModalBody>{props.children}</ModalBody>
-        <ModalFooter>
-          <Button color="secondary" onClick={toggle}>
-            Cancel
-          </Button>
-        </ModalFooter>
-      </Modal>
-    </div>
+      {open && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+          <div className="absolute inset-0 bg-black/60" onClick={toggle} aria-hidden />
+          <div className="relative z-10 w-full max-w-md rounded-card border border-accent/60 bg-surface p-4 shadow-xl">
+            <div className="mb-3 flex items-center justify-between">
+              <h3 className="text-lg font-bold">{title}</h3>
+              <button onClick={toggle} aria-label="Close" className="text-muted hover:text-foreground">
+                <i className="fa-solid fa-xmark" aria-hidden />
+              </button>
+            </div>
+            <div className="text-sm">{children}</div>
+          </div>
+        </div>
+      )}
+    </>
   );
-};
-
-export default DeleteModal;
+}
