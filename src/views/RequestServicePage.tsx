@@ -52,6 +52,9 @@ export default function RequestServicePage() {
 
   return (
     <div>
+      <div className="chalkboard mb-4 px-5 py-6 text-center">
+        <p className="text-3xl leading-tight">Order when you are ready. . . ;)</p>
+      </div>
       <YourCheckout addToOrder={addToOrder} services={services} loading={isLoading} />
       <YourOrder
         order={order}

@@ -17,6 +17,15 @@ const validationSchema = Yup.object({
   description: Yup.string().required('Description is required'),
 });
 
+// Common favors a user can one-click into the form (or write their own below).
+const PRESETS = [
+  { name: 'Bring me coffee', description: 'Just how I like it' },
+  { name: 'Give me a massage', description: '15 minutes' },
+  { name: 'Make me breakfast', description: 'Eggs, bacon, toast' },
+  { name: 'Do the dishes', description: 'Including the pans' },
+  { name: 'My special request', description: '(you know the one) 😉' },
+];
+
 export default function ServiceForm({ service, onUpdate, toggle }: Props) {
   const createService = useCreateService();
   const updateService = useUpdateService();
@@ -46,6 +55,30 @@ export default function ServiceForm({ service, onUpdate, toggle }: Props) {
 
   return (
     <form onSubmit={formik.handleSubmit} className="space-y-3">
+      {!service?.firebaseKey && (
+        <div>
+          <span className="field-label">Quick pick a common favor</span>
+          <div className="flex flex-wrap gap-2">
+            {PRESETS.map((preset) => (
+              <button
+                key={preset.name}
+                type="button"
+                onClick={() =>
+                  formik.setValues({
+                    ...formik.values,
+                    name: preset.name,
+                    description: preset.description,
+                  })
+                }
+                className="rounded-card border border-line px-3 py-1.5 text-xs font-semibold hover:border-accent hover:text-accent"
+              >
+                {preset.name}
+              </button>
+            ))}
+          </div>
+          <p className="mt-1 text-xs text-muted">…or write your own below.</p>
+        </div>
+      )}
       <div>
         <label htmlFor="name" className="field-label">
           Service name

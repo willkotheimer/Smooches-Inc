@@ -53,3 +53,13 @@
 .heart-beat {
   animation: heartbeat 1.2s ease-in-out infinite;
 }
+
+/* Chalkboard banner (handwritten white chalk on slate, wooden frame). */
+.chalkboard {
+  border: 6px solid #5b4a36;
+  border-radius: 4px;
+  background: #232a23;
+  color: #f1eee0;
+  font-family: 'Caveat', cursive;
+  text-shadow: 0 0 2px rgba(241, 238, 224, 0.35);
+}
