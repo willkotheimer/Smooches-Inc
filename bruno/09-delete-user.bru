@@ -1,0 +1,13 @@
+meta {
+  name: Users - cleanup owner
+  type: http
+  seq: 9
+}
+
+delete {
+  url: {{baseUrl}}/users/{{usersKey}}
+}
+
+assert {
+  res.status: eq 204
+}

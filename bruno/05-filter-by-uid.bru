@@ -1,0 +1,23 @@
+meta {
+  name: Services - filter by uid
+  type: http
+  seq: 5
+}
+
+get {
+  url: {{baseUrl}}/services?uid=bruno-uid
+}
+
+assert {
+  res.status: eq 200
+}
+
+tests {
+  test("every result belongs to the uid", function () {
+    expect(res.body).to.be.an("array");
+    expect(res.body.length).to.be.at.least(1);
+    res.body.forEach(function (s) {
+      expect(s.uid).to.equal("bruno-uid");
+    });
+  });
+}

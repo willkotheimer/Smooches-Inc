@@ -1,0 +1,19 @@
+meta {
+  name: Services - deleted is gone
+  type: http
+  seq: 8
+}
+
+get {
+  url: {{baseUrl}}/services/{{servicesKey}}
+}
+
+assert {
+  res.status: eq 404
+}
+
+tests {
+  test("deleted service returns 404", function () {
+    expect(res.status).to.equal(404);
+  });
+}

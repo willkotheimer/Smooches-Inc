@@ -1,0 +1,34 @@
+meta {
+  name: Services - create (for owner)
+  type: http
+  seq: 3
+}
+
+post {
+  url: {{baseUrl}}/services
+  body: json
+}
+
+body:json {
+  {
+    "servicesKey": "",
+    "uid": "bruno-uid",
+    "name": "Bruno task",
+    "description": "created by bruno",
+    "offerDescription": ""
+  }
+}
+
+script:post-response {
+  bru.setVar("servicesKey", res.body.servicesKey);
+}
+
+assert {
+  res.status: eq 201
+}
+
+tests {
+  test("server generated a key", function () {
+    expect(res.body.servicesKey).to.be.a("string").and.not.empty;
+  });
+}

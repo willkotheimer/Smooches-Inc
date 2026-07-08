@@ -1,0 +1,78 @@
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useAPIRequest } from './useAPIRequest';
+import { apiRoutes } from './apiRoutes';
+import type { Service } from '../types';
+
+export function useAllServices() {
+  const { get } = useAPIRequest();
+  return useQuery<Service[]>(['services'], () => get<Service[]>(apiRoutes.services));
+}
+
+export function useUserServices(uid: string) {
+  const { get } = useAPIRequest();
+  // Returned keyed by servicesKey because some callers do services[key].
+  return useQuery<Record<string, Service>>(
+    ['userServices', uid],
+    async () => {
+      const list = await get<Service[]>(apiRoutes.servicesByUid(uid));
+      return Object.fromEntries(list.map((s) => [s.servicesKey, s]));
+    },
+    { enabled: Boolean(uid) },
+  );
+}
+
+export function useServiceByKey(fbKey: string) {
+  const { get } = useAPIRequest();
+  return useQuery<Service | undefined>(
+    ['serviceByKey', fbKey],
+    async () => {
+      const list = await get<Service[]>(apiRoutes.services);
+      return list.find((s) => s.servicesKey === fbKey);
+    },
+    { enabled: Boolean(fbKey) },
+  );
+}
+
+const invalidateServices = (queryClient: ReturnType<typeof useQueryClient>) => {
+  queryClient.invalidateQueries(['services']);
+  queryClient.invalidateQueries(['userServices']);
+};
+
+export function useCreateService() {
+  const { post } = useAPIRequest();
+  const queryClient = useQueryClient();
+  return useMutation<Service, Error, Service>(
+    (service) =>
+      post<Service>(apiRoutes.services, service, {
+        successMessage: 'Service created.',
+        errorMessage: 'Service not created.',
+      }),
+    { onSuccess: () => invalidateServices(queryClient) },
+  );
+}
+
+export function useUpdateService() {
+  const { patch } = useAPIRequest();
+  const queryClient = useQueryClient();
+  return useMutation<Service, Error, Service>(
+    (service) =>
+      patch<Service>(apiRoutes.service(service.servicesKey), service, {
+        successMessage: 'Service updated.',
+        errorMessage: 'Service not updated.',
+      }),
+    { onSuccess: () => invalidateServices(queryClient) },
+  );
+}
+
+export function useDeleteService() {
+  const { del } = useAPIRequest();
+  const queryClient = useQueryClient();
+  return useMutation<unknown, Error, string>(
+    (servicesKey) =>
+      del(apiRoutes.service(servicesKey), {
+        successMessage: 'Service deleted.',
+        errorMessage: 'Service not deleted.',
+      }),
+    { onSuccess: () => invalidateServices(queryClient) },
+  );
+}

@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="SmoochesApp.Tests/SmoochesApp.Tests.csproj" />
+  <Project Path="SmoochesApp/SmoochesApp.csproj" />
+</Solution>

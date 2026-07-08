@@ -1,0 +1,6 @@
+@SmoochesApp_HostAddress = http://localhost:5221
+
+GET {{SmoochesApp_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

@@ -1,0 +1,13 @@
+meta {
+  name: Services - delete
+  type: http
+  seq: 7
+}
+
+delete {
+  url: {{baseUrl}}/services/{{servicesKey}}
+}
+
+assert {
+  res.status: eq 204
+}

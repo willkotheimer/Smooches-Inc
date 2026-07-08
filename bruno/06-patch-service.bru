@@ -1,0 +1,27 @@
+meta {
+  name: Services - patch
+  type: http
+  seq: 6
+}
+
+patch {
+  url: {{baseUrl}}/services/{{servicesKey}}
+  body: json
+}
+
+body:json {
+  {
+    "name": "Bruno task (renamed)"
+  }
+}
+
+assert {
+  res.status: eq 200
+}
+
+tests {
+  test("name updated, description untouched", function () {
+    expect(res.body.name).to.equal("Bruno task (renamed)");
+    expect(res.body.description).to.equal("created by bruno");
+  });
+}

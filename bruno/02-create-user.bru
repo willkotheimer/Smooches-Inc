@@ -1,0 +1,36 @@
+meta {
+  name: Users - create (owner)
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{baseUrl}}/users
+  body: json
+}
+
+body:json {
+  {
+    "usersKey": "",
+    "uid": "bruno-uid",
+    "name": "Bruno Owner",
+    "email": "bruno@example.com",
+    "image": "",
+    "lastSignInTime": ""
+  }
+}
+
+script:post-response {
+  bru.setVar("usersKey", res.body.usersKey);
+}
+
+assert {
+  res.status: eq 201
+}
+
+tests {
+  test("owner user created with a key", function () {
+    expect(res.body.usersKey).to.be.a("string").and.not.empty;
+    expect(res.body.uid).to.equal("bruno-uid");
+  });
+}
