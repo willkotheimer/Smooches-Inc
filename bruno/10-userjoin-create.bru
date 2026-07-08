@@ -1,0 +1,27 @@
+meta {
+  name: UserJoins - create
+  type: http
+  seq: 10
+}
+
+post {
+  url: {{baseUrl}}/userjoins
+  body: json
+}
+
+body:json {
+  {
+    "userJoinsKey": "",
+    "user1FBKey": "bruno-alpha",
+    "user2FBKey": "bruno-beta",
+    "confirm": false
+  }
+}
+
+script:post-response {
+  bru.setVar("userJoinsKey", res.body.userJoinsKey);
+}
+
+assert {
+  res.status: eq 201
+}

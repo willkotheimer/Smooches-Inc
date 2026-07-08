@@ -1,36 +1,10 @@
-# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+# .NET build output
+[Bb]in/
+[Oo]bj/
+*.user
 
-.vscode/
-package-lock.json
-dist/
-.firebase/
-.env
+# Rider / VS
+.idea/
+.vs/
 
-# local data backups / migration dumps (contain real user emails)
-/migration
-
-# dependencies
-/node_modules
-server/node_modules
-/.pnp
-.pnp.js
-
-# keep the server's lockfile for reproducible backend installs
-!server/package-lock.json
-
-# testing
-/coverage
-
-# production
-/build
-
-# misc
-.DS_Store
-.env.local
-.env.development.local
-.env.test.local
-.env.production.local
-
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
+# The React/Node app keeps its own .gitignore under Smooches.UI/

@@ -1,0 +1,23 @@
+meta {
+  name: UserJoins - matches either participant
+  type: http
+  seq: 11
+}
+
+get {
+  url: {{baseUrl}}/userjoins?uid=bruno-beta
+}
+
+assert {
+  res.status: eq 200
+}
+
+tests {
+  test("a join is found by the second participant's uid", function () {
+    expect(res.body).to.be.an("array");
+    var found = res.body.filter(function (j) {
+      return j.userJoinsKey === bru.getVar("userJoinsKey");
+    });
+    expect(found.length).to.equal(1);
+  });
+}

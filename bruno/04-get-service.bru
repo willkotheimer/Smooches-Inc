@@ -1,0 +1,20 @@
+meta {
+  name: Services - get by key
+  type: http
+  seq: 4
+}
+
+get {
+  url: {{baseUrl}}/services/{{servicesKey}}
+}
+
+assert {
+  res.status: eq 200
+}
+
+tests {
+  test("returns the created service", function () {
+    expect(res.body.name).to.equal("Bruno task");
+    expect(res.body.uid).to.equal("bruno-uid");
+  });
+}
