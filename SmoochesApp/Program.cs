@@ -11,10 +11,17 @@ builder.Services.AddControllers();
 builder.Services.AddDbContext<SmoochesDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("Smooches")));
 
-// Let the React dev server call the API from the browser.
+// Let the SPA call the API from the browser. Dev origins are always allowed;
+// the deployed SPA origin comes from the FrontendOrigin app setting (set by Bicep).
 const string CorsPolicy = "SmoochesUI";
+var allowedOrigins = new List<string> { "http://localhost:3000", "http://localhost:5173" };
+var frontendOrigin = builder.Configuration["FrontendOrigin"];
+if (!string.IsNullOrWhiteSpace(frontendOrigin))
+{
+    allowedOrigins.Add(frontendOrigin.TrimEnd('/'));
+}
 builder.Services.AddCors(options => options.AddPolicy(CorsPolicy, policy =>
-    policy.WithOrigins("http://localhost:3000", "http://localhost:5173")
+    policy.WithOrigins(allowedOrigins.ToArray())
           .AllowAnyHeader()
           .AllowAnyMethod()));
 

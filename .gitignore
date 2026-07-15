@@ -8,3 +8,6 @@
 .vs/
 
 # The React/Node app keeps its own .gitignore under Smooches.UI/
+
+# compiled Bicep (ARM) output
+infra/*.json
