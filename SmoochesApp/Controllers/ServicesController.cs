@@ -12,10 +12,12 @@ public class ServicesController : ControllerBase
     private readonly IServiceService _service;
     public ServicesController(IServiceService service) => _service = service;
 
-    // GET /api/services?uid=xxx  -> all, or only that owner's services
+    // GET /api/services?uid=xxx&active=true
+    //   ?uid filters to one owner; ?active filters by offered state.
     [HttpGet]
-    public async Task<ActionResult<List<Service>>> GetAll([FromQuery] string? uid) =>
-        await _service.GetAllAsync(uid);
+    public async Task<ActionResult<List<Service>>> GetAll(
+        [FromQuery] string? uid, [FromQuery] bool? active) =>
+        await _service.GetAllAsync(uid, active);
 
     [HttpGet("{id}")]
     public async Task<ActionResult<Service>> GetById(string id)
@@ -37,5 +39,11 @@ public class ServicesController : ControllerBase
 
     [HttpDelete("{id}")]
     public async Task<IActionResult> Delete(string id) =>
-        await _service.DeleteAsync(id) ? NoContent() : NotFound(new { error = "Service not found" });
+        await _service.DeleteAsync(id) switch
+        {
+            DeleteResult.Deleted => NoContent(),
+            DeleteResult.Forbidden => StatusCode(StatusCodes.Status403Forbidden,
+                new { error = "Preset services can be deactivated but not deleted" }),
+            _ => NotFound(new { error = "Service not found" }),
+        };
 }

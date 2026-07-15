@@ -1,0 +1,65 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-background text-foreground font-body antialiased;
+  }
+  h1,
+  h2,
+  h3,
+  h4 {
+    @apply font-heading;
+  }
+}
+
+@layer components {
+  /* Short rose underline used beneath page titles. */
+  .title-rule {
+    @apply mt-1 mb-3.5 h-1 w-14 rounded-sm bg-accent;
+  }
+
+  /* Primary nav links (active state via react-router NavLink activeClassName). */
+  .nav-link {
+    @apply rounded-card px-3.5 py-2 text-sm font-semibold text-foreground/90 hover:bg-surface-elevated;
+  }
+  .nav-link.active {
+    @apply bg-accent text-accent-foreground hover:bg-accent;
+  }
+
+  /* Form controls */
+  .field {
+    @apply w-full rounded-card border border-line bg-background px-3 py-2 text-sm text-foreground placeholder:text-muted focus:border-accent focus:outline-none;
+  }
+  .field-error {
+    @apply mt-1 text-xs text-accent;
+  }
+  .field-label {
+    @apply mb-1 block text-sm font-semibold;
+  }
+}
+
+/* Flashing-hearts loader animation (kept from the original). */
+@keyframes heartbeat {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  25% {
+    transform: scale(1.3);
+  }
+}
+.heart-beat {
+  animation: heartbeat 1.2s ease-in-out infinite;
+}
+
+/* Chalkboard banner (handwritten white chalk on slate, wooden frame). */
+.chalkboard {
+  border: 6px solid #5b4a36;
+  border-radius: 4px;
+  background: #232a23;
+  color: #f1eee0;
+  font-family: 'Caveat', cursive;
+  text-shadow: 0 0 2px rgba(241, 238, 224, 0.35);
+}

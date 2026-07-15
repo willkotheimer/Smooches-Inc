@@ -5,6 +5,7 @@ import 'firebase/database';
 import { useQueryClient } from '@tanstack/react-query';
 import ReviewTaskCard from '../Components/Cards/ReviewTaskCard';
 import Loader from '../Components/Loader';
+import SectionHeading from '../ui/SectionHeading';
 import YourPreviousReviews from '../Components/YourPreviousReviews';
 import TheirPreviousReviews from '../Components/TheirPreviousReviews';
 import { useAppContext } from '../context/AppContext';
@@ -93,35 +94,29 @@ export default function LeaveReviewPage() {
       ));
 
   return (
-    <>
-      <div className="servicePage">
-        <div className="leftSide">
-          <div className="reviewsToGiveDiv">
-            <>
-              {loading ? (
-                <Loader />
-              ) : (
-                <>
-                  <h3 className="reviewHeader">Completed Tasks To Review:</h3>
-                  <div className="d-flex flex-wrap">{toDos && showUnreviewed()}</div>
-                </>
-              )}
-            </>
-          </div>
-        </div>
-        <div className="rightSide">
-          <div className="previousReviewsGivenDiv">
-            <h4>Previous Reviews Given</h4>
-            <div className="fullLine"></div>
-            {yourReviews && yourPreviousReviews()}
-          </div>
-          <div className="reviewsGivenToYouDiv">
-            <h4>Reviews Given To You</h4>
-            <div className="fullLine"></div>
-            {theirReviews !== undefined && theirPreviousReviews()}
-          </div>
-        </div>
-      </div>
-    </>
+    <div>
+      <SectionHeading icon="fa-solid fa-list-check">Completed Tasks To Review</SectionHeading>
+      {loading ? (
+        <Loader />
+      ) : toDos.length ? (
+        showUnreviewed()
+      ) : (
+        <p className="text-sm text-muted">Nothing to review right now.</p>
+      )}
+
+      <SectionHeading icon="fa-solid fa-pen">Previous Reviews Given</SectionHeading>
+      {yourReviews.length ? (
+        yourPreviousReviews()
+      ) : (
+        <p className="text-sm text-muted">None yet.</p>
+      )}
+
+      <SectionHeading icon="fa-solid fa-heart">Reviews Given To You</SectionHeading>
+      {theirReviews.length ? (
+        theirPreviousReviews()
+      ) : (
+        <p className="text-sm text-muted">None yet.</p>
+      )}
+    </div>
   );
 }

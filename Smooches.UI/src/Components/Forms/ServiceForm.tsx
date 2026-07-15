@@ -1,15 +1,22 @@
 import { useFormik } from 'formik';
+import * as Yup from 'yup';
 import getUser from '../../helpers/data/authData';
+import Button from '../../ui/Button';
 import { useCreateService, useUpdateService } from '../../data/useServiceData';
+import { servicePresets } from '../../data/servicePresets';
 import type { Service } from '../../types';
 
 interface Props {
   service?: Service;
   onUpdate?: () => void;
-  // Injected at runtime by AppModal via React.cloneElement.
-  toggle?: () => void;
+  toggle?: () => void; // injected by AppModal
   user?: any;
 }
+
+const validationSchema = Yup.object({
+  name: Yup.string().required('Name is required'),
+  description: Yup.string().required('Description is required'),
+});
 
 export default function ServiceForm({ service, onUpdate, toggle }: Props) {
   const createService = useCreateService();
@@ -23,14 +30,18 @@ export default function ServiceForm({ service, onUpdate, toggle }: Props) {
       uid: service?.uid || getUser(),
       description: service?.description || '',
       offerDescription: service?.offerDescription || '',
+      active: service?.active ?? true,
+      source: service?.source ?? 'custom',
     },
+    validationSchema,
     onSubmit: (values) => {
       const done = () => {
         onUpdate?.();
         toggle?.();
       };
       if (values.servicesKey === '') {
-        createService.mutate(values, { onSuccess: done });
+        // Anything created here is the user's own task, so it stays deletable.
+        createService.mutate({ ...values, source: 'custom', active: true }, { onSuccess: done });
       } else {
         updateService.mutate(values, { onSuccess: done });
       }
@@ -38,35 +49,81 @@ export default function ServiceForm({ service, onUpdate, toggle }: Props) {
   });
 
   return (
-    <form onSubmit={formik.handleSubmit}>
-      <h3>Service Form</h3>
-      <input
-        type="text"
-        name="name"
-        value={formik.values.name}
-        onChange={formik.handleChange}
-        placeholder="Service Name"
-        className="form-control form-control-lg m-1"
-        required
-      />
-      <input
-        type="text"
-        name="description"
-        value={formik.values.description}
-        onChange={formik.handleChange}
-        placeholder="Service Description"
-        className="form-control form-control-lg m-1"
-        required
-      />
-      <input
-        type="text"
-        name="offerDescription"
-        value={formik.values.offerDescription}
-        onChange={formik.handleChange}
-        placeholder="Optional: This is a special offer"
-        className="form-control form-control-lg m-1"
-      />
-      <button type="submit">Submit</button>
+    <form onSubmit={formik.handleSubmit} className="space-y-3">
+      {!service?.servicesKey && (
+        <div>
+          <span className="field-label">Quick pick a common favor</span>
+          <div className="flex flex-wrap gap-2">
+            {servicePresets.map((preset) => (
+              <button
+                key={preset.name}
+                type="button"
+                onClick={() =>
+                  formik.setValues({
+                    ...formik.values,
+                    name: preset.name,
+                    description: preset.description,
+                  })
+                }
+                className="rounded-card border border-line px-3 py-1.5 text-xs font-semibold hover:border-accent hover:text-accent"
+              >
+                {preset.name}
+              </button>
+            ))}
+          </div>
+          <p className="mt-1 text-xs text-muted">…or write your own below.</p>
+        </div>
+      )}
+      <div>
+        <label htmlFor="name" className="field-label">
+          Service name
+        </label>
+        <input
+          id="name"
+          name="name"
+          className="field"
+          placeholder="e.g. Bring coffee"
+          value={formik.values.name}
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+        />
+        {formik.touched.name && formik.errors.name && (
+          <p className="field-error">{formik.errors.name}</p>
+        )}
+      </div>
+      <div>
+        <label htmlFor="description" className="field-label">
+          Description
+        </label>
+        <input
+          id="description"
+          name="description"
+          className="field"
+          placeholder="What does it involve?"
+          value={formik.values.description}
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+        />
+        {formik.touched.description && formik.errors.description && (
+          <p className="field-error">{formik.errors.description}</p>
+        )}
+      </div>
+      <div>
+        <label htmlFor="offerDescription" className="field-label">
+          Special offer (optional)
+        </label>
+        <input
+          id="offerDescription"
+          name="offerDescription"
+          className="field"
+          placeholder="Optional special offer"
+          value={formik.values.offerDescription}
+          onChange={formik.handleChange}
+        />
+      </div>
+      <Button type="submit">
+        <i className="fa-solid fa-floppy-disk" aria-hidden /> Save
+      </Button>
     </form>
   );
 }

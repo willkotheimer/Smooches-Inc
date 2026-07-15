@@ -1,5 +1,6 @@
 import CheckoutCard from './Cards/CheckoutCard';
 import Loader from './Loader';
+import SectionHeading from '../ui/SectionHeading';
 import { useAppContext } from '../context/AppContext';
 import type { Service } from '../types';
 
@@ -24,23 +25,19 @@ export default function YourCheckout({ services, addToOrder, loading }: Props) {
       />
     ));
 
+  if (loading) return <Loader />;
+
   return (
     <>
-      {loading ? (
-        <Loader />
-      ) : (
-        <>
-          <div>
-            Your Smooches Inc Representative,{' '}
-            {otherName[0][1] && otherName[0][1].name.split(' ')[0]},
-            <br /> has authorized the following services:
-          </div>
-          <div className="tasksOffered">
-            <h3 className="checkoutHeader">Tasks Offered</h3>
-            {services && showServices()}
-          </div>
-        </>
-      )}
+      <p className="mb-2 text-sm text-muted">
+        Your Smooches Inc Representative,{' '}
+        <strong className="text-foreground">
+          {otherName[0]?.[1] && otherName[0][1].name.split(' ')[0]}
+        </strong>
+        , has authorized the following services:
+      </p>
+      <SectionHeading icon="fa-solid fa-store">Tasks Offered</SectionHeading>
+      {services && showServices()}
     </>
   );
 }
