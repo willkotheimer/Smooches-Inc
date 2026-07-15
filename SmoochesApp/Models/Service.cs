@@ -3,11 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SmoochesApp.Models;
 
-/// <summary>
-/// Mirrors the TS <c>Service</c> interface / the SQL <c>Services</c> table.
-/// (The table also has Active/Source columns for the future "service bank"; they
-/// carry SQL defaults and are intentionally not mapped here yet.)
-/// </summary>
+/// <summary>Mirrors the TS <c>Service</c> interface / the SQL <c>Services</c> table.</summary>
 [Table("Services")]
 public class Service : ITimestamped, IHasUid
 {
@@ -17,6 +13,10 @@ public class Service : ITimestamped, IHasUid
     public string Name { get; set; } = string.Empty;
     public string Description { get; set; } = string.Empty;
     public string OfferDescription { get; set; } = string.Empty;
+    // Service bank: offered to the partner when true; deactivating keeps it in the bank.
+    public bool Active { get; set; } = true;
+    // 'custom' (user-created, deletable) | 'preset' (added from the template list)
+    public string Source { get; set; } = "custom";
     public DateTime CreatedAt { get; set; }
     public DateTime UpdatedAt { get; set; }
 }

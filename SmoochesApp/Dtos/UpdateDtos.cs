@@ -32,6 +32,8 @@ public class ServiceUpdateDto
     public string? Name { get; set; }
     public string? Description { get; set; }
     public string? OfferDescription { get; set; }
+    public bool? Active { get; set; }
+    public string? Source { get; set; }
 
     public void ApplyTo(Service e)
     {
@@ -39,6 +41,8 @@ public class ServiceUpdateDto
         if (Name is not null) e.Name = Name;
         if (Description is not null) e.Description = Description;
         if (OfferDescription is not null) e.OfferDescription = OfferDescription;
+        if (Active is not null) e.Active = Active.Value;
+        if (Source is not null) e.Source = Source;
     }
 }
 

@@ -10,7 +10,8 @@ export default function RequestServicePage() {
   const { user, otherKey } = useAppContext();
   const uid = (user as any)?.uid;
 
-  const { data: services = {}, isLoading } = useUserServices(otherKey);
+  // Partner only sees the tasks the owner has activated (offered).
+  const { data: services = {}, isLoading } = useUserServices(otherKey, true);
   const createToDo = useCreateToDo();
 
   const [order, setOrder] = useState<Record<string, number>>({});
@@ -39,7 +40,7 @@ export default function RequestServicePage() {
 
   const addToOrder = (key: string) => {
     setOrder((prev) => ({ ...prev, [key]: 1 }));
-    setSubmitted(false); // reset submit confirmation
+    setSubmitted(false);
   };
 
   const removeFromOrder = (key: string) => {
@@ -51,30 +52,18 @@ export default function RequestServicePage() {
   };
 
   return (
-    <>
-      <div className="servicePage">
-        <div className="leftSide">
-          <div className="createService">
-            <h3>Your Smooch's Inc partner's Inventory:</h3>
-            {<YourCheckout addToOrder={addToOrder} services={services} loading={isLoading} />}
-          </div>
-        </div>
-        <div className="rightSide d-flex flex-column">
-          <div className="todos">
-            <div className="requestRightDiv">
-              {
-                <YourOrder
-                  order={order}
-                  submitted={submitted}
-                  services={services}
-                  submitOrder={submitOrder}
-                  removeFromOrder={removeFromOrder}
-                />
-              }
-            </div>
-          </div>
-        </div>
+    <div>
+      <div className="chalkboard mb-4 px-5 py-6 text-center">
+        <p className="text-3xl leading-tight">Order when you are ready. . . ;)</p>
       </div>
-    </>
+      <YourCheckout addToOrder={addToOrder} services={services} loading={isLoading} />
+      <YourOrder
+        order={order}
+        submitted={submitted}
+        services={services}
+        submitOrder={submitOrder}
+        removeFromOrder={removeFromOrder}
+      />
+    </div>
   );
 }

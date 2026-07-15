@@ -45,19 +45,27 @@ public class ServiceServiceTests
     [Fact]
     public async Task GetAllAsync_without_uid_lists_all()
     {
-        await Sut.GetAllAsync(null);
+        await Sut.GetAllAsync(null, null);
 
         _repo.Verify(r => r.GetAllAsync(), Times.Once);
-        _repo.Verify(r => r.GetByUidAsync(It.IsAny<string>()), Times.Never);
+        _repo.Verify(r => r.GetByUidAsync(It.IsAny<string>(), It.IsAny<bool?>()), Times.Never);
     }
 
     [Fact]
     public async Task GetAllAsync_with_uid_filters_by_uid()
     {
-        await Sut.GetAllAsync("user-1");
+        await Sut.GetAllAsync("user-1", null);
 
-        _repo.Verify(r => r.GetByUidAsync("user-1"), Times.Once);
+        _repo.Verify(r => r.GetByUidAsync("user-1", null), Times.Once);
         _repo.Verify(r => r.GetAllAsync(), Times.Never);
+    }
+
+    [Fact]
+    public async Task GetAllAsync_with_active_passes_the_filter_through()
+    {
+        await Sut.GetAllAsync("user-1", true);
+
+        _repo.Verify(r => r.GetByUidAsync("user-1", true), Times.Once);
     }
 
     [Fact]
@@ -86,21 +94,31 @@ public class ServiceServiceTests
     }
 
     [Fact]
-    public async Task DeleteAsync_returns_false_and_skips_remove_when_missing()
+    public async Task DeleteAsync_returns_NotFound_and_skips_remove_when_missing()
     {
         _repo.Setup(r => r.GetByKeyAsync("x")).ReturnsAsync((Service?)null);
 
-        Assert.False(await Sut.DeleteAsync("x"));
+        Assert.Equal(DeleteResult.NotFound, await Sut.DeleteAsync("x"));
         _repo.Verify(r => r.DeleteAsync(It.IsAny<Service>()), Times.Never);
     }
 
     [Fact]
-    public async Task DeleteAsync_removes_when_found()
+    public async Task DeleteAsync_removes_custom_service()
     {
-        var existing = new Service { ServicesKey = "s1" };
+        var existing = new Service { ServicesKey = "s1", Source = "custom" };
         _repo.Setup(r => r.GetByKeyAsync("s1")).ReturnsAsync(existing);
 
-        Assert.True(await Sut.DeleteAsync("s1"));
+        Assert.Equal(DeleteResult.Deleted, await Sut.DeleteAsync("s1"));
         _repo.Verify(r => r.DeleteAsync(existing), Times.Once);
+    }
+
+    [Fact]
+    public async Task DeleteAsync_forbids_deleting_a_preset()
+    {
+        var preset = new Service { ServicesKey = "s2", Source = "preset" };
+        _repo.Setup(r => r.GetByKeyAsync("s2")).ReturnsAsync(preset);
+
+        Assert.Equal(DeleteResult.Forbidden, await Sut.DeleteAsync("s2"));
+        _repo.Verify(r => r.DeleteAsync(It.IsAny<Service>()), Times.Never);
     }
 }

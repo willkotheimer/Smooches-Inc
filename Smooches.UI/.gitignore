@@ -1,7 +1,6 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
 .vscode/
-package-lock.json
 dist/
 .firebase/
 .env
@@ -9,14 +8,11 @@ dist/
 # local data backups / migration dumps (contain real user emails)
 /migration
 
-# dependencies
+# dependencies (npm is the package manager; package-lock.json is tracked)
 /node_modules
 server/node_modules
 /.pnp
 .pnp.js
-
-# keep the server's lockfile for reproducible backend installs
-!server/package-lock.json
 
 # testing
 /coverage
